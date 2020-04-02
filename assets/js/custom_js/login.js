@@ -16,12 +16,8 @@ $(document).ready(function () {
             username: {
                 validators: {
                     notEmpty: {
-                        message: 'The email address is required'
-                    },
-                    regexp: {
-                        regexp: /^\S+@\S{1,}\.\S{1,}$/,
-                        message: 'Please enter valid email format'
-                    }
+                        message: 'The Username is required'
+                    } 
                 }
             },
             password: {
@@ -35,5 +31,12 @@ $(document).ready(function () {
 
         }
     });
+
+});
+
+$(document).on("keypress", function(e) {  
+if (e.which == 13) {  
+	$( "#signin" ).trigger('click');
+}
 
 });

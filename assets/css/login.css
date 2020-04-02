@@ -9,9 +9,14 @@ body {
     padding: 6.5% 0;
 }
 
-#sign-in, #sign-up {
+/* #sign-in, #sign-up {
     background: radial-gradient(ellipse at center, #5A93AF 0%, #004E74 100%);
+} */
+
+#sign-in, #sign-up {
+    background: radial-gradient(ellipse at center, #E5ECEC 0%, #C7C6C6 50%);
 }
+
 .login-form {
     background-color: rgba(255, 255, 255, .9);
     border-radius: 4px;
@@ -161,6 +166,7 @@ a:hover {
 .logo_h2{
     margin-top:20px;
     margin-bottom:10px;
+    margin-right: 5%;
 }
  a,a:hover, a:focus {
     color: #2a6496;

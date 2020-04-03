@@ -19,7 +19,7 @@
    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/css/custom_css/toastr_notificatons.css">
    <link href="<?php echo base_url() ?>assets/css/custom_css/wizard.css" rel="stylesheet">
    <link href="<?php echo base_url() ?>assets/css/custom_css/runnerwizard.css" rel="stylesheet">
-   
+
 </head>
 
 <body class="skin-default">
@@ -52,169 +52,178 @@
                   <div class="card-body">
                      <form id="form-validation" action="<?php echo base_url() . 'lead/save_lead'; ?>" method="post" class="form-horizontal">
                         <input type="hidden" name="prod_price" id="prod_price">
-                           <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Customer Personal Details</b></h6>
-                           <div class="form-group row">
-                              <div class="col-md-4">
-                                 <label class="form-control-label" for="cust_name">
-                                    Name
-                                    <span class="text-danger">*</span>
-                                 </label>
-                                 <div class="input-group">
-                                    <input type="text" id="cust_name" name="cust_name" class="form-control" placeholder="Enter customer name">
-                                 </div>
-                              </div>
-
-                              <div class="col-md-4">
-                                 <label class="form-control-label" for="email">
-                                    Email
-                                    <span class="text-danger">*</span>
-                                 </label>
-                                 <div class="input-group">
-                                    <input type="text" id="email" name="email" class="form-control" placeholder="Enter customer valid email">
-                                 </div>
-                              </div>
-                              <div class="col-md-4">
-                                 <label class="form-control-label" for="phone">
-                                    Mobile Number
-                                    <span class="text-danger">*</span>
-                                 </label>
-                                 <div class="input-group">
-                                    <input type="text" id="phone" name="phone" class="form-control" placeholder="Enter customer phone number">
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="form-group row">
-                              <div class="col-md-4">
-                                 <label class="form-control-label" for="name">
-                                    Alternate Number
-                                 </label>
-                                 <div class="input-group">
-                                    <input type="text" id="name" name="name" class="form-control" placeholder="Enter customer name">
-                                 </div>
-                              </div>
-                           </div><br>
-
-
-                           <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Billing Details</b></h6>
-                           <div class="form-group row">
-                              <div class="col-md-4">
-                                 <label class="form-control-label" for="val-firstname">
-                                    Address
-                                    <span class="text-danger">*</span>
-                                 </label>
-                                 <div class="input-group">
-                                 <textarea rows="3" class="form-control noresize" placeholder="Billing Address"></textarea>
-                                 </div>
-                              </div>
-                              <div class="col-md-4">
-                                 <label class="form-control-label" for="val-lastname">
-                                    City
-                                    <span class="text-danger">*</span>
-                                 </label>
-                                 <div class="input-group">
-                                    <input type="text" id="val-lastname" name="lastname" class="form-control" placeholder="Enter your last name">
-                                 </div>
-                              </div>
-                              <div class="col-md-4">
-                                 <label class="form-control-label" for="pincode">
-                                    Pin Code
-                                    <span class="text-danger">*</span>
-                                 </label>
-                                 <div class="input-group">
-                                    <input type="text" id="pincode" name="pincode" class="form-control" placeholder="Enter valid pincode">
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="form-group row">
-                              <div class="col-md-4">
-                                 <label class="form-control-label" for="val-firstname">
-                                    Contact Number
-                                    <span class="text-danger">*</span>
-                                 </label>
-                                 <div class="input-group">
-                                    <input type="text" id="firstname" name="firstname" class="form-control" placeholder="Contact Number">
-                                 </div>
-                              </div>
-                             
-                           </div><br>
-
-                           <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Shipping Details</b></h6>
-                           <div class="form-group row">
-                              <div class="col-md-4">
-                                 <label class="form-control-label" for="val-firstname">
-                                    Address
-                                    <span class="text-danger">*</span>
-                                 </label>
-                                 <div class="input-group">
-                                 <textarea rows="3" class="form-control noresize" placeholder="Billing Address"></textarea>
-                                 </div>
-                              </div>
-                              <div class="col-md-4">
-                                 <label class="form-control-label" for="val-lastname">
-                                    City
-                                    <span class="text-danger">*</span>
-                                 </label>
-                                 <div class="input-group">
-                                    <input type="text" id="val-lastname" name="lastname" class="form-control" placeholder="Enter your last name">
-                                 </div>
-                              </div>
-                              <div class="col-md-4">
-                                 <label class="form-control-label" for="pincode">
-                                    Pin Code
-                                    <span class="text-danger">*</span>
-                                 </label>
-                                 <div class="input-group">
-                                    <input type="text" id="pincode" name="pincode" class="form-control" placeholder="Enter your valid pincode">
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="form-group row">
-                              <div class="col-md-4">
-                                 <label class="form-control-label" for="val-firstname">
-                                    Contact Number
-                                    <span class="text-danger">*</span>
-                                 </label>
-                                 <div class="input-group">
-                                    <input type="text" id="firstname" name="firstname" class="form-control" placeholder="Contact Number">
-                                 </div>
-                              </div>
-                             
-                           </div><br>
-
-                           <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Product Details</b></h6>
-                           <div class="form-group row">
+                        <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Customer Personal Details</b></h6>
+                        <div class="form-group row">
                            <div class="col-md-4">
-                                 <label class="form-control-label" for="product">
-                                    Product
-                                    <span class="text-danger">*</span>
-                                 </label>
-                                 <div class="input-group">
-                                    <select id="product" name="product" class="form-control" data-bv-field="product">
-                                       <option value="">Please select</option>   
-                                       <option data-price="1000" value="Basket 1: Grocery @ 1000">Basket 1: Grocery @ 1000</option>
-                                       <option data-price="2000" value="Basket 2: Grocery @ 2000">Basket 2: Grocery @ 2000</option>
-                                       <option data-price="350" value="Basket 3: Vegetables @ 350">Basket 3: Vegetables @ 350</option>
-                                       <option data-price="500" value="Basket 4: Covid @ 500">Basket 4: Covid @ 500</option>
-                                    </select>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="form-group row">
-                              <div class="col-md-4">
-                                 
+                              <label class="form-control-label" for="cust_name">
+                                 Name
+                                 <span class="text-danger">*</span>
+                              </label>
+                              <div class="input-group">
+                                 <input type="text" id="cust_name" name="cust_name" class="form-control" placeholder="Enter customer name">
                               </div>
                            </div>
 
-
-
-
-                           <div class="form-group form-actions">
-                              <div class="col-md-8 ml-auto">
-                                 <button type="submit" class="btn btn-effect-ripple btn-primary">Submit</button>
-                                 <button type="reset" class="btn btn-effect-ripple btn-default reset_btn">Reset
-                                 </button>
+                           <div class="col-md-4">
+                              <label class="form-control-label" for="email">
+                                 Email
+                                 <span class="text-danger">*</span>
+                              </label>
+                              <div class="input-group">
+                                 <input type="text" id="email" name="email" class="form-control" placeholder="Enter customer valid email">
                               </div>
                            </div>
+                           <div class="col-md-4">
+                              <label class="form-control-label" for="phone">
+                                 Mobile Number
+                                 <span class="text-danger">*</span>
+                              </label>
+                              <div class="input-group">
+                                 <input type="text" id="phone" name="phone" class="form-control" placeholder="Enter customer phone number">
+                              </div>
+                           </div>
+                        </div>
+                        <div class="form-group row">
+                           <div class="col-md-4">
+                              <label class="form-control-label" for="name">
+                                 Alternate Number
+                              </label>
+                              <div class="input-group">
+                                 <input type="text" id="name" name="name" class="form-control" placeholder="Enter customer name">
+                              </div>
+                           </div>
+                        </div><br>
+
+
+                        <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Billing Details</b></h6>
+                        <div class="form-group row">
+                           <div class="col-md-4">
+                              <label class="form-control-label" for="val-firstname">
+                                 Address
+                                 <span class="text-danger">*</span>
+                              </label>
+                              <div class="input-group">
+                                 <textarea rows="3" class="form-control noresize" placeholder="Billing Address"></textarea>
+                              </div>
+                           </div>
+                           <div class="col-md-4">
+                              <label class="form-control-label" for="val-lastname">
+                                 City
+                                 <span class="text-danger">*</span>
+                              </label>
+                              <div class="input-group">
+                                 <input type="text" id="val-lastname" name="lastname" class="form-control" placeholder="Enter your last name">
+                              </div>
+                           </div>
+                           <div class="col-md-4">
+                              <label class="form-control-label" for="pincode">
+                                 Pin Code
+                                 <span class="text-danger">*</span>
+                              </label>
+                              <div class="input-group">
+                                 <input type="text" id="pincode" name="pincode" class="form-control" placeholder="Enter valid pincode">
+                              </div>
+                           </div>
+                        </div>
+                        <div class="form-group row">
+                           <div class="col-md-4">
+                              <label class="form-control-label" for="val-firstname">
+                                 Contact Number
+                                 <span class="text-danger">*</span>
+                              </label>
+                              <div class="input-group">
+                                 <input type="text" id="firstname" name="firstname" class="form-control" placeholder="Contact Number">
+                              </div>
+                           </div>
+
+                        </div><br>
+
+                        <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Shipping Details</b></h6>
+                        <div class="form-group row">
+                           <div class="col-md-4">
+                              <label class="form-control-label" for="val-firstname">
+                                 Address
+                                 <span class="text-danger">*</span>
+                              </label>
+                              <div class="input-group">
+                                 <textarea rows="3" class="form-control noresize" placeholder="Billing Address"></textarea>
+                              </div>
+                           </div>
+                           <div class="col-md-4">
+                              <label class="form-control-label" for="val-lastname">
+                                 City
+                                 <span class="text-danger">*</span>
+                              </label>
+                              <div class="input-group">
+                                 <input type="text" id="val-lastname" name="lastname" class="form-control" placeholder="Enter your last name">
+                              </div>
+                           </div>
+                           <div class="col-md-4">
+                              <label class="form-control-label" for="pincode">
+                                 Pin Code
+                                 <span class="text-danger">*</span>
+                              </label>
+                              <div class="input-group">
+                                 <input type="text" id="pincode" name="pincode" class="form-control" placeholder="Enter your valid pincode">
+                              </div>
+                           </div>
+                        </div>
+                        <div class="form-group row">
+                           <div class="col-md-4">
+                              <label class="form-control-label" for="val-firstname">
+                                 Contact Number
+                                 <span class="text-danger">*</span>
+                              </label>
+                              <div class="input-group">
+                                 <input type="text" id="firstname" name="firstname" class="form-control" placeholder="Contact Number">
+                              </div>
+                           </div>
+
+                        </div><br>
+
+                        <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Product Details</b></h6>
+                        <div class="form-group row">
+                           <div class="col-md-4">
+                              <label class="form-control-label" for="product">
+                                 Product
+                                 <span class="text-danger">*</span>
+                              </label>
+                              <div class="input-group">
+                                 <select id="product" name="product" class="form-control" data-bv-field="product">
+                                    <option value="">Please select</option>
+                                    <option data-price="1000" value="Basket 1: Grocery @ 1000">Basket 1: Grocery @ 1000</option>
+                                    <option data-price="2000" value="Basket 2: Grocery @ 2000">Basket 2: Grocery @ 2000</option>
+                                    <option data-price="350" value="Basket 3: Vegetables @ 350">Basket 3: Vegetables @ 350</option>
+                                    <option data-price="500" value="Basket 4: Covid @ 500">Basket 4: Covid @ 500</option>
+                                 </select>
+                              </div>
+                           </div>
+                           <div class="col-md-4">
+                              <label class="form-control-label" for="product">
+                                 Qty
+                                 <span class="text-danger">*</span>
+                              </label>
+                              <div class="input-group">
+                                 <input type="text" id="firstname" name="firstname" value="1" class="form-control">
+                              </div>
+                           </div>
+                        </div>
+                        <div class="form-group row">
+                           <div class="col-md-4">
+
+                           </div>
+                        </div>
+
+
+
+
+                        <div class="form-group form-actions">
+                           <div class="col-md-8 ml-auto">
+                              <button type="submit" class="btn btn-effect-ripple btn-primary">Submit</button>
+                              <button type="reset" class="btn btn-effect-ripple btn-default reset_btn">Reset
+                              </button>
+                           </div>
+                        </div>
                      </form>
 
                   </div>
@@ -264,15 +273,14 @@
    <!-- <script type="text/javascript" src="<?php echo base_url() ?>assets/js/custom_js/app/user.js"></script> -->
 
    <script lang="javascript" type="text/javascript">
-   $(document).ready(function() {
-   
-      $('select').on('change', function() {
-         var prod_price = $(this).find(':selected').attr('data-price');
-         $('#prod_price').val(prod_price);
-      });
+      $(document).ready(function() {
 
-   });
-      
+         $('select').on('change', function() {
+            var prod_price = $(this).find(':selected').attr('data-price');
+            $('#prod_price').val(prod_price);
+         });
+
+      });
    </script>
 
    <!-- end of page level js -->

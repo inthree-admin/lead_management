@@ -19,15 +19,20 @@
    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/css/custom_css/toastr_notificatons.css">
    <link href="<?php echo base_url() ?>assets/css/custom_css/wizard.css" rel="stylesheet">
    <link href="<?php echo base_url() ?>assets/css/custom_css/runnerwizard.css" rel="stylesheet">
+      <!-- Select2-->
+   <link href="<?php echo base_url() ?>assets/vendors/bootstrap-multiselect/css/bootstrap-multiselect.css" rel="stylesheet" type="text/css">
+    <link href="<?php echo base_url() ?>assets/vendors/select2/css/select2.min.css" rel="stylesheet" type="text/css">
+    <link href="<?php echo base_url() ?>assets/vendors/select2/css/select2-bootstrap.css" rel="stylesheet" type="text/css">
 </head>
-
+<script>
+var BASE_URL = "<?php echo base_url() ?>";
+</script>
 <body class="skin-default">
    <div class="preloader">
       <div class="loader_img"><img src="<?php echo base_url() ?>assets/img/loader.gif" alt="loading..." height="64" width="64"></div>
    </div>
    <!-- header logo: style can be found in header-->
    <?php include('includes/header.php');?>
-
    <div class="wrapper row-offcanvas row-offcanvas-left">
    <?php include('includes/aside_left.php'); ?>
    <?php include('includes/aside_right.php'); ?>
@@ -134,9 +139,17 @@
                               </div>
                            </div>
                            <div class="form-group row">
+                           <div class="col-md-4">
+                                 <label class="form-control-label" for="email">
+                                    Pin Code
+                                 </label>
+                                 <div class="input-group">
+                                    <input type="text" id="email" name="email" class="form-control" placeholder="Enter your valid email">
+                                 </div>
+                              </div>
                               <div class="col-md-4">
                                  <label class="form-control-label" for="val-firstname">
-                                    State
+                                   City
                                     <span class="text-danger">*</span>
                                  </label>
                                  <div class="input-group">
@@ -145,21 +158,17 @@
                               </div>
                               <div class="col-md-4">
                                  <label class="form-control-label" for="val-lastname">
-                                    City
+                                    State
                                     <span class="text-danger">*</span>
                                  </label>
                                  <div class="input-group">
-                                    <input type="text" id="val-lastname" name="lastname" class="form-control" placeholder="Enter your last name">
+                                 <select id="state" class="form-control select2" placeholder="State" style="width:100%">
+                                 
+                                 </select>
+                                     
                                  </div>
                               </div>
-                              <div class="col-md-4">
-                                 <label class="form-control-label" for="email">
-                                    Pin Code
-                                 </label>
-                                 <div class="input-group">
-                                    <input type="text" id="email" name="email" class="form-control" placeholder="Enter your valid email">
-                                 </div>
-                              </div>
+                             
                            </div><br>
 
                            <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Shipping Details</b></h3>
@@ -192,6 +201,14 @@
                               </div>
                            </div>
                            <div class="form-group row">
+                           <div class="col-md-4">
+                                 <label class="form-control-label" for="email">
+                                    Pin Code
+                                 </label>
+                                 <div class="input-group">
+                                    <input type="text" id="email" name="email" class="form-control" placeholder="Enter your valid email">
+                                 </div>
+                              </div>
                               <div class="col-md-4">
                                  <label class="form-control-label" for="val-firstname">
                                     State
@@ -210,14 +227,7 @@
                                     <input type="text" id="val-lastname" name="lastname" class="form-control" placeholder="Enter your last name">
                                  </div>
                               </div>
-                              <div class="col-md-4">
-                                 <label class="form-control-label" for="email">
-                                    Pin Code
-                                 </label>
-                                 <div class="input-group">
-                                    <input type="text" id="email" name="email" class="form-control" placeholder="Enter your valid email">
-                                 </div>
-                              </div>
+                             
                            </div>
 
 
@@ -262,7 +272,7 @@
    <script type="text/javascript" src="<?php echo base_url() ?>assets/vendors/sweetalert2/js/sweetalert2.min.js"></script>
    <script type="text/javascript" src="<?php echo base_url() ?>assets/vendors/card/jquery.card.js"></script>
    <script type="text/javascript" src="<?php echo base_url() ?>assets/vendors/iCheck/js/icheck.js"></script>
-   <script src="<?php echo base_url() ?>assets/js/passtrength/passtrength.js"></script>
+   
 
    <script type="text/javascript" src="<?php echo base_url() ?>assets/vendors/datatables/js/jquery.dataTables.js"></script>
    <script type="text/javascript" src="<?php echo base_url() ?>assets/vendors/datatables/js/dataTables.bootstrap4.js"></script>
@@ -270,11 +280,11 @@
    <script src="<?php echo base_url() ?>assets/vendors/select2/js/select2.js" type="text/javascript"></script>
    <script src="<?php echo base_url() ?>assets/vendors/bootstrapwizard/js/jquery.bootstrap.wizard.js" type="text/javascript"></script>
    <script src="<?php echo base_url() ?>assets/vendors/bootstrapvalidator/js/bootstrapValidator.min.js" type="text/javascript"></script>
-   <script src="<?php echo base_url() ?>assets/js/custom_js/app/form_wizards.js" type="text/javascript"></script>
-   <script src="<?php echo base_url() ?>assets/js/custom_js/app/runner.js" type="text/javascript"></script>
-
+   <script src="<?php echo base_url() ?>assets/js/custom_js/app/form_wizards.js" type="text/javascript"></script> 
+   <script src="<?php echo base_url() ?>assets/vendors/bootstrap-multiselect/js/bootstrap-multiselect.js" type="text/javascript"></script>
+   <script src="<?php echo base_url() ?>assets/vendors/select2/js/select2.js" type="text/javascript"></script>
    <script type="text/javascript" src="<?php echo base_url() ?>assets/js/custom_js/app/common.js"></script>
-   <script type="text/javascript" src="<?php echo base_url() ?>assets/js/custom_js/app/user.js"></script>
+   <script type="text/javascript" src="<?php echo base_url() ?>assets/js/custom_js/app/lead.js"></script>
 
 
    <!-- end of page level js -->

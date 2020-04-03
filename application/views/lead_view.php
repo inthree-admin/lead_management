@@ -3,7 +3,7 @@
 
 <head>
    <meta charset="UTF-8">
-   <title> ::Lead Management::</title>
+   <title> ::Lead Management:: </title>
    <meta content='width=device-width,user-scalable=no' name='viewport'>
    <link rel="shortcut icon" href="img/favicon.ico" />
    <!-- global css -->

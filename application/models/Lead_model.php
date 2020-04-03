@@ -25,4 +25,17 @@ class Lead_model extends CI_Model {
         return $result = $query->row_array();
     }
 
+    public function get_lead_by_receipt($receipt_no) {
+        $this->db->select('*');
+        $this->db->from('tbl_lead');
+        $this->db->where('receipt_no', $receipt_no);
+        return $this->db->get()->result_array();
+    }
+
+    public function insert_payment_details($ins_arr) {
+        $this->db->insert('tbl_lead_payments', $ins_arr);
+        return $this->db->insert_id();
+    }
+
+
 }

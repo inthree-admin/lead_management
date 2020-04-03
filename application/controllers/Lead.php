@@ -15,12 +15,51 @@ class Lead extends MY_Controller
 		$this->load->view('lead_view');
 	}
 
-	
+
 	public function verify()
 	{
-		echo '<pre>';
-		print_r($_GET);
-		exit;
+
+		$res_arr = $_GET;
+		if (is_array($res_arr) && count($res_arr) > 0) {
+
+			$rz_payment_id = $res_arr['razorpay_payment_id'];
+			$rz_invoice_id = $res_arr['razorpay_invoice_id'];
+			$rz_invoice_status = $res_arr['razorpay_invoice_status'];
+			$rz_invoice_receipt = $res_arr['razorpay_invoice_receipt'];
+			$rz_signature = $res_arr['razorpay_signature'];
+
+			// Get the lead info based on receipt no
+			$lead_info = $this->Lead_model->get_lead_by_receipt($rz_invoice_receipt);
+			if (is_array($lead_info) && count($lead_info) > 0) {
+
+				$lead_id = $lead_info[0]['lead_id'];
+
+				// Update lead table
+				$up_arr = array('payment_status' => 1);
+				$this->Lead_model->update_lead($up_arr, $lead_id);
+
+				// Insert payment details
+				$insert_arr = array(
+					'lead_id' => $lead_id,
+					'rzpy_payment_id' => $rz_payment_id,
+					'rzpy_invoice_id' => $rz_invoice_id,
+					'rzpy_invoice_status' => $rz_invoice_status,
+					'rzpy_invoice_receipt' => $rz_invoice_receipt,
+					'rzpy_signature' => $rz_signature,
+					'created_on' => date('Y-m-d G:i:s'),
+				);
+				$payment_id = $this->Lead_model->insert_payment_details($insert_arr);
+
+				if($payment_id) {
+
+					// Push lead to lastmile
+
+					// Show success screen
+					$this->load->view('success');
+
+				}
+			}
+		}
 	}
 
 	public function save_lead()
@@ -41,15 +80,15 @@ class Lead extends MY_Controller
 		$shipping_contact_no = (isset($post['shipping_contact_no'])) ? trim($post['shipping_contact_no']) : '';
 		$quantity			= (isset($post['quantity'])) ? trim($post['quantity']) : '';
 		$login_id 			= $this->session->userdata('admin_id');
-		 
+
 		//-------------- Get Product Info-------------//
 		$product_info = $this->Lead_model->get_product_info($product_id);
 		$item_id = $product_info['prod_id'];
 		$item_name = $product_info['prod_name'];
 		$item_unit_price = $product_info['prod_price'];
-		$prod_price = $item_unit_price * (int) $quantity * 100;
+		$prod_price = $item_unit_price * (int) $quantity;
 
-		$receipt = 'BB'.time();
+		$receipt = 'BB' . time();
 		$fields_string = '{"customer": {
 						"name": "' . $cust_name . '",
 						"email": "' . $cust_email . '",
@@ -57,7 +96,7 @@ class Lead extends MY_Controller
 						},
 						"type": "link",
 						"view_less": 1,
-						"amount": ' . $prod_price . ',
+						"amount": ' . $prod_price * 100 . ',
 						"currency": "INR",
 						"description": "' . $item_name . '",
 						"receipt": "' . $receipt . '",
@@ -100,7 +139,7 @@ class Lead extends MY_Controller
 			);
 			$lead_item_id = $this->Lead_model->insert_new_lead_items($insert_item_arr);
 		}
-		if($lead_id){
+		if ($lead_id) {
 
 			$msg = 'Lead generated';
 
@@ -146,25 +185,23 @@ class Lead extends MY_Controller
 					'payment_link_response' => $result,
 					'rpay_order_id' => $rpay_order_id
 				);
-
-				
 			} else {
-				
+
 				$up_arr = array(
 					'payment_link_status' => 2,
 					'payment_link_response' => 'Empty Response',
 					'rpay_order_id' => ''
 				);
-				
+
 				$msg .= ' and payment link failed';
 			}
 
 			$this->Lead_model->update_lead($up_arr, $lead_id);
 
 
-			echo json_encode(array('success'=>true,'msg'=>$msg));
-		}else{
-			echo json_encode(array('success'=>false,'msg'=>'Lead generation failed'));
+			echo json_encode(array('success' => true, 'msg' => $msg));
+		} else {
+			echo json_encode(array('success' => false, 'msg' => 'Lead generation failed'));
 		}
 	}
 }

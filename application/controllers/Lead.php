@@ -15,6 +15,14 @@ class Lead extends MY_Controller
 		$this->load->view('lead_view');
 	}
 
+	
+	public function verify()
+	{
+		echo '<pre>';
+		print_r($_GET);
+		exit;
+	}
+
 	public function save_lead()
 	{
 		$post = $this->input->post();
@@ -39,9 +47,9 @@ class Lead extends MY_Controller
 		$item_id = $product_info['prod_id'];
 		$item_name = $product_info['prod_name'];
 		$item_unit_price = $product_info['prod_price'];
-		$prod_price = $item_unit_price * (int) $quantity;
+		$prod_price = $item_unit_price * (int) $quantity * 100;
 
-		$receipt = 'BB' . time();
+		$receipt = 'BB'.time();
 		$fields_string = '{"customer": {
 						"name": "' . $cust_name . '",
 						"email": "' . $cust_email . '",
@@ -57,8 +65,9 @@ class Lead extends MY_Controller
 						"sms_notify": 1,
 						"email_notify": 1,
 						"expire_by": "",
-						"callback_url": "http://testcloud.in3access.in/razorpay/verify.php",
+						"callback_url": "http://dev.in3access.in/lead_management/lead/verify",
 						"callback_method": "get" }';
+
 		//-------------- Save Lead -------------//
 		$insert_arr = array(
 			'cust_name' 		=> $cust_name,
@@ -92,9 +101,70 @@ class Lead extends MY_Controller
 			$lead_item_id = $this->Lead_model->insert_new_lead_items($insert_item_arr);
 		}
 		if($lead_id){
-			echo json_encode(array('success'=>true,'msg'=>'Lead generated successfully'));
+
+			$msg = 'Lead generated';
+
+			// Send Payment Link
+			$url = 'https://api.razorpay.com/v1/invoices/';
+			$key_id = 'rzp_test_WIy9t4y8B55ivj';
+			$key_secret = 'zYx0UxiPQ9DdTYH0VWTvCWPj';
+			$receipt = 'BB' . time();
+
+			//Prepare CURL Request for payment link
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_USERPWD, $key_id . ':' . $key_secret);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt(
+				$ch,
+				CURLOPT_HTTPHEADER,
+				array(
+					'Content-Type: application/json',
+					'Content-Length: ' . strlen($fields_string)
+				)
+			);
+			$result = curl_exec($ch);
+
+			if ($result) {
+				$res_arr = json_decode($result);
+
+				if (isset($res_arr->id)) {
+					$payment_link_status = 1;
+					$rpay_order_id = $res_arr->order_id;
+					$msg .= ' and payment link sent successfully';
+				} else {
+					$payment_link_status = 2;
+					$rpay_order_id = '';
+					$msg .= ' and payment link failed';
+				}
+
+				$up_arr = array(
+					'payment_link_status' => $payment_link_status,
+					'payment_link_response' => $result,
+					'rpay_order_id' => $rpay_order_id
+				);
+
+				
+			} else {
+				
+				$up_arr = array(
+					'payment_link_status' => 2,
+					'payment_link_response' => 'Empty Response',
+					'rpay_order_id' => ''
+				);
+				
+				$msg .= ' and payment link failed';
+			}
+
+			$this->Lead_model->update_lead($up_arr, $lead_id);
+
+
+			echo json_encode(array('success'=>true,'msg'=>$msg));
 		}else{
-			echo json_encode(array('success'=>false,'msg'=>'Failed to generate lead'));
+			echo json_encode(array('success'=>false,'msg'=>'Lead generation failed'));
 		}
 	}
 }

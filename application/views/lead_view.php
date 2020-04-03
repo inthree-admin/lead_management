@@ -66,7 +66,7 @@
                                  <span class="text-danger">*</span>
                               </label>
                               <div class="input-group">
-                                 <input type="text" id="email" name="email" class="form-control" placeholder="Enter customer valid email">
+                                 <input type="text" id="email" name="email" class="form-control" placeholder="Enter customer email">
                               </div>
                            </div>
                            <div class="col-md-4">
@@ -81,25 +81,12 @@
                         </div>
                         <div class="form-group row">
                            <div class="col-md-4">
-                              <label class="form-control-label" for="alter_mobile">
-                                 Alternate Number
-                              </label>
-                              <div class="input-group">
-                                 <input type="text" id="alter_mobile" name="alter_mobile" class="form-control" placeholder="Enter customer name">
-                              </div>
-                           </div>
-                        </div><br>
-
-
-                        <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Billing Details</b></h6>
-                        <div class="form-group row">
-                           <div class="col-md-4">
                               <label class="form-control-label" for="billing_address">
-                                 Address
+                                 Billing Address
                                  <span class="text-danger">*</span>
                               </label>
                               <div class="input-group">
-                                 <textarea id="billing_address" name="billing_address" rows="3" class="form-control bill noresize" placeholder="Billing Address"></textarea>
+                                 <input type="text" id="billing_address" name="billing_address" class="form-control" placeholder="Door No / Apartment Name / Street">   
                               </div>
                            </div>
                            <div class="col-md-4">
@@ -135,18 +122,17 @@
                         </div><br>
 
                         <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Shipping Details</b></h6>
-                        <label class="padding7" for="terms">
-                           <input type="checkbox" class="custom_icheck icheckbox_minimal-blue" id="chk_copy_address" onclick="is_check(this);">&nbsp;&nbsp;Same as above
-                           <a href="javascript:void(0);">Billing Address</a>
+                        <label class="padding7" for="terms" style="margin-bottom: 5px;">
+                           <input type="checkbox" class="custom_icheck icheckbox_minimal-blue" id="chk_copy_address" onclick="is_check(this);">&nbsp;&nbsp;<label for="chk_copy_address">Same as billing details</label>         
                         </label>
                         <div class="form-group row">
                            <div class="col-md-4">
                               <label class="form-control-label" for="shipping_address">
-                                 Address
+                                 Shipping Address
                                  <span class="text-danger">*</span>
                               </label>
                               <div class="input-group">
-                                 <textarea id="shipping_address" name="shipping_address" rows="3" class="form-control noresize" placeholder="Shipping Address"></textarea>
+                                 <input type="text" id="shipping_address" name="shipping_address" class="form-control" placeholder="Door No / Apartment Name / Street">   
                               </div>
                            </div>
                            <div class="col-md-4">
@@ -166,8 +152,11 @@
                               <div class="input-group">
                                  <input type="text" id="shipping_pincode" name="shipping_pincode" class="form-control" placeholder="Shipping Pincode">
                               </div>
-                           </div>
-                           <div class="col-md-4">
+                           </div>                         
+                        </div>
+
+                        <div class="form-group row">
+                        <div class="col-md-4">
                               <label class="form-control-label" for="shipping_contact_no">
                                  Contact Number
                                  <span class="text-danger">*</span>
@@ -179,10 +168,7 @@
                         </div><br>
 
                         <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Product Details</b></h6>
-
-
                         <div class="form-group row">
-
                            <div class="col-md-4">
                               <label class="form-control-label" for="product">
                                  Product

@@ -8,19 +8,18 @@
    <link rel="shortcut icon" href="img/favicon.ico" />
    <!-- global css -->
    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/css/app.css" />
+
    <!-- end of global css -->
    <!--page level css -->
    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/vendors/iCheck/css/all.css" />
-   <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/css/passtrength/passtrength.css" />
    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/css/custom.css" />
-   <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/vendors/sweetalert2/css/sweetalert2.min.css" />
    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/vendors/bootstrapvalidator/css/bootstrapValidator.min.css">
-   <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/vendors/datatables/css/dataTables.bootstrap4.css" />
-   <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/css/custom_css/toastr_notificatons.css">
-   <link href="<?php echo base_url() ?>assets/css/custom_css/wizard.css" rel="stylesheet">
-   <link href="<?php echo base_url() ?>assets/css/custom_css/runnerwizard.css" rel="stylesheet">
-
+   <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/vendors/sweetalert2/css/sweetalert2.min.css" />
+   <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/css/custom_css/sweet_alert2.css">
 </head>
+<script>
+   var BASE_URL = "<?php echo base_url() ?>";
+</script>
 
 <body class="skin-default">
    <div class="preloader">
@@ -28,15 +27,12 @@
    </div>
    <!-- header logo: style can be found in header-->
    <?php include('includes/header.php'); ?>
-
    <div class="wrapper row-offcanvas row-offcanvas-left">
       <?php include('includes/aside_left.php'); ?>
       <?php include('includes/aside_right.php'); ?>
-
       <!--section ends-->
       <section class="content">
          <!--main content-->
-
          <div class="row">
             <div class="col-md-12 col-xl-12">
                <div class="card ">
@@ -50,7 +46,7 @@
                      </span>
                   </div>
                   <div class="card-body">
-                     <form id="form-validation" action="<?php echo base_url() . 'lead/save_lead'; ?>" method="post" class="form-horizontal">
+                     <form id="form-validation" name="form-validation" enctype="multipart/form-data" action="javascript:void(0);>" method="post" class="form-horizontal">
                         <input type="hidden" name="prod_price" id="prod_price">
                         <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Customer Personal Details</b></h6>
                         <div class="form-group row">
@@ -74,22 +70,22 @@
                               </div>
                            </div>
                            <div class="col-md-4">
-                              <label class="form-control-label" for="phone">
+                              <label class="form-control-label" for="mobile">
                                  Mobile Number
                                  <span class="text-danger">*</span>
                               </label>
                               <div class="input-group">
-                                 <input type="text" id="phone" name="phone" class="form-control" placeholder="Enter customer phone number">
+                                 <input type="text" id="mobile" name="mobile" class="form-control" placeholder="Enter customer phone number">
                               </div>
                            </div>
                         </div>
                         <div class="form-group row">
                            <div class="col-md-4">
-                              <label class="form-control-label" for="name">
+                              <label class="form-control-label" for="alter_mobile">
                                  Alternate Number
                               </label>
                               <div class="input-group">
-                                 <input type="text" id="name" name="name" class="form-control" placeholder="Enter customer name">
+                                 <input type="text" id="alter_mobile" name="alter_mobile" class="form-control" placeholder="Enter customer name">
                               </div>
                            </div>
                         </div><br>
@@ -98,125 +94,130 @@
                         <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Billing Details</b></h6>
                         <div class="form-group row">
                            <div class="col-md-4">
-                              <label class="form-control-label" for="val-firstname">
+                              <label class="form-control-label" for="billing_address">
                                  Address
                                  <span class="text-danger">*</span>
                               </label>
                               <div class="input-group">
-                                 <textarea rows="3" class="form-control noresize" placeholder="Billing Address"></textarea>
+                                 <textarea id="billing_address" name="billing_address" rows="3" class="form-control bill noresize" placeholder="Billing Address"></textarea>
                               </div>
                            </div>
                            <div class="col-md-4">
-                              <label class="form-control-label" for="val-lastname">
+                              <label class="form-control-label" for="billing_city">
                                  City
                                  <span class="text-danger">*</span>
                               </label>
                               <div class="input-group">
-                                 <input type="text" id="val-lastname" name="lastname" class="form-control" placeholder="Enter your last name">
+                                 <input type="text" id="billing_city" name="billing_city" class="form-control bill" placeholder="Billing City">
                               </div>
                            </div>
                            <div class="col-md-4">
-                              <label class="form-control-label" for="pincode">
+                              <label class="form-control-label" for="billing_pincode">
                                  Pin Code
                                  <span class="text-danger">*</span>
                               </label>
                               <div class="input-group">
-                                 <input type="text" id="pincode" name="pincode" class="form-control" placeholder="Enter valid pincode">
+                                 <input type="text" id="billing_pincode" name="billing_pincode" class="form-control bill" placeholder="Billing pincode" required>
                               </div>
                            </div>
                         </div>
                         <div class="form-group row">
                            <div class="col-md-4">
-                              <label class="form-control-label" for="val-firstname">
+                              <label class="form-control-label" for="billing_contact_no">
                                  Contact Number
                                  <span class="text-danger">*</span>
                               </label>
                               <div class="input-group">
-                                 <input type="text" id="firstname" name="firstname" class="form-control" placeholder="Contact Number">
+                                 <input type="text" id="billing_contact_no" name="billing_contact_no" class="form-control bill" placeholder="Contact Number">
                               </div>
                            </div>
 
                         </div><br>
 
                         <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Shipping Details</b></h6>
+                        <label class="padding7" for="terms">
+                           <input type="checkbox" class="custom_icheck icheckbox_minimal-blue" id="chk_copy_address" onclick="is_check(this);">&nbsp;&nbsp;Same as above
+                           <a href="javascript:void(0);">Billing Address</a>
+                        </label>
                         <div class="form-group row">
                            <div class="col-md-4">
-                              <label class="form-control-label" for="val-firstname">
+                              <label class="form-control-label" for="shipping_address">
                                  Address
                                  <span class="text-danger">*</span>
                               </label>
                               <div class="input-group">
-                                 <textarea rows="3" class="form-control noresize" placeholder="Billing Address"></textarea>
+                                 <textarea id="shipping_address" name="shipping_address" rows="3" class="form-control noresize" placeholder="Shipping Address"></textarea>
                               </div>
                            </div>
                            <div class="col-md-4">
-                              <label class="form-control-label" for="val-lastname">
+                              <label class="form-control-label" for="shipping_city">
                                  City
                                  <span class="text-danger">*</span>
                               </label>
                               <div class="input-group">
-                                 <input type="text" id="val-lastname" name="lastname" class="form-control" placeholder="Enter your last name">
+                                 <input type="text" id="shipping_city" name="shipping_city" class="form-control" placeholder="Shipping City">
                               </div>
                            </div>
                            <div class="col-md-4">
-                              <label class="form-control-label" for="pincode">
-                                 Pin Code
+                              <label class="form-control-label" for="shipping_pincode">
+                                 Pin Codes
                                  <span class="text-danger">*</span>
                               </label>
                               <div class="input-group">
-                                 <input type="text" id="pincode" name="pincode" class="form-control" placeholder="Enter your valid pincode">
+                                 <input type="text" id="shipping_pincode" name="shipping_pincode" class="form-control" placeholder="Shipping Pincode">
                               </div>
                            </div>
-                        </div>
-                        <div class="form-group row">
                            <div class="col-md-4">
-                              <label class="form-control-label" for="val-firstname">
+                              <label class="form-control-label" for="shipping_contact_no">
                                  Contact Number
                                  <span class="text-danger">*</span>
                               </label>
                               <div class="input-group">
-                                 <input type="text" id="firstname" name="firstname" class="form-control" placeholder="Contact Number">
+                                 <input type="text" id="shipping_contact_no" name="shipping_contact_no" class="form-control" placeholder="Contact Number">
                               </div>
                            </div>
-
                         </div><br>
 
                         <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Product Details</b></h6>
+
+
                         <div class="form-group row">
+
                            <div class="col-md-4">
                               <label class="form-control-label" for="product">
                                  Product
                                  <span class="text-danger">*</span>
                               </label>
                               <div class="input-group">
-                                 <select id="product" name="product" class="form-control" data-bv-field="product">
+                                 <select id="product" name="product" class="form-control">
                                     <option value="">Please select</option>
-                                    <option data-price="1000" value="Basket 1: Grocery @ 1000">Basket 1: Grocery @ 1000</option>
-                                    <option data-price="2000" value="Basket 2: Grocery @ 2000">Basket 2: Grocery @ 2000</option>
-                                    <option data-price="350" value="Basket 3: Vegetables @ 350">Basket 3: Vegetables @ 350</option>
-                                    <option data-price="500" value="Basket 4: Covid @ 500">Basket 4: Covid @ 500</option>
+                                    <option data-price="1000" value="1">Basket 1: Grocery @ 1000</option>
+                                    <option data-price="2000" value="2">Basket 2: Grocery @ 2000</option>
+                                    <option data-price="350" value="3">Basket 3: Vegetables @ 350</option>
+                                    <option data-price="500" value="4">Basket 4: Covid @ 500</option>
                                  </select>
                               </div>
                            </div>
                            <div class="col-md-4">
-                              <label class="form-control-label" for="product">
+                              <label class="form-control-label" for="quantity">
                                  Qty
                                  <span class="text-danger">*</span>
                               </label>
                               <div class="input-group">
-                                 <input type="text" id="firstname" name="firstname" value="1" class="form-control">
+                                 <input type="number" id="quantity" name="quantity" value="1" class="form-control">
                               </div>
                            </div>
+                        </div><br>
+
+
+                        <div class="form-group row">
+
+
                         </div>
                         <div class="form-group row">
                            <div class="col-md-4">
-
                            </div>
                         </div>
-
-
-
-
                         <div class="form-group form-actions">
                            <div class="col-md-8 ml-auto">
                               <button type="submit" class="btn btn-effect-ripple btn-primary">Submit</button>
@@ -230,51 +231,23 @@
                </div>
             </div>
          </div>
-
-
       </section>
       <!-- /.content -->
-
-
       </aside>
       <!-- /.right-side -->
    </div>
    <!-- ./wrapper -->
-   <!-- global js -->
-
-   <!-- end of global js -->
    <script src="<?php echo base_url() ?>assets/js/app.js" type="text/javascript"></script>
-   <!-- end of global js -->
-   <!-- Push notify js -->
-   <script type="text/javascript" src="<?php echo base_url() ?>assets/vendors/pnotify/js/pnotify.js"></script>
-   <script type="text/javascript" src="<?php echo base_url() ?>assets/vendors/pnotify/js/pnotify.buttons.js"></script>
-
-   <script src="<?php echo base_url() ?>assets/js/custom_js/notifications.js"></script>
-
-
-   <!-- begining of page level js -->
    <script type="text/javascript" src="<?php echo base_url() ?>assets/vendors/bootstrapvalidator/js/bootstrapValidator.min.js"></script>
-   <script type="text/javascript" src="<?php echo base_url() ?>assets/vendors/bootstrap-maxlength/js/bootstrap-maxlength.js"></script>
    <script type="text/javascript" src="<?php echo base_url() ?>assets/vendors/sweetalert2/js/sweetalert2.min.js"></script>
-   <script type="text/javascript" src="<?php echo base_url() ?>assets/vendors/card/jquery.card.js"></script>
-   <script type="text/javascript" src="<?php echo base_url() ?>assets/vendors/iCheck/js/icheck.js"></script>
-   <script src="<?php echo base_url() ?>assets/js/passtrength/passtrength.js"></script>
-
-   <script type="text/javascript" src="<?php echo base_url() ?>assets/vendors/datatables/js/jquery.dataTables.js"></script>
-   <script type="text/javascript" src="<?php echo base_url() ?>assets/vendors/datatables/js/dataTables.bootstrap4.js"></script>
-
+   <script type="text/javascript" src="<?php echo base_url() ?>assets/js/custom_js/sweetalert.js"></script>
    <script src="<?php echo base_url() ?>assets/vendors/select2/js/select2.js" type="text/javascript"></script>
-   <script src="<?php echo base_url() ?>assets/vendors/bootstrapwizard/js/jquery.bootstrap.wizard.js" type="text/javascript"></script>
+   <script type="text/javascript" src="<?php echo base_url() ?>assets/vendors/iCheck/js/icheck.js"></script>
    <script src="<?php echo base_url() ?>assets/vendors/bootstrapvalidator/js/bootstrapValidator.min.js" type="text/javascript"></script>
-   <script src="<?php echo base_url() ?>assets/js/custom_js/app/form_wizards.js" type="text/javascript"></script>
-   <script src="<?php echo base_url() ?>assets/js/custom_js/app/runner.js" type="text/javascript"></script>
-
    <script type="text/javascript" src="<?php echo base_url() ?>assets/js/custom_js/app/common.js"></script>
-   <!-- <script type="text/javascript" src="<?php echo base_url() ?>assets/js/custom_js/app/user.js"></script> -->
-
+   <script type="text/javascript" src="<?php echo base_url() ?>assets/js/custom_js/app/lead.js"></script>
    <script lang="javascript" type="text/javascript">
       $(document).ready(function() {
-
          $('select').on('change', function() {
             var prod_price = $(this).find(':selected').attr('data-price');
             $('#prod_price').val(prod_price);
@@ -282,8 +255,6 @@
 
       });
    </script>
-
-   <!-- end of page level js -->
 </body>
 
 </html>

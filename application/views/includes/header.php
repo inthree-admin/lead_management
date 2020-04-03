@@ -18,7 +18,7 @@
                  <!-- User Account: style can be found in dropdown-->
                  <li class="dropdown user user-menu">
                      <a href="#" class="dropdown-toggle padding-user d-block" data-toggle="dropdown">
-                         <img src="<?php echo base_url() ?>assets/img/authors/avatar1.jpg" width="35" class="rounded-circle img-fluid float-left" height="35" alt="User Image">
+                         <img src="<?php echo base_url() ?>assets/img/user.jpg" width="35" class="rounded-circle img-fluid float-left" height="35" alt="User Image">
                          <div class="riot">
                              <div>
                                  <?php echo $this->session->userdata('name'); ?>
@@ -29,7 +29,7 @@
                      <ul class="dropdown-menu">
                          <!-- User image -->
                          <li class="user-header">
-                             <img src="<?php echo base_url() ?>assets/img/authors/avatar1.jpg" class="rounded-circle" alt="User Image">
+                             <img src="<?php echo base_url() ?>assets/img/user.jpg" class="rounded-circle" alt="User Image">
                              <p>   <?php echo $this->session->userdata('username'); ?></p>
                          </li>
                          <!-- Menu Body -->

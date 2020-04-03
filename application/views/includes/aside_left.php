@@ -5,7 +5,7 @@
              <div class="nav_profile">
                  <div class="media profile-left">
                      <a class="float-left profile-thumb" href="javascript:void(0);">
-                         <img src="<?php echo base_url(); ?>assets/img/authors/avatar1.jpg" class="rounded-circle" alt="User Image"></a>
+                         <img src="<?php echo base_url(); ?>assets/img/user.jpg" class="rounded-circle" alt="User Image"></a>
                      <div class="content-profile">
                          <h4 class="media-heading"><?php echo $this->session->userdata('username'); ?></h4>
                          <ul class="icon-list">

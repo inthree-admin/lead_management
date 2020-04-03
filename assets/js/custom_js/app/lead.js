@@ -3,87 +3,166 @@ $(document).ready(function () {
 
     $('#form-validation').bootstrapValidator({
         fields: {
-            username: {
+            cust_name: {
                 validators: {
                     notEmpty: {
-                        message: 'The user name is required and cannot be empty'
+                        message: 'Please enter ther customer name'
                     }
                 }
-            },
-            firstname: {
-                validators: {
-                    notEmpty: {
-                        message: 'The first name is required and cannot be empty'
-                    }
-                }
-            },
-            lastname: {
-                validators: {
-                    notEmpty: {
-                        message: 'The last name is required and cannot be empty'
-                    }
-                }
-            },
-            password: {
-                validators: {
-
-                    notEmpty: {
-                        message: 'Please provide a password'
-                    }
-                }
-            },
-            c_password: {
-                validators: {
-                    notEmpty: {
-                        message: 'The confirm password is required and can\'t be empty'
-                    },
-                    identical: {
-                        field: 'password',
-                        message: 'Please enter the password same as above'
-                    }
-                }
-            },
+            },  
             email: {
                 validators: {
                     notEmpty: {
-                        message: 'The email address is required'
+                        message: 'Please enter the Email'
                     },
                     regexp: {
                         regexp: /^\S+@\S{1,}\.\S{1,}$/,
                         message: 'Please enter valid email format'
                     }
                 }
-            },
-
-
-            phone: {
+            }, 
+            mobile: {
                 validators: {
                     notEmpty: {
-                        message: 'The phone number is required and cannot be empty'
+                        message: 'Please enter the contact no'
                     },
                     regexp: {
                         regexp: /[2-9]{2}\d{8}/,
-                        message: 'The phone number can only consist of numbers'
+                        message: 'Please enter number only'
+                    },
+                     stringLength: {
+	                    min: 10,
+	                    max: 10,
+	                    message: 'The number must be between 10 digit'
+	                }
+                }
+            },
+            alter_mobile: {
+                validators: { 
+                    regexp: {
+                        regexp: /[2-9]{2}\d{8}/,
+                        message: 'The alternate number can only consist of numbers'
+                    },
+                     stringLength: {
+	                    min: 10,
+	                    max: 10,
+	                    message: 'The number must be between 10 digit'
+	                }
+                }
+            },
+             billing_address: {
+                validators: {
+                    notEmpty: {
+                        message: 'Please enter the customer address'
                     }
                 }
             },
-
-            gender: {
+             billing_city: {
                 validators: {
                     notEmpty: {
-                        message: 'The gender is required'
+                        message: 'Please enter the city'
                     }
                 }
-            }
+            },  
+            billing_pincode: {
+                notEmpty: {
+                       message: 'Please enter the pincode',
+                    },
+	            validators: {
+	                stringLength: {
+	                    min: 6,
+	                    max: 6,
+	                    message: 'The number must be between 6 digit'
+	                }
+	            }
+            },    
+ 			billing_contact_no: {
+                validators: {
+                    notEmpty: {
+                        message: 'Please enter the contact no'
+                    },
+                    regexp: {
+                        regexp: /[2-9]{2}\d{8}/,
+                        message: 'Please enter number only'
+                    },
+                     stringLength: {
+	                    min: 10,
+	                    max: 10,
+	                    message: 'The number must be between 10 digit'
+	                }
+                }
+            },
+            shipping_address: {
+                validators: {
+                    notEmpty: {
+                        message: 'Please enter the billing address'
+                    }
+                }
+            },
+             shipping_city: {
+                validators: {
+                    notEmpty: {
+                        message: 'Please enter the city'
+                    }
+                }
+            },  
+            shipping_pincode: { 
+	            validators: {
+	            	notEmpty: {
+                       message: 'Please enter the pincode',
+                    },
+	                stringLength: {
+	                    min: 6,
+	                    max: 6,
+	                    message: 'The number must be between 6 digit'
+	                }
+	            }
+            },    
+ 			shipping_contact_no: {
+                validators: {
+                    notEmpty: {
+                        message: 'Please enter the contact no'
+                    },
+                    regexp: {
+                        regexp: /[2-9]{2}\d{8}/,
+                        message: 'Please enter number only'
+                    },
+                     stringLength: {
+	                    min: 10,
+	                    max: 10,
+	                    message: 'The number must be between 10 digit'
+	                }
+                }
+            },
+           product: { 
+	            validators: {
+	            	notEmpty: {
+                       message: 'Please select product',
+                    } 
+	            }
+            }, 
+            quantity: { 
+	             validators: {
+                    notEmpty: {
+                        message: 'Please enter the quantity'
+                    },
+                    regexp: {
+                        regexp: /[1-9]/,
+                        message: 'Please enter number only'
+                    } 
+                }
+            }, 
+            
         },
         submitHandler: function (validator, form, submitButton) {
             alert();
         }
     }).on('success.form.bv', function (e) {
         // Prevent form submission
-        e.preventDefault();
-		serializeData = $('#form-validation').serializeArray();
-        save();
+        e.preventDefault(); 
+		var form = $('#form-validation')[0];  
+        var data = new FormData(form); 
+        save(data);
 
     });
 
@@ -95,40 +174,58 @@ $(document).ready(function () {
 
 var serializeData = [];
 // Own script started  
-function save() { 
-}
-
-sateList();
-
-function sateList(activeId='') {
-    var AjaxParams = {
-        "q":"all",
-        "country": "in"
-    };
-    var params = $.extend({}, doAjax_params_default);
-    params = {
-        url: BASE_URL+"/lead/state/",
-        data: AjaxParams,
-        "requestType": "GET",
-        "successCallbackFunction": getResponseData
-    };
-    doAjax(params);
-    function getResponseData(data) {
-		var result = JSON.parse(data);
-        var formattedData = [];
-        $.each(result, function(i, j) {
-            formattedData.push({
-                "id": j['state'],
-                "value": j['state']
-            });
+function save(data) { 
+	 $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            url: BASE_URL+"/lead/save_lead",
+            data: data,
+            processData: false,
+            contentType: false,
+            cache: false,
+            timeout: 800000,
+            success: function (data) { 
+            	var result = JSON.parse(data);
+            	if(result['success']){
+	            		swal({
+			            title: "Success",
+			            text: result['msg'],
+			            type: "success",
+			            confirmButtonColor: "#66cc99"
+			        }).then(function() {
+			            location.reload();
+			        });
+            	}
+            },
+            error: function (e) { 
+ 
+            }
         });
-        dropdownBox('#state', formattedData, activeId);
-    }
 }
- 
 
- 
+function is_check(e){
+	if($(e).prop('checked')) copy_billing_address();
+	else clear_shipping_input();
+}
+ function clear_shipping_input(){
+	$('#shipping_address').val('');
+	$('#shipping_city').val('');
+	$('#shipping_pincode').val('');
+	$('#shipping_contact_no').val('');
+ }
+function copy_billing_address(){
+	var chk_status = $('#chk_copy_address').prop('checked');
+	if(chk_status == true){ 
+		$('#shipping_address').val($('#billing_address').val().trim());
+		$('#shipping_city').val($('#billing_city').val().trim());
+		$('#shipping_pincode').val($('#billing_pincode').val().trim());
+		$('#shipping_contact_no').val($('#billing_contact_no').val().trim());
+	}
 
+}
+$('.bill').on('keydown',function(){ 
+	copy_billing_address(); 
+});
 function resetInput(){
     $.each($('form'),function() { 
          $(this)[0].reset();

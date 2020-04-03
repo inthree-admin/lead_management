@@ -19,6 +19,7 @@
    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/css/custom_css/toastr_notificatons.css">
    <link href="<?php echo base_url() ?>assets/css/custom_css/wizard.css" rel="stylesheet">
    <link href="<?php echo base_url() ?>assets/css/custom_css/runnerwizard.css" rel="stylesheet">
+   
 </head>
 
 <body class="skin-default">
@@ -26,121 +27,83 @@
       <div class="loader_img"><img src="<?php echo base_url() ?>assets/img/loader.gif" alt="loading..." height="64" width="64"></div>
    </div>
    <!-- header logo: style can be found in header-->
-   <?php include('includes/header.php');?>
+   <?php include('includes/header.php'); ?>
 
    <div class="wrapper row-offcanvas row-offcanvas-left">
-   <?php include('includes/aside_left.php'); ?>
-   <?php include('includes/aside_right.php'); ?>
- 
-         <!--section ends-->
-         <section class="content">
-            <!--main content-->
-            
-            
-            <div class="row">
-               <div class="col-md-12 col-xl-12">
-                  <div class="card ">
-                     <div class="card-header">
-                        <h3 class="card-title">
-                           <i class="fa fa-fw ti-star"></i>New Lead
-                        </h3>
-                        <span class="float-right">
-                           <i class="fa fa-fw ti-angle-up clickable"></i>
-                           <i class="fa fa-fw ti-close removecard"></i>
-                        </span>
-                     </div>
-                     <div class="card-body">
-                        <form id="form-validation" action="javascript:void(0)" method="post" class="form-horizontal">
-                           <h6 class="h6pnl_font"  style="margin-bottom: 15px;"><b>Customer Personal Details</b></h3>
+      <?php include('includes/aside_left.php'); ?>
+      <?php include('includes/aside_right.php'); ?>
+
+      <!--section ends-->
+      <section class="content">
+         <!--main content-->
+
+         <div class="row">
+            <div class="col-md-12 col-xl-12">
+               <div class="card ">
+                  <div class="card-header">
+                     <h3 class="card-title">
+                        <i class="fa fa-fw ti-star"></i>New Lead
+                     </h3>
+                     <span class="float-right">
+                        <i class="fa fa-fw ti-angle-up clickable"></i>
+                        <i class="fa fa-fw ti-close removecard"></i>
+                     </span>
+                  </div>
+                  <div class="card-body">
+                     <form id="form-validation" action="<?php echo base_url() . 'lead/save_lead'; ?>" method="post" class="form-horizontal">
+                        <input type="hidden" name="prod_price" id="prod_price">
+                           <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Customer Personal Details</b></h6>
                            <div class="form-group row">
                               <div class="col-md-4">
-                                 <label class="form-control-label" for="val-firstname">
-                                    First name
+                                 <label class="form-control-label" for="cust_name">
+                                    Name
                                     <span class="text-danger">*</span>
                                  </label>
                                  <div class="input-group">
-                                    <input type="text" id="firstname" name="firstname" class="form-control" placeholder="Enter your First name">
+                                    <input type="text" id="cust_name" name="cust_name" class="form-control" placeholder="Enter customer name">
                                  </div>
                               </div>
-                              <div class="col-md-4">
-                                 <label class="form-control-label" for="val-lastname">
-                                    Last name
-                                    <span class="text-danger">*</span>
-                                 </label>
-                                 <div class="input-group">
-                                    <input type="text" id="val-lastname" name="lastname" class="form-control" placeholder="Enter your last name">
-                                 </div>
-                              </div>
+
                               <div class="col-md-4">
                                  <label class="form-control-label" for="email">
                                     Email
                                     <span class="text-danger">*</span>
                                  </label>
                                  <div class="input-group">
-                                    <input type="text" id="email" name="email" class="form-control" placeholder="Enter your valid email">
+                                    <input type="text" id="email" name="email" class="form-control" placeholder="Enter customer valid email">
                                  </div>
                               </div>
-                           </div>
-
-                           <div class="form-group row">
                               <div class="col-md-4">
                                  <label class="form-control-label" for="phone">
                                     Mobile Number
                                     <span class="text-danger">*</span>
                                  </label>
                                  <div class="input-group">
-                                    <input type="text" id="phone" name="phone" class="form-control" placeholder="Enter your phone number">
+                                    <input type="text" id="phone" name="phone" class="form-control" placeholder="Enter customer phone number">
                                  </div>
                               </div>
-                               
+                           </div>
+                           <div class="form-group row">
                               <div class="col-md-4">
-                                 <label class="form-control-label" for="phone">
+                                 <label class="form-control-label" for="name">
                                     Alternate Number
-                                    <span class="text-danger">*</span>
                                  </label>
                                  <div class="input-group">
-                                    <input type="text" id="phone" name="phone" class="form-control" placeholder="Enter your phone number">
+                                    <input type="text" id="name" name="name" class="form-control" placeholder="Enter customer name">
                                  </div>
                               </div>
                            </div><br>
 
-                           <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Billing Details</b></h3>
+
+                           <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Billing Details</b></h6>
                            <div class="form-group row">
                               <div class="col-md-4">
                                  <label class="form-control-label" for="val-firstname">
-                                    Address1
+                                    Address
                                     <span class="text-danger">*</span>
                                  </label>
                                  <div class="input-group">
-                                    <input type="text" id="firstname" name="firstname" class="form-control" placeholder="Enter your First name">
-                                 </div>
-                              </div>
-                              <div class="col-md-4">
-                                 <label class="form-control-label" for="val-lastname">
-                                    Address2
-                                    <span class="text-danger">*</span>
-                                 </label>
-                                 <div class="input-group">
-                                    <input type="text" id="val-lastname" name="lastname" class="form-control" placeholder="Enter your last name">
-                                 </div>
-                              </div>
-                              <div class="col-md-4">
-                                 <label class="form-control-label" for="email">
-                                    Address3
-                                 </label>
-                                 <div class="input-group">
-                                    <input type="text" id="email" name="email" class="form-control" placeholder="Enter your valid email">
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="form-group row">
-                              <div class="col-md-4">
-                                 <label class="form-control-label" for="val-firstname">
-                                    State
-                                    <span class="text-danger">*</span>
-                                 </label>
-                                 <div class="input-group">
-                                    <input type="text" id="firstname" name="firstname" class="form-control" placeholder="Enter your First name">
+                                 <textarea rows="3" class="form-control noresize" placeholder="Billing Address"></textarea>
                                  </div>
                               </div>
                               <div class="col-md-4">
@@ -153,52 +116,37 @@
                                  </div>
                               </div>
                               <div class="col-md-4">
-                                 <label class="form-control-label" for="email">
+                                 <label class="form-control-label" for="pincode">
                                     Pin Code
-                                 </label>
-                                 <div class="input-group">
-                                    <input type="text" id="email" name="email" class="form-control" placeholder="Enter your valid email">
-                                 </div>
-                              </div>
-                           </div><br>
-
-                           <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Shipping Details</b></h3>
-                           <div class="form-group row">
-                              <div class="col-md-4">
-                                 <label class="form-control-label" for="val-firstname">
-                                    Address1
                                     <span class="text-danger">*</span>
                                  </label>
                                  <div class="input-group">
-                                    <input type="text" id="firstname" name="firstname" class="form-control" placeholder="Enter your First name">
-                                 </div>
-                              </div>
-                              <div class="col-md-4">
-                                 <label class="form-control-label" for="val-lastname">
-                                    Address2
-                                    <span class="text-danger">*</span>
-                                 </label>
-                                 <div class="input-group">
-                                    <input type="text" id="val-lastname" name="lastname" class="form-control" placeholder="Enter your last name">
-                                 </div>
-                              </div>
-                              <div class="col-md-4">
-                                 <label class="form-control-label" for="email">
-                                    Address3
-                                 </label>
-                                 <div class="input-group">
-                                    <input type="text" id="email" name="email" class="form-control" placeholder="Enter your valid email">
+                                    <input type="text" id="pincode" name="pincode" class="form-control" placeholder="Enter valid pincode">
                                  </div>
                               </div>
                            </div>
                            <div class="form-group row">
                               <div class="col-md-4">
                                  <label class="form-control-label" for="val-firstname">
-                                    State
+                                    Contact Number
                                     <span class="text-danger">*</span>
                                  </label>
                                  <div class="input-group">
-                                    <input type="text" id="firstname" name="firstname" class="form-control" placeholder="Enter your First name">
+                                    <input type="text" id="firstname" name="firstname" class="form-control" placeholder="Contact Number">
+                                 </div>
+                              </div>
+                             
+                           </div><br>
+
+                           <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Shipping Details</b></h6>
+                           <div class="form-group row">
+                              <div class="col-md-4">
+                                 <label class="form-control-label" for="val-firstname">
+                                    Address
+                                    <span class="text-danger">*</span>
+                                 </label>
+                                 <div class="input-group">
+                                 <textarea rows="3" class="form-control noresize" placeholder="Billing Address"></textarea>
                                  </div>
                               </div>
                               <div class="col-md-4">
@@ -211,14 +159,53 @@
                                  </div>
                               </div>
                               <div class="col-md-4">
-                                 <label class="form-control-label" for="email">
+                                 <label class="form-control-label" for="pincode">
                                     Pin Code
+                                    <span class="text-danger">*</span>
                                  </label>
                                  <div class="input-group">
-                                    <input type="text" id="email" name="email" class="form-control" placeholder="Enter your valid email">
+                                    <input type="text" id="pincode" name="pincode" class="form-control" placeholder="Enter your valid pincode">
                                  </div>
                               </div>
                            </div>
+                           <div class="form-group row">
+                              <div class="col-md-4">
+                                 <label class="form-control-label" for="val-firstname">
+                                    Contact Number
+                                    <span class="text-danger">*</span>
+                                 </label>
+                                 <div class="input-group">
+                                    <input type="text" id="firstname" name="firstname" class="form-control" placeholder="Contact Number">
+                                 </div>
+                              </div>
+                             
+                           </div><br>
+
+                           <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Product Details</b></h6>
+                           <div class="form-group row">
+                           <div class="col-md-4">
+                                 <label class="form-control-label" for="product">
+                                    Product
+                                    <span class="text-danger">*</span>
+                                 </label>
+                                 <div class="input-group">
+                                    <select id="product" name="product" class="form-control" data-bv-field="product">
+                                       <option value="">Please select</option>   
+                                       <option data-price="1000" value="Basket 1: Grocery @ 1000">Basket 1: Grocery @ 1000</option>
+                                       <option data-price="2000" value="Basket 2: Grocery @ 2000">Basket 2: Grocery @ 2000</option>
+                                       <option data-price="350" value="Basket 3: Vegetables @ 350">Basket 3: Vegetables @ 350</option>
+                                       <option data-price="500" value="Basket 4: Covid @ 500">Basket 4: Covid @ 500</option>
+                                    </select>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="form-group row">
+                              <div class="col-md-4">
+                                 
+                              </div>
+                           </div>
+
+
 
 
                            <div class="form-group form-actions">
@@ -228,16 +215,16 @@
                                  </button>
                               </div>
                            </div>
-                        </form>
+                     </form>
 
-                     </div>
                   </div>
                </div>
             </div>
+         </div>
 
 
-         </section>
-         <!-- /.content -->
+      </section>
+      <!-- /.content -->
 
 
       </aside>
@@ -274,8 +261,19 @@
    <script src="<?php echo base_url() ?>assets/js/custom_js/app/runner.js" type="text/javascript"></script>
 
    <script type="text/javascript" src="<?php echo base_url() ?>assets/js/custom_js/app/common.js"></script>
-   <script type="text/javascript" src="<?php echo base_url() ?>assets/js/custom_js/app/user.js"></script>
+   <!-- <script type="text/javascript" src="<?php echo base_url() ?>assets/js/custom_js/app/user.js"></script> -->
 
+   <script lang="javascript" type="text/javascript">
+   $(document).ready(function() {
+   
+      $('select').on('change', function() {
+         var prod_price = $(this).find(':selected').attr('data-price');
+         $('#prod_price').val(prod_price);
+      });
+
+   });
+      
+   </script>
 
    <!-- end of page level js -->
 </body>

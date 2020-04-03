@@ -6,31 +6,36 @@
     <meta charset="UTF-8">
     <title> ::Lead Management::</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-    <link rel="shortcut icon" href="<?= base_url() ?>assets/img/favicon.ico" />
+    <link rel="shortcut icon" href="<?php echo base_url() ?>assets/img/favicon.ico" />
 
     <!-- global css -->
-    <link type="text/css" rel="stylesheet" href="<?= base_url() ?>assets/css/app.css" />
+    <link type="text/css" rel="stylesheet" href="<?php echo base_url() ?>assets/css/app.css" />
     <!-- end of global css -->
     <!--page level css -->
-    <link rel="stylesheet" href="<?= base_url() ?>assets/vendors/swiper/css/swiper.min.css">
-    <link href="<?= base_url() ?>assets/vendors/nvd3/css/nv.d3.min.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="<?= base_url() ?>assets/css/lc_switch.css">
-    <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/custom.css">
-    <link href="<?= base_url() ?>assets/css/custom_css/dashboard1.css" rel="stylesheet" type="text/css" />
-    <link href="<?= base_url() ?>assets/css/custom_css/dashboard1_timeline.css" rel="stylesheet" />
+    <link rel="stylesheet" href="<?php echo base_url() ?>assets/vendors/swiper/css/swiper.min.css">
+    <link href="<?php echo base_url() ?>assets/vendors/nvd3/css/nv.d3.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="<?php echo base_url() ?>assets/css/lc_switch.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/css/custom.css">
+    <link href="<?php echo base_url() ?>assets/css/custom_css/dashboard1.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo base_url() ?>assets/css/custom_css/dashboard1_timeline.css" rel="stylesheet" />
     <!--end of page level css-->
 </head>
 
 <body class="skin-default">
     <div class="preloader">
-        <div class="loader_img"><img src="<?= base_url() ?>assets/img/loader.gif" alt="loading..." height="64" width="64"></div>
+        <div class="loader_img"><img src="<?php echo base_url() ?>assets/img/loader.gif" alt="loading..." height="64" width="64"></div>
     </div>
     <!-- header logo: style can be found in header-->
     <?php include('includes/header.php');?>
     <div class="wrapper row-offcanvas row-offcanvas-left">
         <!-- Left side column. contains the logo and sidebar -->
         <?php include('includes/aside_left.php'); ?>
-   <?php include('includes/aside_right.php'); ?>
+        <aside class="right-side">
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>Dashboard</h1>
+</section>
             
 
             <section class="content">
@@ -138,16 +143,16 @@
     <!-- ./wrapper -->
     <!-- global js -->
     <div id="qn"></div>
-    <script src="<?= base_url() ?>assets/js/app.js" type="text/javascript"></script>
+    <script src="<?php echo base_url() ?>assets/js/app.js" type="text/javascript"></script>
     <!-- end of global js -->
 
     <!-- begining of page level js -->
     <!--Sparkline Chart-->
-    <script type="text/javascript" src="<?= base_url() ?>assets/js/custom_js/sparkline/jquery.flot.spline.js"></script>
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/js/custom_js/sparkline/jquery.flot.spline.js"></script>
     <!-- flip --->
-    <script type="text/javascript" src="<?= base_url() ?>assets/js/flip.min.js"></script>
-    <script type="text/javascript" src="<?= base_url() ?>assets/js/lc_switch.min.js"></script>
-    <script type="text/javascript" src="<?= base_url() ?>assets/js/dashboard1.js"></script>
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/js/flip.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/js/lc_switch.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/js/dashboard1.js"></script>
     <!-- end of page level js -->
 
 

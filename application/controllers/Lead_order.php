@@ -50,7 +50,7 @@ class Lead_order extends CI_Controller
 					$this->push_order($lead_id);
 
 					// Show success screen
-					//$this->load->view('success');
+					$this->load->view('success');
 				}
 			}
 		}
@@ -59,15 +59,16 @@ class Lead_order extends CI_Controller
 	public function push_order($lead_id){
 		$id = $lead_id;
 		$order_list = $this->Lead_order_model->get_lead($id);
-		$vendor_id='3';
-		$delivery_to=2; //Customer
-		$payment_mode='Prepaid';
+		$vendor_id = '3';
+		$delivery_to = 2; //Customer
+		$payment_mode = 'Prepaid';
 		$time = date('Y-m-d h:m:s');
-		$lmdp="bb_monish";
+		$lmdp = "bb_monish";
 		$otp = '';
 		$urn = '';
-		$loanrefno='';
-		$data=array();
+		$loanrefno = '';
+		$data = array();
+		$res_arr = array();
 
 		foreach($order_list as $ord ){
 			$leadid= $ord['lead_id'];
@@ -139,8 +140,7 @@ class Lead_order extends CI_Controller
 				$hsty['remarks']="Success";
 				$hsty['code']="1";
 				$this->Lead_order_model->add_receive_history($hsty);
-				//echo "Transaction unsuccessful" .$trans_success;
-				echo '{"successList":["'.$referenceNumber.'"],"failureList":[],"successCount":1,"code":1,"remarks":"Success"}';
+				$res_arr = '{"successList":["'.$referenceNumber.'"],"failureList":[],"successCount":1,"code":1,"remarks":"Success"}';
 			}
 			else{
 				$hsty['status']="Failure";
@@ -148,12 +148,11 @@ class Lead_order extends CI_Controller
 				$hsty['remarks']="Duplicate Entry";
 				$hsty['code']="0";
 				$this->Lead_order_model->add_receive_history($hsty);
-				//echo "Transaction unsuccessful" .$trans_success;
-				echo '{"successList":[""],"failureList":["'.$referenceNumber.'"],"successCount":0,"code":0,"remarks":"Duplicate Entry"}';
+				$res_arr = '{"successList":[""],"failureList":["'.$referenceNumber.'"],"successCount":0,"code":0,"remarks":"Duplicate Entry"}';
 			}
 		}
 		
-		//print_r($data); 
+		return $res_arr;
 		
 	}
 

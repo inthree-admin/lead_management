@@ -56,10 +56,10 @@
                                     Phone
                                  </th>
                                  <th>
-                                    Link Status
+                                    Payment Link
                                  </th>
                                  <th>Payment</th>
-                                 <th>Order date</th>
+                                 <th>Created On</th>
                               </tr>
                            </thead>
                            <tbody>

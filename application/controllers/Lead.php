@@ -169,10 +169,8 @@ class Lead extends MY_Controller
 		$ordertype = (isset($_GET['order'][0]['dir'])) ?$_GET['order'][0]['dir'] :''; //asc or desc  
 		$columnArray = array(0=>'cust_name',1=>'cust_email', 2=>'cust_phone',3=>'payment_link_status',4=>'payment_status',5=>'created_on');
 		$filter_arr = array( 'start'=>$start, 'length'=>$length, 'searchKey'=>$searchKey, 'ordercolumn'=>$columnArray[$ordercolumn], 'ordertype'=>$ordertype);  
-		$result = $this->Lead_model->lead_list($filter_arr);
-		$lead_total = $this->Lead_model->lead_total_count();
-		$total_lead = (isset($lead_total['total_lead'])) ? $lead_total['total_lead'] : 0;
-	 
+		$result = $this->Lead_model->lead_list($filter_arr); 
+		$lead_total = $this->Lead_model->lead_list( array('searchKey'=>$searchKey)); 
 		$returnData = array();
 		foreach($result as $key=>$data){
 			$returnData['data'][$key][0] = $data['cust_name'];
@@ -183,7 +181,7 @@ class Lead extends MY_Controller
 			$returnData['data'][$key][5] = $data['created_on']; 
 		} 
 		$returnData['recordsTotal'] = count($result);
-        $returnData['recordsFiltered'] = $total_lead; 
+        $returnData['recordsFiltered'] = count($lead_total); 
 		echo json_encode($returnData);
 		
 		 

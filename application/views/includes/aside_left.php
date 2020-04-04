@@ -36,19 +36,26 @@
              <?php 
 
             $seg1 = $this->uri->segment(1);
+            $seg2 = $this->uri->segment(2);
  
             ?>
              <ul class="navigation">
-                 <li class="<?php if($seg1=="home") echo "active"; ?>" >
+                 <li class="<?php if($seg1=="home" and empty($seg2)) echo "active"; ?>" >
                      <a href="<?php echo site_url("home"); ?>">
                          <i class="menu-icon ti-desktop"></i>
                          <span class="mm-text ">Dashboard</span>
                      </a>
                  </li>
-                 <li class="<?php if($seg1=="lead") echo "active"; ?>"  >
+                 <li class="<?php if($seg1=="lead" and empty($seg2)) echo "active"; ?>"  >
                      <a href="<?php echo site_url("lead"); ?>">
-                         <i class="menu-icon ti-briefcase"></i>
+                         <i class="menu-icon ti-check-box"></i>
                          <span class="mm-text ">New Lead</span>
+                     </a>
+                 </li>
+				 <li class="<?php if($seg2=="list") echo "active"; ?>"  >
+                     <a href="<?php echo site_url("lead/list"); ?>">
+                         <i class="menu-icon ti-layout-grid4"></i>
+                         <span class="mm-text ">Lead List</span>
                      </a>
                  </li>
 

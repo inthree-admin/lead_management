@@ -15,53 +15,6 @@ class Lead extends MY_Controller
 		$this->load->view('lead_view');
 	}
 
-
-	public function verify()
-	{
-
-		$res_arr = $_GET;
-		if (is_array($res_arr) && count($res_arr) > 0) {
-
-			$rz_payment_id = $res_arr['razorpay_payment_id'];
-			$rz_invoice_id = $res_arr['razorpay_invoice_id'];
-			$rz_invoice_status = $res_arr['razorpay_invoice_status'];
-			$rz_invoice_receipt = $res_arr['razorpay_invoice_receipt'];
-			$rz_signature = $res_arr['razorpay_signature'];
-
-			// Get the lead info based on receipt no
-			$lead_info = $this->Lead_model->get_lead_by_receipt($rz_invoice_receipt);
-			if (is_array($lead_info) && count($lead_info) > 0) {
-
-				$lead_id = $lead_info[0]['lead_id'];
-
-				// Update lead table
-				$up_arr = array('payment_status' => 1);
-				$this->Lead_model->update_lead($up_arr, $lead_id);
-
-				// Insert payment details
-				$insert_arr = array(
-					'lead_id' => $lead_id,
-					'rzpy_payment_id' => $rz_payment_id,
-					'rzpy_invoice_id' => $rz_invoice_id,
-					'rzpy_invoice_status' => $rz_invoice_status,
-					'rzpy_invoice_receipt' => $rz_invoice_receipt,
-					'rzpy_signature' => $rz_signature,
-					'created_on' => date('Y-m-d G:i:s'),
-				);
-				$payment_id = $this->Lead_model->insert_payment_details($insert_arr);
-
-				if($payment_id) {
-
-					// Push lead to lastmile
-
-					// Show success screen
-					$this->load->view('success');
-
-				}
-			}
-		}
-	}
-
 	public function save_lead()
 	{
 		$post = $this->input->post();
@@ -104,7 +57,7 @@ class Lead extends MY_Controller
 						"sms_notify": 1,
 						"email_notify": 1,
 						"expire_by": "",
-						"callback_url": "http://dev.in3access.in/lead_management/lead/verify",
+						"callback_url": "http://dev.in3access.in/lead_management/lead_order/verify",
 						"callback_method": "get" }';
 
 		//-------------- Save Lead -------------//

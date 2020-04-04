@@ -46,19 +46,15 @@
                   <div class="card-body">
                      <div class="table-responsive">
                         <table class="table table-striped table-bordered table-hover" id="sample_1" style="width:100%">
-                           <thead>
+                           <thead style="text-align: center;">
                               <tr>
-                                 <th>
-                                    Customer
-                                 </th>
-                                 <th>email</th>
-                                 <th>
-                                    Phone
-                                 </th>
-                                 <th>
-                                    Payment Link
-                                 </th>
-                                 <th>Payment</th>
+                                 <th>Receipt#</th>
+                                 <th>Customer</th>
+                                 <th>Email</th>
+                                 <th>Phone</th>
+                                 <th>Payment Link</th>
+                                 <th>Payment Status</th>
+                                 <th>Order Amount</th>
                                  <th>Created On</th>
                               </tr>
                            </thead>
@@ -94,7 +90,19 @@
             "processing": true,
             "serverSide": true,
             "ajax": BASE_URL+"lead/lead_list",
-            "responsive": true
+            "responsive": true,
+            "order": [[ 7, "desc" ]],
+            "columns": [
+               { "width": "10%" },
+               { "width": "25%" },
+               { "width": "25%" },
+               { "width": "10%" },
+               { "width": "5%" },
+               { "width": "5%" },
+               { "width": "5%" },
+               { "width": "15%" },
+            ],
+
          });
  
 

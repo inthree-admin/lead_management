@@ -155,7 +155,7 @@ $(document).ready(function () {
             
         },
         submitHandler: function (validator, form, submitButton) {
-            alert();
+             $("#btn_submit").attr("disabled", true);
         }
     }).on('success.form.bv', function (e) {
         // Prevent form submission
@@ -193,7 +193,7 @@ function save(data) {
 			            type: "success",
 			            confirmButtonColor: "#66cc99"
 			        }).then(function() {
-			            location.reload();
+			            location.href = BASE_URL+'/lead/list';
 			        });
             	}
             },

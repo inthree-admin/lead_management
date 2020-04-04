@@ -56,8 +56,8 @@ class Lead_model extends CI_Model
             WHEN payment_status = 0 THEN "Not Paid"
             WHEN payment_status = 1 THEN "Paid"
             ELSE "Failed"
-        END AS payment_status,
-        DATE_FORMAT(created_on, "%d-%m-%Y %h:%i %p")AS created_on
+        END AS payment_status,order_total,receipt_no,
+        DATE_FORMAT(created_on, "%d-%m-%Y %h:%i %p") AS created_on
         ', FALSE);
         $this->db->from(' tbl_lead');
         if (isset($filter['searchKey']) and !empty($filter['searchKey'])) {

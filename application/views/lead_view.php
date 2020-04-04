@@ -206,7 +206,7 @@
                         </div>
                         <div class="form-group form-actions">
                            <div class="col-md-8 ml-auto">
-                              <button type="submit" class="btn btn-effect-ripple btn-primary">Submit</button>
+                              <button type="submit" class="btn btn-effect-ripple btn-primary" id="btn_submit">Submit</button>
                               <button type="reset" class="btn btn-effect-ripple btn-default reset_btn">Reset
                               </button>
                            </div>

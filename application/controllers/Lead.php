@@ -167,18 +167,20 @@ class Lead extends MY_Controller
         $searchKey = (isset($_GET['search']['value'])) ? trim($_GET['search']['value']) :'';
         $ordercolumn =  (isset($_GET['order'][0]['column'])) ? $_GET['order'][0]['column'] : 1 ; 
 		$ordertype = (isset($_GET['order'][0]['dir'])) ?$_GET['order'][0]['dir'] :''; //asc or desc  
-		$columnArray = array(0=>'cust_name',1=>'cust_email', 2=>'cust_phone',3=>'payment_link_status',4=>'payment_status',5=>'created_on');
+		$columnArray = array(0=>'receipt_no',1=>'cust_name',2=>'cust_email', 3=>'cust_phone',4=>'payment_link_status',5=>'payment_status',6=>'order_total',7=>'created_on');
 		$filter_arr = array( 'start'=>$start, 'length'=>$length, 'searchKey'=>$searchKey, 'ordercolumn'=>$columnArray[$ordercolumn], 'ordertype'=>$ordertype);  
 		$result = $this->Lead_model->lead_list($filter_arr); 
 		$lead_total = $this->Lead_model->lead_list( array('searchKey'=>$searchKey)); 
 		$returnData = array();
 		foreach($result as $key=>$data){
-			$returnData['data'][$key][0] = $data['cust_name'];
-			$returnData['data'][$key][1] = $data['cust_email'];
-			$returnData['data'][$key][2] = $data['cust_phone'];
-			$returnData['data'][$key][3] = $data['payment_link_status'];
-			$returnData['data'][$key][4] = $data['payment_status'];
-			$returnData['data'][$key][5] = $data['created_on']; 
+			$returnData['data'][$key][0] = $data['receipt_no'];
+			$returnData['data'][$key][1] = $data['cust_name'];
+			$returnData['data'][$key][2] = $data['cust_email'];
+			$returnData['data'][$key][3] = $data['cust_phone'];
+			$returnData['data'][$key][4] = $data['payment_link_status'];
+			$returnData['data'][$key][5] = $data['payment_status'];
+			$returnData['data'][$key][6] = $data['order_total'];
+			$returnData['data'][$key][7] = $data['created_on']; 
 		} 
 		$returnData['recordsTotal'] = count($result);
         $returnData['recordsFiltered'] = count($lead_total); 

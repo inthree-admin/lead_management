@@ -48,7 +48,7 @@
                         <table class="table table-striped table-bordered table-hover" id="sample_1" style="width:100%">
                            <thead style="text-align: center;">
                               <tr>
-                                 <th>Receipt#</th>
+                                 <th>Receipt No</th>
                                  <th>Customer</th>
                                  <th>Email</th>
                                  <th>Phone</th>
@@ -93,14 +93,14 @@
             "responsive": true,
             "order": [[ 7, "desc" ]],
             "columns": [
-               { "width": "10%" },
-               { "width": "25%" },
-               { "width": "25%" },
-               { "width": "10%" },
-               { "width": "5%" },
-               { "width": "5%" },
-               { "width": "5%" },
-               { "width": "15%" },
+               { "width": "9%" },
+               { "width": "8%" },
+               { "width": "9%" },
+               { "width": "8%" },
+               { "width": "11%" },
+               { "width": "12%" },
+               { "width": "11%" },
+               { "width": "12%" },
             ],
 
          });

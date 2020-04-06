@@ -28,7 +28,7 @@
                         <img src="<?php echo base_url() ?>assets/img/success.png" alt="Payment Success">
                     </div>
                     <hr class="seperator">
-                    <p>Your order reference number is : <?php echo $ref_no; ?></p>
+                    <p>Your order number is : <?php echo $ref_no; ?></p>
                     <p>We will keep update your order details through SMS and Email.</p>
                     <p>For more details call Toll Free No: 1800 102 1271</p>
                     <p> <img src="<?php echo base_url() ?>assets/img/logo.png" alt="logo" width="250px" /></p>

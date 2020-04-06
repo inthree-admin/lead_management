@@ -3,23 +3,26 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class Leadlibrary { 
 
-    protected $CI;
+	protected $CI;
+	protected $lead_id;
 
-    function __construct() {
+    function __construct($params) {
+
+		$this->lead_id = $params['lead_id'];
+
         //This Context not available here so create new instance below
         $this->CI = & get_instance(); 
         $this->CI->load->model('Lead_model');
 		$this->CI->load->model('Lead_order_model');
     } 
 
-    public function push_order($lead_id){
-		$id = $lead_id;
+    public function push_order(){
+		$id = $this->lead_id;
 		$order_list = $this->CI->Lead_order_model->get_lead($id);
 		$vendor_id = '3';
 		$delivery_to = 2; //Customer
-		$payment_mode = 'Prepaid';
+		$payment_mode = '';
 		$time = date('Y-m-d h:m:s');
-		$lmdp = "bb_monish";
 		$otp = '';
 		$urn = '';
 		$loanrefno = '';
@@ -31,9 +34,10 @@ class Leadlibrary {
 			$leadid= $ord['lead_id'];
 			$hsty['ad_id'] = $vendor_id;
 			$hsty['status_from']="3pl";
+			$payment_mode = ($ord['order_type']==1)?'Prepaid':'COD';
 
 			$lmp_id = $ord['lmp_id'];
-			$orderid= $ord['rpay_order_id'];
+			$orderid= $ord['lead_no'];
 			$shipmentid= $ord['receipt_no'];
 			$referenceNumber= $orderid.'-'.$shipmentid;
 
@@ -70,6 +74,7 @@ class Leadlibrary {
 							'created_at' => $time
 					);
 				$data = $this->CI->security->xss_clean($data);
+
 				$trans_id = $this->CI->Lead_order_model->add_transaction($data);
 				
 				if($trans_id){
@@ -92,6 +97,7 @@ class Leadlibrary {
 					}
 					
 				}
+
 				$hsty['status']="Success";
 				$hsty['response_json'] = '{"successList":["'.$referenceNumber.'"],"failureList":[],"successCount":1,"code":1,"remarks":"Success"}';
 				$hsty['remarks']="Success";

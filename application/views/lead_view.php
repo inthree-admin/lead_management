@@ -17,10 +17,9 @@
    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/vendors/sweetalert2/css/sweetalert2.min.css" />
    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/css/custom_css/sweet_alert2.css">
    <style type="text/css">
-      .plist_error{
+      .plist_error {
          border-color: #ff0000;
       }
-
    </style>
 </head>
 <script>
@@ -171,8 +170,24 @@
                            </div>
                         </div><br>
 
-                        <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Product Details</b></h6>
+                        <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Order & Product Details</b></h6>
 
+                        <div class="form-group row">
+                           <div class="col-md-4">
+                              <label class="form-control-label" for="shipping_pincode">
+                                 Order Type
+                                 <span class="text-danger">*</span>
+                              </label>
+                              <div class="input-group">
+                                 <select class="form-control" id="order_type" name="order_type">
+                                    <option value="">-Select-</option>
+                                    <option value="1">Prepaid</option>
+                                    <option value="2">COD</option>
+                                 </select>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="form-group row">
                         <div class="col-md-9">
                            <div class="table-responsive product_list">
                               <table class=" table table-striped table-bordered" id="plist" style="cursor: pointer;">
@@ -193,7 +208,7 @@
                                              <option value="">-Select-</option>
                                           </select>
                                        </td>
-                                       <td><input class="form-control" type="number" value="1" onchange="totalCalc();" onkeyup="totalCalc();"  max="10000" min="1" name="quantity[]" required></td>
+                                       <td><input class="form-control" type="number" value="1" onchange="totalCalc();" onkeyup="totalCalc();" max="10000" min="1" name="quantity[]" required></td>
                                        <td style="text-align: right;">00.00</td>
                                        <td> <a href="javascript:void(0);" onclick="deleteRow(this);" class="btn btn-danger btn-xs delrow"><i class="fa fa-trash"></i></a></td>
                                     </tr>
@@ -203,30 +218,33 @@
 
 
 
-                               
+
                            </div>
                         </div>
+                        </div>
+
+                        
 
 
                         <div class="form-group row">
 
-                              <div class="col-3" >
-                                    
-                                </div>
-                                 <div class="col-sm-3" >
-                                    
-                                </div>
-                                 <div class="col-sm-3" >
-                                    <div class="alert alert-info  m-t-10" style="font-weight: bold;font-size: 20px;">
-                                        Total : <i class="fa fa-inr" ></i> <span id='total_amount'>00.00</span>
-                                    </div>
-                                </div>
-                                 <div class="col-sm-3" >
-                                    
-                                </div>
+                           <div class="col-3">
+
+                           </div>
+                           <div class="col-sm-3">
+
+                           </div>
+                           <div class="col-sm-3">
+                              <div class="alert alert-info  m-t-10" style="font-weight: bold;font-size: 20px;">
+                                 Total : <i class="fa fa-inr"></i> <span id='total_amount'>00.00</span>
+                              </div>
+                           </div>
+                           <div class="col-sm-3">
+
+                           </div>
 
                         </div>
-                        
+
                         <div class="form-group form-actions">
                            <div class="col-md-8 ml-auto">
                               <button type="submit" class="btn btn-effect-ripple btn-primary" id="btn_submit">Submit</button>

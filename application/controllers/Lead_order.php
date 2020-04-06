@@ -8,7 +8,6 @@ class Lead_order extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->model('Lead_model');
-		$this->load->model('Lead_order_model');
 	}
 
 	public function verify()
@@ -29,6 +28,7 @@ class Lead_order extends CI_Controller
 			if (is_array($lead_info) && count($lead_info) > 0) {
 
 				$lead_id = $lead_info[0]['lead_id'];
+				$lead_no = $lead_info[0]['lead_no'];
 
 				// Update lead table
 				$up_arr = array('payment_status' => 1);
@@ -49,17 +49,19 @@ class Lead_order extends CI_Controller
 				if ($payment_id) {
 
 					// Push lead to lastmile
-					$this->push_order($lead_id);
+					$params = array('lead_id' => $lead_id);
+					$this->load->library('leadlibrary', $params);
+					$this->leadlibrary->push_order();
 
 					// Show success screen
-					$data['ref_no'] = $rz_invoice_receipt;
+					$data['ref_no'] = $lead_no;
 					$this->load->view('success', $data);
 				}
 			}
 		}
 	}
 
-	public function push_order($lead_id){
+	/*public function push_order($lead_id){
 		$id = $lead_id;
 		$order_list = $this->Lead_order_model->get_lead($id);
 		$vendor_id = '3';
@@ -158,7 +160,7 @@ class Lead_order extends CI_Controller
 		
 		return $res_arr;
 		
-	}
+	}*/
 
 
 

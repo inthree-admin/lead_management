@@ -134,6 +134,13 @@ $(document).ready(function () {
 	        //         }
             //     }
             // },
+            order_type: {
+                validators: {
+                    notEmpty: {
+                        message: 'Please select order type'
+                    }
+                }
+            }, 
            product: { 
 	            validators: {
 	            	notEmpty: {

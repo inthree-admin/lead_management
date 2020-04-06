@@ -14,6 +14,8 @@ class Lead_order extends CI_Controller
 	public function verify()
 	{
 		$res_arr = $_GET;
+		$data = array();
+
 		if (is_array($res_arr) && count($res_arr) > 0) {
 
 			$rz_payment_id = $res_arr['razorpay_payment_id'];
@@ -50,7 +52,8 @@ class Lead_order extends CI_Controller
 					$this->push_order($lead_id);
 
 					// Show success screen
-					$this->load->view('success');
+					$data['ref_no'] = $rz_invoice_receipt;
+					$this->load->view('success', $data);
 				}
 			}
 		}

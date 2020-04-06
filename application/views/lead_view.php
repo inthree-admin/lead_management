@@ -112,10 +112,9 @@
                            <div class="col-md-4">
                               <label class="form-control-label" for="billing_contact_no">
                                  Contact Number
-                                 <span class="text-danger">*</span>
                               </label>
                               <div class="input-group">
-                                 <input type="text" id="billing_contact_no" name="billing_contact_no" class="form-control bill" placeholder="Contact Number">
+                                 <input type="text" id="billing_contact_no" name="billing_contact_no" class="form-control bill" placeholder="Billing Contact Number">
                               </div>
                            </div>
 
@@ -159,10 +158,9 @@
                         <div class="col-md-4">
                               <label class="form-control-label" for="shipping_contact_no">
                                  Contact Number
-                                 <span class="text-danger">*</span>
                               </label>
                               <div class="input-group">
-                                 <input type="text" id="shipping_contact_no" name="shipping_contact_no" class="form-control" placeholder="Contact Number">
+                                 <input type="text" id="shipping_contact_no" name="shipping_contact_no" class="form-control" placeholder="Shipping Contact Number">
                               </div>
                            </div>
                         </div><br>

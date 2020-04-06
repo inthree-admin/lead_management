@@ -93,14 +93,14 @@
             "responsive": true,
             "order": [[ 7, "desc" ]],
             "columns": [
-               { "width": "9%" },
                { "width": "8%" },
-               { "width": "9%" },
+               { "width": "8%" },
+               { "width": "8%" },
                { "width": "8%" },
                { "width": "11%" },
                { "width": "12%" },
-               { "width": "11%" },
                { "width": "12%" },
+               { "width": "13%" },
             ],
 
          });

@@ -62,6 +62,7 @@ class Lead extends MY_Controller
 		$shipping_contact_no = (isset($post['shipping_contact_no'])) ? trim($post['shipping_contact_no']) : ''; 
 		$login_id 			= $this->session->userdata('admin_id'); 
 		$receipt = 'BB' . time();
+		$tot_amount_paisa = $total_amount*100;
 		$fields_string = '{"customer": {
 						"name": "' . $cust_name . '",
 						"email": "' . $cust_email . '",
@@ -69,7 +70,7 @@ class Lead extends MY_Controller
 						},
 						"type": "link",
 						"view_less": 1,
-						"amount": ' . $total_amount. ',
+						"amount": ' .$tot_amount_paisa. ',
 						"currency": "INR",
 						"description": "' . $discription . '",
 						"receipt": "' . $receipt . '",

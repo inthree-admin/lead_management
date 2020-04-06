@@ -37,19 +37,19 @@ $(document).ready(function () {
 	                }
                 }
             },
-            alter_mobile: {
-                validators: { 
-                    regexp: {
-                        regexp: /[2-9]{2}\d{8}/,
-                        message: 'The alternate number can only consist of numbers'
-                    },
-                     stringLength: {
-	                    min: 10,
-	                    max: 10,
-	                    message: 'The number must be between 10 digit'
-	                }
-                }
-            },
+            // alter_mobile: {
+            //     validators: { 
+            //         regexp: {
+            //             regexp: /[2-9]{2}\d{8}/,
+            //             message: 'The alternate number can only consist of numbers'
+            //         },
+            //          stringLength: {
+	        //             min: 10,
+	        //             max: 10,
+	        //             message: 'The number must be between 10 digit'
+	        //         }
+            //     }
+            // },
              billing_address: {
                 validators: {
                     notEmpty: {
@@ -76,22 +76,22 @@ $(document).ready(function () {
 	                }
 	            }
             },    
- 			billing_contact_no: {
-                validators: {
-                    notEmpty: {
-                        message: 'Please enter the contact no'
-                    },
-                    regexp: {
-                        regexp: /[2-9]{2}\d{8}/,
-                        message: 'Please enter number only'
-                    },
-                     stringLength: {
-	                    min: 10,
-	                    max: 10,
-	                    message: 'The number must be between 10 digit'
-	                }
-                }
-            },
+ 			// billing_contact_no: {
+            //     validators: {
+            //         notEmpty: {
+            //             message: 'Please enter the contact no'
+            //         },
+            //         regexp: {
+            //             regexp: /[2-9]{2}\d{8}/,
+            //             message: 'Please enter number only'
+            //         },
+            //          stringLength: {
+	        //             min: 10,
+	        //             max: 10,
+	        //             message: 'The number must be between 10 digit'
+	        //         }
+            //     }
+            // },
             shipping_address: {
                 validators: {
                     notEmpty: {
@@ -118,22 +118,22 @@ $(document).ready(function () {
 	                }
 	            }
             },    
- 			shipping_contact_no: {
-                validators: {
-                    notEmpty: {
-                        message: 'Please enter the contact no'
-                    },
-                    regexp: {
-                        regexp: /[2-9]{2}\d{8}/,
-                        message: 'Please enter number only'
-                    },
-                     stringLength: {
-	                    min: 10,
-	                    max: 10,
-	                    message: 'The number must be between 10 digit'
-	                }
-                }
-            },
+ 			// shipping_contact_no: {
+            //     validators: {
+            //         notEmpty: {
+            //             message: 'Please enter the contact no'
+            //         },
+            //         regexp: {
+            //             regexp: /[2-9]{2}\d{8}/,
+            //             message: 'Please enter number only'
+            //         },
+            //          stringLength: {
+	        //             min: 10,
+	        //             max: 10,
+	        //             message: 'The number must be between 10 digit'
+	        //         }
+            //     }
+            // },
            product: { 
 	            validators: {
 	            	notEmpty: {

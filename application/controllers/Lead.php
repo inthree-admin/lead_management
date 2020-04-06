@@ -170,8 +170,9 @@ class Lead extends MY_Controller
 		$columnArray = array(0=>'receipt_no',1=>'cust_name',2=>'cust_email', 3=>'cust_phone',4=>'payment_link_status',5=>'payment_status',6=>'order_total',7=>'created_on');
 		$filter_arr = array( 'start'=>$start, 'length'=>$length, 'searchKey'=>$searchKey, 'ordercolumn'=>$columnArray[$ordercolumn], 'ordertype'=>$ordertype);  
 		$result = $this->Lead_model->lead_list($filter_arr); 
-		$lead_total = $this->Lead_model->lead_list( array('searchKey'=>$searchKey)); 
+		$lead_total = $this->Lead_model->lead_total_count( array('searchKey'=>$searchKey)); 
 		$returnData = array();
+		$returnData['data'] = [];
 		foreach($result as $key=>$data){
 			$returnData['data'][$key][0] = $data['receipt_no'];
 			$returnData['data'][$key][1] = $data['cust_name'];
@@ -183,7 +184,7 @@ class Lead extends MY_Controller
 			$returnData['data'][$key][7] = $data['created_on']; 
 		} 
 		$returnData['recordsTotal'] = count($result);
-        $returnData['recordsFiltered'] = count($lead_total); 
+        $returnData['recordsFiltered'] =$lead_total['total_lead']; 
 		echo json_encode($returnData);
 		
 		 

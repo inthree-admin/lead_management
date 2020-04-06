@@ -17,11 +17,40 @@ class Lead extends MY_Controller
 
 	public function save_lead()
 	{
-		$post = $this->input->post();
+		$post = $this->input->post(); 
+		$discription = 'Boonbox Product';
+		$order_data = array();
+		foreach ($post['product'] as $key => $pid) {
+			if(!empty($pid)) {
+				if(isset($order_data[$pid])) 
+				 	$order_data[$pid] += $post['quantity'][$key];
+				 else 
+					$order_data[$pid] = $post['quantity'][$key]; 
+			} 
+		}
+		 
+		$product_info = $this->Lead_model->get_product_info(array_keys($order_data)); 
+		$total_amount = 0;
+		$insert_item_arr = array();
+		foreach ($product_info as $key => $pdata) {
+			  $qty = $order_data[$pdata['prod_id']];
+			  $price =  $pdata['prod_price'];
+			  $subtotal = $qty * $price;
+			  $total_amount = $total_amount + $subtotal;
+			  $item_arr = array(
+				'lead_id' 			=> 10,	// $lead_id,
+				'item_name' 		=> $pdata['prod_name'],
+				'item_id' 			=> $pdata['prod_id'],
+				'item_unit_price' 	=> $price,
+				'item_qty' 			=> $qty,
+				'item_price' 		=> $subtotal
+			);
+			array_push($insert_item_arr, $item_arr);  
+		} 
+		 
 		$cust_name 			= (isset($post['cust_name'])) ? trim($post['cust_name']) : '';
 		$cust_email 		= (isset($post['email'])) ? trim($post['email']) : '';
-		$cust_phone 		= (isset($post['mobile'])) ? trim($post['mobile']) : '';
-		$product_id			= (isset($post['product'])) ? trim($post['product']) : '';
+		$cust_phone 		= (isset($post['mobile'])) ? trim($post['mobile']) : ''; 
 		$alter_mobile		= (isset($post['alter_mobile'])) ? trim($post['alter_mobile']) : '';
 		$billing_address	= (isset($post['billing_address'])) ? trim($post['billing_address']) : '';
 		$billing_city		= (isset($post['billing_city'])) ? trim($post['billing_city']) : '';
@@ -30,17 +59,8 @@ class Lead extends MY_Controller
 		$shipping_address	= (isset($post['shipping_address'])) ? trim($post['shipping_address']) : '';
 		$shipping_city		= (isset($post['shipping_city'])) ? trim($post['shipping_city']) : '';
 		$shipping_pincode	= (isset($post['shipping_pincode'])) ? trim($post['shipping_pincode']) : '';
-		$shipping_contact_no = (isset($post['shipping_contact_no'])) ? trim($post['shipping_contact_no']) : '';
-		$quantity			= (isset($post['quantity'])) ? trim($post['quantity']) : '';
-		$login_id 			= $this->session->userdata('admin_id');
-
-		//-------------- Get Product Info-------------//
-		$product_info = $this->Lead_model->get_product_info($product_id);
-		$item_id = $product_info['prod_id'];
-		$item_name = $product_info['prod_name'];
-		$item_unit_price = $product_info['prod_price'];
-		$prod_price = $item_unit_price * (int) $quantity;
-
+		$shipping_contact_no = (isset($post['shipping_contact_no'])) ? trim($post['shipping_contact_no']) : ''; 
+		$login_id 			= $this->session->userdata('admin_id'); 
 		$receipt = 'BB' . time();
 		$fields_string = '{"customer": {
 						"name": "' . $cust_name . '",
@@ -49,9 +69,9 @@ class Lead extends MY_Controller
 						},
 						"type": "link",
 						"view_less": 1,
-						"amount": ' . $prod_price * 100 . ',
+						"amount": ' . $total_amount. ',
 						"currency": "INR",
-						"description": "' . $item_name . '",
+						"description": "' . $discription . '",
 						"receipt": "' . $receipt . '",
 						"reminder_enable": true,
 						"sms_notify": 1,
@@ -60,12 +80,12 @@ class Lead extends MY_Controller
 						"callback_url": "http://dev.in3access.in/lead_management/lead_order/verify",
 						"callback_method": "get" }';
 
-		//-------------- Save Lead -------------//
+		/*-------------- Save Lead -------------*/
 		$insert_arr = array(
 			'cust_name' 		=> $cust_name,
 			'cust_email' 		=> $cust_email,
 			'cust_phone' 		=> $cust_phone,
-			'order_total' 		=> $prod_price,
+			'order_total' 		=> $total_amount,
 			'created_on' 		=> date('Y-m-d G:i:s'),
 			'created_by' 		=> $this->session->userdata('username'),
 			'payment_link_req' 	=> $fields_string,
@@ -81,17 +101,10 @@ class Lead extends MY_Controller
 			'lmp_id' 		    => $login_id,
 		);
 		$lead_id = $this->Lead_model->insert_new_lead($insert_arr);
-		if ($lead_id) {
-			$insert_item_arr = array(
-				'lead_id' 			=> $lead_id,
-				'item_name' 		=> $item_name,
-				'item_id' 			=> $item_id,
-				'item_unit_price' 	=> $item_unit_price,
-				'item_qty' 			=> $quantity,
-				'item_price' 		=> $prod_price
-			);
+		if ($lead_id) { 
+			/*-------------- Save Lead Item -------------*/
 			$lead_item_id = $this->Lead_model->insert_new_lead_items($insert_item_arr);
-		}
+		} 
 		if ($lead_id) {
 
 			$msg = 'Lead generated';

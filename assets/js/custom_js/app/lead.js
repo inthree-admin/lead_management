@@ -307,12 +307,12 @@ function appendRow() {
 function deleteRow(e) {
 	var trlength = $('#plist').find('tr').length; 
 	if(trlength > 2) $(e).closest('tr').remove();
-	if(trlength == 2) appendRow();
-	totalCalc();
-	row_number(); 
+	if(trlength == 2) appendRow(); 
 	if($('#plist').find('tr').length == 2) $('.delrow').hide();
 	else $('.delrow').show();
 	validatePlistinput();
+    totalCalc();
+    row_number(); 
 }
 
 function row_number(){
@@ -326,8 +326,8 @@ let quantity = 0;
 let subtotal = 0;
 let total_amount = 0;
 
-function totalCalc(){
-	 total_amount = 0;
+function totalCalc(){ 
+	total_amount = 0;
 	$.each($('#plist tbody').find('tr'),function(i,j){
 		if($(j).find('td:eq(1)').find('select').val()!=''){
 			price = $(j).find('td:eq(1)').find('select  option:selected').attr('data-price');
@@ -335,9 +335,10 @@ function totalCalc(){
 			subtotal = (price * quantity).toFixed(2);
 			$(j).find('td:eq(3)').text(subtotal); 
 			total_amount = parseFloat(total_amount) +  parseFloat(subtotal);
-			$('#total_amount').text(total_amount.toFixed(2));
+			
 		} 
 	}); 
+    $('#total_amount').text(total_amount.toFixed(2));
 	validatePlistinput();
 }
 

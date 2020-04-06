@@ -1,67 +1,20 @@
-<?php
-defined('BASEPATH') or exit('No direct script access allowed');
+<?php 
+if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Lead_order extends CI_Controller
-{
+class Leadlibrary { 
 
-	public function __construct()
-	{
-		parent::__construct();
-		$this->load->model('Lead_model');
-		$this->load->model('Lead_order_model');
-	}
+    protected $CI;
 
-	public function verify()
-	{
-		$res_arr = $_GET;
-		$data = array();
+    function __construct() {
+        //This Context not available here so create new instance below
+        $this->CI = & get_instance(); 
+        $this->CI->load->model('Lead_model');
+		$this->CI->load->model('Lead_order_model');
+    } 
 
-		if (is_array($res_arr) && count($res_arr) > 0) {
-
-			$rz_payment_id = $res_arr['razorpay_payment_id'];
-			$rz_invoice_id = $res_arr['razorpay_invoice_id'];
-			$rz_invoice_status = $res_arr['razorpay_invoice_status'];
-			$rz_invoice_receipt = $res_arr['razorpay_invoice_receipt'];
-			$rz_signature = $res_arr['razorpay_signature'];
-
-			// Get the lead info based on receipt no
-			$lead_info = $this->Lead_model->get_lead_by_receipt($rz_invoice_receipt);
-			if (is_array($lead_info) && count($lead_info) > 0) {
-
-				$lead_id = $lead_info[0]['lead_id'];
-
-				// Update lead table
-				$up_arr = array('payment_status' => 1);
-				$this->Lead_model->update_lead($up_arr, $lead_id);
-
-				// Insert payment details
-				$insert_arr = array(
-					'lead_id' => $lead_id,
-					'rzpy_payment_id' => $rz_payment_id,
-					'rzpy_invoice_id' => $rz_invoice_id,
-					'rzpy_invoice_status' => $rz_invoice_status,
-					'rzpy_invoice_receipt' => $rz_invoice_receipt,
-					'rzpy_signature' => $rz_signature,
-					'created_on' => date('Y-m-d G:i:s'),
-				);
-				$payment_id = $this->Lead_model->insert_payment_details($insert_arr);
-
-				if ($payment_id) {
-
-					// Push lead to lastmile
-					$this->push_order($lead_id);
-
-					// Show success screen
-					$data['ref_no'] = $rz_invoice_receipt;
-					$this->load->view('success', $data);
-				}
-			}
-		}
-	}
-
-	public function push_order($lead_id){
+    public function push_order($lead_id){
 		$id = $lead_id;
-		$order_list = $this->Lead_order_model->get_lead($id);
+		$order_list = $this->CI->Lead_order_model->get_lead($id);
 		$vendor_id = '3';
 		$delivery_to = 2; //Customer
 		$payment_mode = 'Prepaid';
@@ -84,8 +37,8 @@ class Lead_order extends CI_Controller
 			$shipmentid= $ord['receipt_no'];
 			$referenceNumber= $orderid.'-'.$shipmentid;
 
-			$lmdp = $this->Lead_order_model->get_lmp($lmp_id);
-			$trans_check = $this->Lead_order_model->chk_transaction($referenceNumber);
+			$lmdp = $this->CI->Lead_order_model->get_lmp($lmp_id);
+			$trans_check = $this->CI->Lead_order_model->chk_transaction($referenceNumber);
 			if(empty($trans_check)){
 			   $data = array(
 							'id' => '',
@@ -116,11 +69,11 @@ class Lead_order extends CI_Controller
 							'lmdp' => $lmdp,
 							'created_at' => $time
 					);
-				$data = $this->security->xss_clean($data);
-				$trans_id = $this->Lead_order_model->add_transaction($data);
+				$data = $this->CI->security->xss_clean($data);
+				$trans_id = $this->CI->Lead_order_model->add_transaction($data);
 				
 				if($trans_id){
-					$item_list   = $this->Lead_order_model->get_lead_item($leadid);
+					$item_list   = $this->CI->Lead_order_model->get_lead_item($leadid);
 					foreach($item_list as $item){
 						$amount=$item['item_price'];
 						$quantity=$item['item_qty'];
@@ -135,7 +88,7 @@ class Lead_order extends CI_Controller
 								'row_total' => $amount * $quantity,
 								'created' => $time,
 								);
-						 $trans_item_id = $this->Lead_order_model->add_transaction_item($itemdata);
+						 $trans_item_id = $this->CI->Lead_order_model->add_transaction_item($itemdata);
 					}
 					
 				}
@@ -143,7 +96,7 @@ class Lead_order extends CI_Controller
 				$hsty['response_json'] = '{"successList":["'.$referenceNumber.'"],"failureList":[],"successCount":1,"code":1,"remarks":"Success"}';
 				$hsty['remarks']="Success";
 				$hsty['code']="1";
-				$this->Lead_order_model->add_receive_history($hsty);
+				$this->CI->Lead_order_model->add_receive_history($hsty);
 				$res_arr = '{"successList":["'.$referenceNumber.'"],"failureList":[],"successCount":1,"code":1,"remarks":"Success"}';
 			}
 			else{
@@ -151,7 +104,7 @@ class Lead_order extends CI_Controller
 				$hsty['response_json'] = '{"successList":[""],"failureList":["'.$referenceNumber.'"],"successCount":0,"code":0,"remarks":"Duplicate Entry"}';
 				$hsty['remarks']="Duplicate Entry";
 				$hsty['code']="0";
-				$this->Lead_order_model->add_receive_history($hsty);
+				$this->CI->Lead_order_model->add_receive_history($hsty);
 				$res_arr = '{"successList":[""],"failureList":["'.$referenceNumber.'"],"successCount":0,"code":0,"remarks":"Duplicate Entry"}';
 			}
 		}
@@ -159,7 +112,8 @@ class Lead_order extends CI_Controller
 		return $res_arr;
 		
 	}
-
-
+      
 
 }
+
+?>

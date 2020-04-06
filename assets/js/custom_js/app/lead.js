@@ -158,11 +158,36 @@ $(document).ready(function () {
              $("#btn_submit").attr("disabled", true);
         }
     }).on('success.form.bv', function (e) {
+    	if($('.plist_error').length > 0) {
+    		 $("#btn_submit").attr("disabled", false);
+    		return false;	
+    	}
         // Prevent form submission
-        e.preventDefault(); 
-		var form = $('#form-validation')[0];  
-        var data = new FormData(form); 
-        save(data);
+        var cust_name = $('#cust_name').val().trim(); 
+         swal({
+            title: 'Hi '+cust_name,
+            text: 'Are you sure Want to place your order?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: "#66cc99",
+            cancelButtonColor: '#ff6666',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'cancel',
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger'
+        }).then(function (conrifm) {
+        	if(conrifm['value'] == true){
+        		e.preventDefault();  
+        		var form = $('#form-validation')[0];  
+		        var data = new FormData(form); 
+		        save(data);
+        	}else{
+        		 location.reload();
+        	}        	 
+           
+        });
+
+		
 
     });
 
@@ -174,8 +199,7 @@ $(document).ready(function () {
 
 var serializeData = [];
 // Own script started  
-function save(data) { 
-    return false;
+function save(data) {  
 	 $.ajax({
             type: "POST",
             enctype: 'multipart/form-data',
@@ -251,10 +275,13 @@ function resetInput(){
 	}).responseText;
 	return JSON.parse(data);;
  }
+ //loading scrit on page start
  var productList = loadProductList();
-
+ $('.delrow').hide();
 var default_tr ='';
 generateProductDropdown();
+
+//----------End -----------------//
 function generateProductDropdown(){
 	var jsonData = productList;
 	var optionElement = '<option value="">-Select-</option>';
@@ -269,9 +296,12 @@ function generateProductDropdown(){
 
 function appendRow() {
 	var trlength = $('#plist').find('tr').length; 
-	if($('#plist').find("tr:eq("+(trlength - 1)+")" ).find('select').val() != '') $('#plist tbody').append(default_tr);
+	if($('#plist').find("tr:eq("+(trlength - 1)+")" ).find('select').val() != '') $('#plist tbody').append(default_tr); 
 	totalCalc();
-	row_number();
+	row_number(); 
+	if($('#plist').find('tr').length == 2) $('.delrow').hide();
+	else $('.delrow').show(); 
+	validatePlistinput();
 }
 
 function deleteRow(e) {
@@ -279,7 +309,10 @@ function deleteRow(e) {
 	if(trlength > 2) $(e).closest('tr').remove();
 	if(trlength == 2) appendRow();
 	totalCalc();
-	row_number();
+	row_number(); 
+	if($('#plist').find('tr').length == 2) $('.delrow').hide();
+	else $('.delrow').show();
+	validatePlistinput();
 }
 
 function row_number(){
@@ -291,14 +324,39 @@ function row_number(){
 let price = 0;
 let quantity = 0;
 let subtotal = 0;
+let total_amount = 0;
+
 function totalCalc(){
+	 total_amount = 0;
 	$.each($('#plist tbody').find('tr'),function(i,j){
 		if($(j).find('td:eq(1)').find('select').val()!=''){
 			price = $(j).find('td:eq(1)').find('select  option:selected').attr('data-price');
 			quantity = $(j).find('td:eq(2)').find('input').val();  
-			subtotal = (price * quantity).toFixed(2)
-			$(j).find('td:eq(3)').text(subtotal);	
+			subtotal = (price * quantity).toFixed(2);
+			$(j).find('td:eq(3)').text(subtotal); 
+			total_amount = parseFloat(total_amount) +  parseFloat(subtotal);
+			$('#total_amount').text(total_amount.toFixed(2));
+		} 
+	}); 
+	validatePlistinput();
+}
+
+function validatePlistinput(){
+	var trlength = $('#plist tbody').find('tr').length;
+	$.each($('#plist tbody').find('tr'),function(i,j){
+		if(trlength != (i+1) ){
+			if($(j).find('td:eq(1)').find('select').val()==''){
+			 	$(j).find('td:eq(1)').find('select').attr('class','form-control plist_error'); 
+			}else{
+				$(j).find('td:eq(1)').find('select').attr('class','form-control'); 
+			}
+			if($(j).find('td').find('input').val()==0){
+				 	$(j).find('td').find('input').attr('class','form-control plist_error'); 
+			}else{
+				$(j).find('td').find('input').attr('class','form-control'); 
+			} 
 		}
+		
 		
 	}); 
 }

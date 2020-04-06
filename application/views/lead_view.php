@@ -16,6 +16,12 @@
    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/vendors/bootstrapvalidator/css/bootstrapValidator.min.css">
    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/vendors/sweetalert2/css/sweetalert2.min.css" />
    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/css/custom_css/sweet_alert2.css">
+   <style type="text/css">
+      .plist_error{
+         border-color: #ff0000;
+      }
+
+   </style>
 </head>
 <script>
    var BASE_URL = "<?php echo base_url() ?>";
@@ -46,7 +52,7 @@
                      </span>
                   </div>
                   <div class="card-body">
-                     <form id="form-validation" name="form-validation" enctype="multipart/form-data" action="javascript:void(0);>" method="post" class="form-horizontal">
+                     <form id="form-validation" name="form-validation" enctype="multipart/form-data" action="javascript:void(0);" method="post" class="form-horizontal">
                         <input type="hidden" name="prod_price" id="prod_price">
                         <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Customer Personal Details</b></h6>
                         <div class="form-group row">
@@ -183,30 +189,44 @@
                                     <tr>
                                        <td>1</td>
                                        <td>
-                                          <select tabindex="1" class="form-control" id="inp_product" name="product" class="form-control" onchange="appendRow();">
+                                          <select tabindex="1" class="form-control" id="inp_product" name="product[]" class="form-control has-error" onchange="appendRow();" required>
                                              <option value="">-Select-</option>
                                           </select>
                                        </td>
-                                       <td><input class="form-control" type="text" value="1" onchange="totalCalc();"></td>
+                                       <td><input class="form-control" type="number" value="1" onchange="totalCalc();" onkeyup="totalCalc();"  max="10000" min="1" name="quantity[]" required></td>
                                        <td style="text-align: right;">00.00</td>
-                                       <td> <a href="javascript:void(0);" onclick="deleteRow(this);" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a></td>
+                                       <td> <a href="javascript:void(0);" onclick="deleteRow(this);" class="btn btn-danger btn-xs delrow"><i class="fa fa-trash"></i></a></td>
                                     </tr>
 
                                  </tbody>
                               </table>
-                              <input maxlength="30" style="position: absolute; top: -557px; left: 394px; padding: 8px; text-align: left; font: 400 13px / 19.5px &quot;Open Sans&quot;, sans-serif; border: 1px solid rgb(222, 226, 230); width: 239px; height: 36px; display: none;">
+
+
+
+                               
                            </div>
                         </div>
 
 
                         <div class="form-group row">
 
+                              <div class="col-3" >
+                                    
+                                </div>
+                                 <div class="col-sm-3" >
+                                    
+                                </div>
+                                 <div class="col-sm-3" >
+                                    <div class="alert alert-info  m-t-10" style="font-weight: bold;font-size: 20px;">
+                                        Total : <i class="fa fa-inr" ></i> <span id='total_amount'>00.00</span>
+                                    </div>
+                                </div>
+                                 <div class="col-sm-3" >
+                                    
+                                </div>
 
                         </div>
-                        <div class="form-group row">
-                           <div class="col-md-4">
-                           </div>
-                        </div>
+                        
                         <div class="form-group form-actions">
                            <div class="col-md-8 ml-auto">
                               <button type="submit" class="btn btn-effect-ripple btn-primary" id="btn_submit">Submit</button>

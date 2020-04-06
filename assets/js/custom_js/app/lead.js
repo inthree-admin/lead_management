@@ -227,6 +227,9 @@ function copy_billing_address(){
 $('.bill').on('keydown',function(){ 
 	copy_billing_address(); 
 });
+$('.bill').on('change',function(){ 
+    copy_billing_address(); 
+});
 function resetInput(){
     $.each($('form'),function() { 
          $(this)[0].reset();
@@ -234,3 +237,68 @@ function resetInput(){
     });
 }
 
+ 
+
+ function loadProductList(){
+	var data = $.ajax({
+	  url: BASE_URL+"/lead/load_products",
+	  type: "POST",
+	  data: {},
+	  async: false,
+	  success: function(data){
+	      var outputData = JSON.parse(data);  
+	  }
+	}).responseText;
+	return JSON.parse(data);;
+ }
+ var productList = loadProductList();
+
+var default_tr ='';
+generateProductDropdown();
+function generateProductDropdown(){
+	var jsonData = productList;
+	var optionElement = '<option value="">-Select-</option>';
+	if(jsonData != ''){
+		$.each(jsonData,function(i,j){
+			optionElement += '<option data-price="'+j['prod_price']+'" value="'+j['prod_id']+'">'+j['prod_name']+'</option>';
+		});
+	}  
+	$('#inp_product').html(optionElement);
+	default_tr = '<tr>'+$('#plist').find( "tr:eq(1)" ).html()+'</tr>';
+}
+
+function appendRow() {
+	var trlength = $('#plist').find('tr').length; 
+	if($('#plist').find("tr:eq("+(trlength - 1)+")" ).find('select').val() != '') $('#plist tbody').append(default_tr);
+	totalCalc();
+	row_number();
+}
+
+function deleteRow(e) {
+	var trlength = $('#plist').find('tr').length; 
+	if(trlength > 2) $(e).closest('tr').remove();
+	if(trlength == 2) appendRow();
+	totalCalc();
+	row_number();
+}
+
+function row_number(){
+	$.each($('#plist tbody').find('tr'),function(i,j){
+		$(j).find('td:eq(0)').text(i+1);
+	}); 
+}
+
+let price = 0;
+let quantity = 0;
+let subtotal = 0;
+function totalCalc(){
+	$.each($('#plist tbody').find('tr'),function(i,j){
+		if($(j).find('td:eq(1)').find('select').val()!=''){
+			price = $(j).find('td:eq(1)').find('select  option:selected').attr('data-price');
+			quantity = $(j).find('td:eq(2)').find('input').val();  
+			subtotal = (price * quantity).toFixed(2)
+			$(j).find('td:eq(3)').text(subtotal);	
+		}
+		
+	}); 
+}

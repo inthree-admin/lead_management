@@ -175,6 +175,7 @@ $(document).ready(function () {
 var serializeData = [];
 // Own script started  
 function save(data) { 
+    return false;
 	 $.ajax({
             type: "POST",
             enctype: 'multipart/form-data',
@@ -229,7 +230,7 @@ $('.bill').on('keydown',function(){
 function resetInput(){
     $.each($('form'),function() { 
          $(this)[0].reset();
-         $(this).closest('.row').hide();
+         
     });
 }
 

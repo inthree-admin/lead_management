@@ -65,6 +65,7 @@ class Lead_model extends CI_Model
             cust_name LIKE '%" . $filter['searchKey'] . "%' 
             OR cust_email LIKE '%" . $filter['searchKey'] . "%' 
             OR cust_phone  LIKE '%" . $filter['searchKey'] . "%'  
+			OR receipt_no LIKE '%" . $filter['searchKey'] . "%'
         ");
         }
         if (!empty($filter['ordercolumn']))
@@ -74,10 +75,18 @@ class Lead_model extends CI_Model
          return $this->db->get()->result_array();
          
     }
-    public function lead_total_count()
+    public function lead_total_count($filter)
     {
         $this->db->select('count(*) total_lead');
         $this->db->from(' tbl_lead');
+		if (isset($filter['searchKey']) and !empty($filter['searchKey'])) {
+            $this->db->where("
+            cust_name LIKE '%" . $filter['searchKey'] . "%' 
+            OR cust_email LIKE '%" . $filter['searchKey'] . "%' 
+            OR cust_phone  LIKE '%" . $filter['searchKey'] . "%'  
+			OR receipt_no LIKE '%" . $filter['searchKey'] . "%'
+        ");
+        }
         return $this->db->get()->row_array();
     }
 }

@@ -21,13 +21,25 @@ class Lead_model extends CI_Model
         return $this->db->insert_id();
     }
 
-    public function get_product_info($prod_id)
+    public function get_product_info($prod_id = '')
     {
+        if ($prod_id == '') return false;
         $this->db->select('*');
         $this->db->from('tbl_lead_products');
-        $this->db->where('prod_id', $prod_id);
-        $query = $this->db->get();
-        return $result = $query->row_array();
+        if ($prod_id == 'all') {
+            $query = $this->db->get();
+            return $result = $query->result_array();
+        }
+        if (is_array($prod_id) and count($prod_id) > 0) {
+            $this->db->where_in('prod_id', $prod_id);
+            $query = $this->db->get();
+            return $result = $query->result_array();
+        }
+        if (!is_array($prod_id) and $prod_id != 0) {
+            $this->db->where('prod_id', $prod_id);
+            $query = $this->db->get();
+            return $result = $query->row_array();
+        }
     }
 
     public function get_lead_by_receipt($receipt_no)
@@ -72,14 +84,13 @@ class Lead_model extends CI_Model
             $this->db->order_by($filter['ordercolumn'], $filter['ordertype']);
         if (!empty($filter['length']))
             $this->db->limit($filter['length'], $filter['start']);
-         return $this->db->get()->result_array();
-         
+        return $this->db->get()->result_array();
     }
     public function lead_total_count($filter)
     {
         $this->db->select('count(*) total_lead');
         $this->db->from(' tbl_lead');
-		if (isset($filter['searchKey']) and !empty($filter['searchKey'])) {
+        if (isset($filter['searchKey']) and !empty($filter['searchKey'])) {
             $this->db->where("
             cust_name LIKE '%" . $filter['searchKey'] . "%' 
             OR cust_email LIKE '%" . $filter['searchKey'] . "%' 

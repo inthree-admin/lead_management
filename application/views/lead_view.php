@@ -86,7 +86,7 @@
                                  <span class="text-danger">*</span>
                               </label>
                               <div class="input-group">
-                                 <input type="text" id="billing_address" name="billing_address" class="form-control" placeholder="Door No / Apartment Name / Street">   
+                                 <input type="text" id="billing_address" name="billing_address" class="form-control bill" placeholder="Door No / Apartment Name / Street">
                               </div>
                            </div>
                            <div class="col-md-4">
@@ -123,7 +123,7 @@
 
                         <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Shipping Details</b></h6>
                         <label class="padding7" for="terms" style="margin-bottom: 5px;">
-                           <input type="checkbox" class="custom_icheck icheckbox_minimal-blue" id="chk_copy_address" onclick="is_check(this);">&nbsp;&nbsp;<label for="chk_copy_address">Same as billing details</label>         
+                           <input type="checkbox" class="custom_icheck icheckbox_minimal-blue" id="chk_copy_address" onclick="is_check(this);">&nbsp;&nbsp;<label for="chk_copy_address">Same as billing details</label>
                         </label>
                         <div class="form-group row">
                            <div class="col-md-4">
@@ -132,7 +132,7 @@
                                  <span class="text-danger">*</span>
                               </label>
                               <div class="input-group">
-                                 <input type="text" id="shipping_address" name="shipping_address" class="form-control" placeholder="Door No / Apartment Name / Street">   
+                                 <input type="text" id="shipping_address" name="shipping_address" class="form-control" placeholder="Door No / Apartment Name / Street">
                               </div>
                            </div>
                            <div class="col-md-4">
@@ -152,11 +152,11 @@
                               <div class="input-group">
                                  <input type="text" id="shipping_pincode" name="shipping_pincode" class="form-control" placeholder="Shipping Pincode">
                               </div>
-                           </div>                         
+                           </div>
                         </div>
 
                         <div class="form-group row">
-                        <div class="col-md-4">
+                           <div class="col-md-4">
                               <label class="form-control-label" for="shipping_contact_no">
                                  Contact Number
                                  <span class="text-danger">*</span>
@@ -168,32 +168,37 @@
                         </div><br>
 
                         <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Product Details</b></h6>
-                        <div class="form-group row">
-                           <div class="col-md-4">
-                              <label class="form-control-label" for="product">
-                                 Product
-                                 <span class="text-danger">*</span>
-                              </label>
-                              <div class="input-group">
-                                 <select id="product" name="product" class="form-control">
-                                    <option value="">Please select</option>
-                                    <option data-price="1000" value="1">Basket 1: Grocery @ 1000</option>
-                                    <option data-price="2000" value="2">Basket 2: Grocery @ 2000</option>
-                                    <option data-price="350" value="3">Basket 3: Vegetables @ 350</option>
-                                    <option data-price="500" value="4">Basket 4: Covid @ 500</option>
-                                 </select>
-                              </div>
+
+                        <div class="col-md-9">
+                           <div class="table-responsive product_list">
+                              <table class=" table table-striped table-bordered" id="plist" style="cursor: pointer;">
+                                 <thead>
+                                    <tr>
+                                       <th width="2%">S.no</th>
+                                       <th width="50%">Product</th>
+                                       <th width="20%">Qty</th>
+                                       <th width="20%">Total</th>
+                                       <th width="8%"> </th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <tr>
+                                       <td>1</td>
+                                       <td>
+                                          <select tabindex="1" class="form-control" id="inp_product" name="product" class="form-control" onchange="appendRow();">
+                                             <option value="">-Select-</option>
+                                          </select>
+                                       </td>
+                                       <td><input class="form-control" type="text" value="1" onchange="totalCalc();"></td>
+                                       <td style="text-align: right;">00.00</td>
+                                       <td> <a href="javascript:void(0);" onclick="deleteRow(this);" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a></td>
+                                    </tr>
+
+                                 </tbody>
+                              </table>
+                              <input maxlength="30" style="position: absolute; top: -557px; left: 394px; padding: 8px; text-align: left; font: 400 13px / 19.5px &quot;Open Sans&quot;, sans-serif; border: 1px solid rgb(222, 226, 230); width: 239px; height: 36px; display: none;">
                            </div>
-                           <div class="col-md-4">
-                              <label class="form-control-label" for="quantity">
-                                 Qty
-                                 <span class="text-danger">*</span>
-                              </label>
-                              <div class="input-group">
-                                 <input type="number" id="quantity" name="quantity" value="1" class="form-control">
-                              </div>
-                           </div>
-                        </div><br>
+                        </div>
 
 
                         <div class="form-group row">

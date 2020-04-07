@@ -47,6 +47,11 @@
                   </div>
                   <div class="card-body">
                      <div class="table-responsive">
+                     
+                            <div class="btn-group" style="margin:10px 0;">
+                                <button type="button" class="toggle-vis btn btn-default" onclick="downloadReport();"> <span class="ti-download"></span> Download CSV </button>
+                                 
+                            </div>
                         <table class="table table-striped table-bordered table-hover" id="tbl_list" style="width:100%">
                            <thead style="text-align: center;">
                               <tr>
@@ -163,6 +168,12 @@
            
         });
       }
+
+   function downloadReport(){
+      let q =  $('.dataTables_filter').find('input').val().trim();
+      let url = BASE_URL+'lead/download?q='+q; 
+      window.open(url);
+   }
    </script>
 </body>
 

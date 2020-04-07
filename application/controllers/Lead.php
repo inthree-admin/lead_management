@@ -276,4 +276,37 @@ class Lead extends MY_Controller
 				}
 		}
 	}
+
+	public function download(){
+		$q = (isset($_GET['q'])) ? $_GET['q'] : '';
+		$filter_arr = array('searchKey'=> $q, 'ordercolumn' => 'created_on', 'ordertype' => 'DESC');
+		$result = $this->Lead_model->lead_list($filter_arr);
+		header("Content-Disposition: attachment; filename=\"lead_list_".time().".xls\"");
+        header("Content-Type: application/vnd.ms-excel;");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+		$handle = fopen("php://output", 'w');
+		$header =  array(0=> 'Order#',
+					1=>'Name',
+					2=>'Phone',
+					3=>'Payment Type',
+					4=>'Payment Link',
+					5=>'Payment Status',
+					6=>'Amount',
+					7=>'Created On',
+					8=>'Status' ); 
+		fputcsv($handle,  $header,"\t");
+		foreach ($result as $key => $info) {
+			$data =  array(0=>$info['lead_no'],
+					1=>$info['cust_name'],
+					2=>$info['cust_phone'],
+					3=>$info['payment_type'],
+					4=>$info['payment_link_status'],
+					5=>$info['payment_status'],
+					6=>$info['order_total'],
+					7=>$info['created_on'],
+					8=>$info['status'] );
+			 fputcsv($handle, $data,"\t");
+		  }
+	}	
 }

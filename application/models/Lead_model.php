@@ -58,7 +58,7 @@ class Lead_model extends CI_Model
 
     public function lead_list($filter)
     {
-        $this->db->select('cust_name,cust_email,cust_phone,
+        $this->db->select('lead_id,cust_name,cust_email,cust_phone,
         CASE
             WHEN payment_link_status = 0 THEN "Not Send"
             WHEN payment_link_status = 1 THEN "Send"
@@ -69,7 +69,12 @@ class Lead_model extends CI_Model
             WHEN payment_status = 1 THEN "Paid"
             ELSE "Failed"
         END AS payment_status,order_total,receipt_no,
-        DATE_FORMAT(created_on, "%d-%m-%Y %h:%i %p") AS created_on
+        DATE_FORMAT(created_on, "%d-%m-%Y %h:%i %p") AS created_on,
+        CASE
+            WHEN status = 1 THEN "Open"
+            WHEN status = 2 THEN "Cancel"
+            ELSE "-"
+        END AS status
         ', FALSE);
         $this->db->from(' tbl_lead');
         if (isset($filter['searchKey']) and !empty($filter['searchKey'])) {

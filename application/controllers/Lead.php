@@ -218,7 +218,7 @@ class Lead extends MY_Controller
 		$searchKey = (isset($_GET['search']['value'])) ? trim($_GET['search']['value']) : '';
 		$ordercolumn =  (isset($_GET['order'][0]['column'])) ? $_GET['order'][0]['column'] : 1;
 		$ordertype = (isset($_GET['order'][0]['dir'])) ? $_GET['order'][0]['dir'] : ''; //asc or desc  
-		$columnArray = array(0 => 'receipt_no', 1 => 'cust_name', 2 => 'cust_email', 3 => 'cust_phone', 4 => 'payment_link_status', 5 => 'payment_status', 6 => 'order_total', 7 => 'created_on');
+		$columnArray = array(0 => 'receipt_no', 1 => 'cust_name',  2 => 'cust_phone', 3 => 'payment_link_status', 4 => 'payment_status', 5 => 'order_total', 6 => 'created_on', 7 => 'status');
 		$filter_arr = array('start' => $start, 'length' => $length, 'searchKey' => $searchKey, 'ordercolumn' => $columnArray[$ordercolumn], 'ordertype' => $ordertype);
 		$result = $this->Lead_model->lead_list($filter_arr);
 		$lead_total = $this->Lead_model->lead_total_count(array('searchKey' => $searchKey));
@@ -227,12 +227,16 @@ class Lead extends MY_Controller
 		foreach ($result as $key => $data) {
 			$returnData['data'][$key][0] = $data['receipt_no'];
 			$returnData['data'][$key][1] = $data['cust_name'];
-			$returnData['data'][$key][2] = $data['cust_email'];
-			$returnData['data'][$key][3] = $data['cust_phone'];
-			$returnData['data'][$key][4] = $data['payment_link_status'];
-			$returnData['data'][$key][5] = $data['payment_status'];
-			$returnData['data'][$key][6] = $data['order_total'];
-			$returnData['data'][$key][7] = $data['created_on'];
+			$returnData['data'][$key][2] = $data['cust_phone'];
+			$returnData['data'][$key][3] = $data['payment_link_status'];
+			$returnData['data'][$key][4] = $data['payment_status'];
+			$returnData['data'][$key][5] = $data['order_total'];
+			$returnData['data'][$key][6] = $data['created_on'];
+			$returnData['data'][$key][7] = $data['status'];
+			$btn = '';
+			if($data['status'] == 'Open') 
+				$btn = '<button class="btn btn-primary btn-sm" onclick="cancelLead('.$data['lead_id'].')">Cancel</button>';
+			$returnData['data'][$key][8] = $btn;
 		}
 		$returnData['recordsTotal'] = count($result);
 		$returnData['recordsFiltered'] = $lead_total['total_lead'];
@@ -243,5 +247,25 @@ class Lead extends MY_Controller
 	{
 		$product_info = $this->Lead_model->get_product_info('all');
 		echo json_encode($product_info);
+	}
+	public function change_status(){
+		$post = $this->input->post();
+		$lead_id = (isset($post['lead_id'])) ? $post['lead_id'] :0;
+		$status = (isset($post['status'])) ? $post['status'] : 0 ; 
+		if(empty($lead_id) OR empty($status)){
+			echo json_encode(array('success'=>false,'msg'=>'Something went wrong'));
+		}
+		if(!empty($lead_id) AND !empty($status)){
+				$username = $this->session->userdata('username');
+				$up_arr = array('status' => 2,'modified_on'=> date('Y-m-d G:i:s'),'modified_by'=>$username );
+				$result = $this->Lead_model->update_lead($up_arr, $lead_id);
+				if($result){
+					echo json_encode(array('success'=>true,'msg'=>'Lead Canceled Successfully'));
+					return true;
+				}else{
+					echo json_encode(array('success'=>true,'msg'=>'Failed to Lead Cancel'));
+					return true;
+				}
+		}
 	}
 }

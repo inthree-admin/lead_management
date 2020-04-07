@@ -172,7 +172,7 @@ $(document).ready(function () {
         // Prevent form submission
         var cust_name = $('#cust_name').val().trim(); 
          swal({
-            title: 'Hi '+cust_name,
+            title: '',
             text: 'Are you sure Want to place your order?',
             type: 'warning',
             showCancelButton: true,

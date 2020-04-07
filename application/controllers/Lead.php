@@ -227,7 +227,7 @@ class Lead extends MY_Controller
 		$returnData = array();
 		$returnData['data'] = [];
 		foreach ($result as $key => $data) {
-			$returnData['data'][$key][0] = $data['lead_no'];
+			$returnData['data'][$key][0] = '<a href="'.base_url().'order_history/get_history?id='.$data['lead_no'].'">'.$data['lead_no'].'</a>';
 			$returnData['data'][$key][1] = $data['cust_name'];
 			$returnData['data'][$key][2] = $data['cust_phone'];
 			$returnData['data'][$key][3] = $data['payment_type']; 

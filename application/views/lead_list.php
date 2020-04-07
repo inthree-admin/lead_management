@@ -48,7 +48,7 @@
                   <div class="card-body">
                      <div class="table-responsive">
                      
-                            <div class="btn-group" style="margin:10px 0;">
+                            <div class="btn-group" style="float:right;margin-right:15px;">
                                 <button type="button" class="toggle-vis btn btn-default" onclick="downloadReport();"> <span class="ti-download"></span> Download CSV </button>
                                  
                             </div>

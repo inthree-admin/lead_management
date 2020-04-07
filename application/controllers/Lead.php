@@ -12,7 +12,7 @@ class Lead extends MY_Controller
 
 	public function index()
 	{
-		$this->load->view('lead_view');
+		$this->load->view('lead_create');
 	}
 
 	public function save_lead()

@@ -173,10 +173,10 @@
                         </div><br>
 
                         <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Payment & Product Details</b></h6>
-
+                     
 
                         <div class="form-group has-pretty-child">
-                           <label class="test_radio">Payment Type </label>
+                           <label class="test_radio">Payment Type <span class="text-danger">*</span></label>                         
                            <div class="clearfix prettyradio labelright margin-right blue">
                               <input type="radio" class="" value="1" id="prepaid" name="payment_type" checked="checked" style="display: none;">
                               <a href="javascript:void(0);" onclick="choosePaymode(this);" class='checked' id='prepaid_a'></a>

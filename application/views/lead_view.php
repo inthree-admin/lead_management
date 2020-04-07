@@ -11,11 +11,13 @@
 
    <!-- end of global css -->
    <!--page level css -->
+   <link href="<?php echo base_url() ?>assets/css/prettycheckable/css/prettyCheckable.css" rel="stylesheet" type="text/css" />
    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/vendors/iCheck/css/all.css" />
    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/css/custom.css" />
    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/vendors/bootstrapvalidator/css/bootstrapValidator.min.css">
    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/vendors/sweetalert2/css/sweetalert2.min.css" />
    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/css/custom_css/sweet_alert2.css">
+   <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/css/custom_css/radio_checkbox.css">
    <style type="text/css">
       .plist_error {
          border-color: #ff0000;
@@ -172,58 +174,59 @@
 
                         <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Payment & Product Details</b></h6>
 
+
+                        <div class="form-group has-pretty-child">
+                           <label class="test_radio">Payment Type </label>
+                           <div class="clearfix prettyradio labelright margin-right blue">
+                              <input type="radio" class="" value="1" id="prepaid" name="payment_type" checked="checked" style="display: none;">
+                              <a href="javascript:void(0);" onclick="choosePaymode(this);" class='checked' id='prepaid_a'></a>
+                              <label for="prepaid">Prepaid</label></div>
+                           <div class="clearfix prettyradio labelright  blue">
+                              <input type="radio" class="" value="2" id="cod" name="payment_type" style="display: none;">
+                              <a href="javascript:void(0);" onclick="choosePaymode(this);" id='cod_a'></a>
+                              <label for="cod">COD</label></div>
+                        </div>
+
+
+
+
                         <div class="form-group row">
-                           <div class="col-md-4">
-                              <label class="form-control-label" for="shipping_pincode">
-                                 Payment Type
-                                 <span class="text-danger">*</span>
-                              </label>
-                              <div class="input-group">
-                                 <select class="form-control" id="payment_type" name="payment_type">
-                                    <option value="">-Select-</option>
-                                    <option value="1">Prepaid</option>
-                                    <option value="2">COD</option>
-                                 </select> 
+                           <div class="col-md-9">
+                              <div class="table-responsive product_list">
+                                 <table class=" table table-striped table-bordered" id="plist" style="cursor: pointer;">
+                                    <thead>
+                                       <tr>
+                                          <th width="2%">S.no</th>
+                                          <th width="50%">Product</th>
+                                          <th width="20%">Qty</th>
+                                          <th width="20%">Total</th>
+                                          <th width="8%"> </th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                       <tr>
+                                          <td>1</td>
+                                          <td>
+                                             <select tabindex="1" class="form-control" id="inp_product" name="product[]" class="form-control has-error" onchange="appendRow();" required>
+                                                <option value="">-Select-</option>
+                                             </select>
+                                          </td>
+                                          <td><input class="form-control" type="number" value="1" onchange="totalCalc();" onkeyup="totalCalc();" max="10000" min="1" name="quantity[]" required></td>
+                                          <td style="text-align: right;">00.00</td>
+                                          <td> <a href="javascript:void(0);" onclick="deleteRow(this);" class="btn btn-danger btn-xs delrow"><i class="fa fa-trash"></i></a></td>
+                                       </tr>
+
+                                    </tbody>
+                                 </table>
+
+
+
+
                               </div>
                            </div>
                         </div>
-                        <div class="form-group row">
-                        <div class="col-md-9">
-                           <div class="table-responsive product_list">
-                              <table class=" table table-striped table-bordered" id="plist" style="cursor: pointer;">
-                                 <thead>
-                                    <tr>
-                                       <th width="2%">S.no</th>
-                                       <th width="50%">Product</th>
-                                       <th width="20%">Qty</th>
-                                       <th width="20%">Total</th>
-                                       <th width="8%"> </th>
-                                    </tr>
-                                 </thead>
-                                 <tbody>
-                                    <tr>
-                                       <td>1</td>
-                                       <td>
-                                          <select tabindex="1" class="form-control" id="inp_product" name="product[]" class="form-control has-error" onchange="appendRow();" required>
-                                             <option value="">-Select-</option>
-                                          </select>
-                                       </td>
-                                       <td><input class="form-control" type="number" value="1" onchange="totalCalc();" onkeyup="totalCalc();" max="10000" min="1" name="quantity[]" required></td>
-                                       <td style="text-align: right;">00.00</td>
-                                       <td> <a href="javascript:void(0);" onclick="deleteRow(this);" class="btn btn-danger btn-xs delrow"><i class="fa fa-trash"></i></a></td>
-                                    </tr>
-
-                                 </tbody>
-                              </table>
 
 
-
-
-                           </div>
-                        </div>
-                        </div>
-
-                        
 
 
                         <div class="form-group row">
@@ -281,6 +284,21 @@
          });
 
       });
+
+      function choosePaymode(e) {
+         $('#prepaid').prop('checked', '');
+         $('#cod').prop('checked', '');
+         $('#prepaid_a').attr('class', '');
+         $('#cod_a').attr('class', '');
+         if ($(e).attr('id') == 'prepaid_a') {
+            $(e).attr('class', 'checked');
+            $('#prepaid').prop('checked', 'checked');
+         }
+         if ($(e).attr('id') == 'cod_a') {
+            $(e).attr('class', 'checked');
+            $('#cod').prop('checked', 'checked');
+         }
+      }
    </script>
 </body>
 

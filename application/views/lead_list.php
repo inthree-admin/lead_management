@@ -50,13 +50,13 @@
                         <table class="table table-striped table-bordered table-hover" id="tbl_list" style="width:100%">
                            <thead style="text-align: center;">
                               <tr>
-                                 <th>Order No</th>
+                                 <th>Order #</th>
                                  <th>Customer</th>
                                  <th>Phone</th>
                                  <th>Payment Type</th>
                                  <th>Payment Link</th>
                                  <th>Payment Status</th>
-                                 <th>Order Amount</th>
+                                 <th>Amount</th>
                                  <th>Created On</th>
                                  <th>Status</th>
                                  <th>Action</th>
@@ -104,14 +104,14 @@
             "order": [[ 7, "desc" ]],
             "columns": [
                { "width": "8%" },
-               { "width": "30%" },
+               { "width": "9%" },
+               { "width": "9%" },
                { "width": "10%" },
-               { "width": "2%" },
-               { "width": "2%" },
-               { "width": "5%" },
-               { "width": "30%" },
-               { "width": "2%" },
+               { "width": "10%" },
+               { "width": "11%" },
                { "width": "8%" },
+               { "width": "14%" },
+               { "width": "2%" },
             ],
             "columnDefs": [ {
             "targets": [3,4,5,6,8,9],

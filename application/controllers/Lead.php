@@ -242,7 +242,8 @@ class Lead extends MY_Controller
 
 			$actionbtn = '-';
 			if($data['status'] == 'Open') 
-				$actionbtn = '<button class="btn btn-primary btn-sm" onclick="cancelLead('.$data['lead_id'].')">Cancel</button>';
+				$actionbtn = '<i class="fa fa-fw ti-close text-danger actions_icon" title="Cancel" onclick="cancelLead('.$data['lead_id'].')"></i>';
+				//$actionbtn = '<button class="btn btn-primary btn-xs" onclick="cancelLead('.$data['lead_id'].')">Cancel</button>';
 			$returnData['data'][$key][9] = $actionbtn;
 		}
 		$returnData['recordsTotal'] = count($result);

@@ -33,7 +33,7 @@ class Lead extends MY_Controller
 			$shipping_city		= (isset($post['shipping_city'])) ? trim($post['shipping_city']) : '';
 			$shipping_pincode	= (isset($post['shipping_pincode'])) ? trim($post['shipping_pincode']) : '';
 			$shipping_contact_no = (isset($post['shipping_contact_no'])) ? trim($post['shipping_contact_no']) : '';
-			$order_type 		= (isset($post['order_type'])) ? trim($post['order_type']) : '';
+			$payment_type 		= (isset($post['payment_type'])) ? trim($post['payment_type']) : '';
 			$login_id 			= $this->session->userdata('admin_id');
 			$receipt 			= 'BB' . time();
 
@@ -55,7 +55,7 @@ class Lead extends MY_Controller
 				'shipping_pincode'	=> $shipping_pincode,
 				'shipping_contact_no' => $shipping_contact_no,
 				'lmp_id' 		    => $login_id,
-				'order_type' 		=> $order_type
+				'payment_type' 		=> $payment_type
 			);
 
 			// Save lead
@@ -105,7 +105,7 @@ class Lead extends MY_Controller
 				$msg = 'Lead generated';
 
 				// Send details to payment gateway for prepaid orders
-				if ($order_type == 1) {
+				if ($payment_type == 1) {
 
 					$tot_amount_paisa = $total_amount * 100;
 					$discription = 'Boonbox Product';
@@ -188,7 +188,7 @@ class Lead extends MY_Controller
 
 
 				// Push orders to lastmile for COD Orders
-				if ($order_type == 2) {
+				if ($payment_type == 2) {
 					$params = array('lead_id' => $lead_id);
 					$this->load->library('leadlibrary', $params);
 					$this->leadlibrary->push_order();

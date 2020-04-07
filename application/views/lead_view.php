@@ -170,20 +170,20 @@
                            </div>
                         </div><br>
 
-                        <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Order & Product Details</b></h6>
+                        <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Payment & Product Details</b></h6>
 
                         <div class="form-group row">
                            <div class="col-md-4">
                               <label class="form-control-label" for="shipping_pincode">
-                                 Order Type
+                                 Payment Type
                                  <span class="text-danger">*</span>
                               </label>
                               <div class="input-group">
-                                 <select class="form-control" id="order_type" name="order_type">
+                                 <select class="form-control" id="payment_type" name="payment_type">
                                     <option value="">-Select-</option>
                                     <option value="1">Prepaid</option>
                                     <option value="2">COD</option>
-                                 </select>
+                                 </select> 
                               </div>
                            </div>
                         </div>

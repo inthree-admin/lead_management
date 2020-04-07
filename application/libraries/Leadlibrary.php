@@ -34,7 +34,7 @@ class Leadlibrary {
 			$leadid= $ord['lead_id'];
 			$hsty['ad_id'] = $vendor_id;
 			$hsty['status_from']="3pl";
-			$payment_mode = ($ord['order_type']==1)?'Prepaid':'COD';
+			$payment_mode = ($ord['payment_type']==1)?'Prepaid':'COD';
 
 			$lmp_id = $ord['lmp_id'];
 			$orderid= $ord['lead_no'];

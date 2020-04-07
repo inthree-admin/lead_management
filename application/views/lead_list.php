@@ -100,7 +100,7 @@
             "serverSide": true,
             "ajax": BASE_URL+"lead/lead_list",
             "responsive": true,
-            "order": [[ 7, "desc" ]],
+            "order": [[ 6, "desc" ]],
             "columns": [
                { "width": "10%" },
                { "width": "30%" },

@@ -109,8 +109,8 @@
                { "width": "10%" },
                { "width": "10%" },
                { "width": "11%" },
-               { "width": "8%" },
-               { "width": "14%" },
+               { "width": "9%" },
+               { "width": "13%" },
                { "width": "2%" },
             ],
             "columnDefs": [ {

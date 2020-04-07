@@ -141,7 +141,7 @@ $(document).ready(function () {
                     }
                 }
             }, 
-           product: { 
+           'product[]': { 
 	            validators: {
 	            	notEmpty: {
                        message: 'Please select product',
@@ -162,7 +162,7 @@ $(document).ready(function () {
             
         },
         submitHandler: function (validator, form, submitButton) {
-             $("#btn_submit").attr("disabled", true);
+            // $("#btn_submit").attr("disabled", true);
         }
     }).on('success.form.bv', function (e) {
     	if($('.plist_error').length > 0) {
@@ -189,7 +189,7 @@ $(document).ready(function () {
 		        var data = new FormData(form); 
 		        save(data);
         	}else{
-        		 location.reload();
+        		 
         	}        	 
            
         });
@@ -244,6 +244,7 @@ function is_check(e){
 	$('#shipping_city').val('');
 	$('#shipping_pincode').val('');
 	$('#shipping_contact_no').val('');
+
  }
 function copy_billing_address(){
 	var chk_status = $('#chk_copy_address').prop('checked');
@@ -252,8 +253,15 @@ function copy_billing_address(){
 		$('#shipping_city').val($('#billing_city').val().trim());
 		$('#shipping_pincode').val($('#billing_pincode').val().trim());
 		$('#shipping_contact_no').val($('#billing_contact_no').val().trim());
+        shipping_input_revalidate();
 	}
 
+}
+function shipping_input_revalidate(){
+    $('#form-validation').bootstrapValidator('revalidateField', 'shipping_address');
+    $('#form-validation').bootstrapValidator('revalidateField', 'shipping_city');
+    $('#form-validation').bootstrapValidator('revalidateField', 'shipping_pincode');
+    $('#form-validation').bootstrapValidator('revalidateField', 'shipping_contact_no');
 }
 $('.bill').on('keydown',function(){ 
 	copy_billing_address(); 

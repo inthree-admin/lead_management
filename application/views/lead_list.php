@@ -50,9 +50,10 @@
                         <table class="table table-striped table-bordered table-hover" id="tbl_list" style="width:100%">
                            <thead style="text-align: center;">
                               <tr>
-                                 <th>Receipt No</th>
+                                 <th>Order No</th>
                                  <th>Customer</th>
                                  <th>Phone</th>
+                                 <th>Payment Type</th>
                                  <th>Payment Link</th>
                                  <th>Payment Status</th>
                                  <th>Order Amount</th>
@@ -100,9 +101,9 @@
             "serverSide": true,
             "ajax": BASE_URL+"lead/lead_list",
             "responsive": true,
-            "order": [[ 6, "desc" ]],
+            "order": [[ 7, "desc" ]],
             "columns": [
-               { "width": "10%" },
+               { "width": "8%" },
                { "width": "30%" },
                { "width": "10%" },
                { "width": "2%" },
@@ -112,6 +113,10 @@
                { "width": "2%" },
                { "width": "8%" },
             ],
+            "columnDefs": [ {
+            "targets": [3,4,5,6,8,9],
+            "orderable": false
+            } ],
 
          });
  

@@ -58,7 +58,7 @@ class Lead_model extends CI_Model
 
     public function lead_list($filter)
     {
-        $this->db->select('lead_id,cust_name,cust_email,cust_phone,
+         $this->db->select('lead_id,cust_name,cust_email,cust_phone,lead_no,order_total,receipt_no,
         CASE
             WHEN payment_link_status = 0 THEN "Not Send"
             WHEN payment_link_status = 1 THEN "Send"
@@ -68,18 +68,24 @@ class Lead_model extends CI_Model
             WHEN payment_status = 0 THEN "Not Paid"
             WHEN payment_status = 1 THEN "Paid"
             ELSE "Failed"
-        END AS payment_status,order_total,receipt_no,
+        END AS payment_status,
         DATE_FORMAT(created_on, "%d-%m-%Y %h:%i %p") AS created_on,
         CASE
             WHEN status = 1 THEN "Open"
-            WHEN status = 2 THEN "Cancel"
+            WHEN status = 2 THEN "Cancelled"
             ELSE "-"
-        END AS status
+        END AS status,
+        CASE
+            WHEN payment_type = 1 THEN "Prepaid"
+            WHEN payment_type = 2 THEN "COD"
+            ELSE "-"
+        END AS payment_type
         ', FALSE);
         $this->db->from(' tbl_lead');
         if (isset($filter['searchKey']) and !empty($filter['searchKey'])) {
             $this->db->where("
             cust_name LIKE '%" . $filter['searchKey'] . "%' 
+            OR lead_no LIKE '%" . $filter['searchKey'] . "%' 
             OR cust_email LIKE '%" . $filter['searchKey'] . "%' 
             OR cust_phone  LIKE '%" . $filter['searchKey'] . "%'  
 			OR receipt_no LIKE '%" . $filter['searchKey'] . "%'

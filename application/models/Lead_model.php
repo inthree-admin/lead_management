@@ -111,4 +111,52 @@ class Lead_model extends CI_Model
         }
         return $this->db->get()->row_array();
     }
+
+    public function lead_info($lead_no=false){
+        $return =array();
+        if($lead_no){
+           $this->db->select('*,
+            CASE
+                WHEN payment_link_status = 0 THEN "Not Send"
+                WHEN payment_link_status = 1 THEN "Send"
+                ELSE "Failed"
+            END AS payment_link_status,
+            CASE
+                WHEN payment_status = 0 THEN "Not Paid"
+                WHEN payment_status = 1 THEN "Paid"
+                ELSE "Failed"
+            END AS payment_status,
+            DATE_FORMAT(created_on, "%d-%m-%Y %h:%i %p") AS created_on,
+            CASE
+                WHEN status = 1 THEN "Open"
+                WHEN status = 2 THEN "Cancelled"
+                ELSE "-"
+            END AS status,
+            CASE
+                WHEN payment_type = 1 THEN "Prepaid"
+                WHEN payment_type = 2 THEN "COD"
+                ELSE "-"
+            END AS payment_type
+            ', FALSE);
+            $this->db->from('tbl_lead'); 
+            $this->db->where('lead_no',$lead_no);
+            $result = $this->db->get()->row_array();
+            if($result){
+                $return['lead'] = $result;
+                $this->db->select('*');
+                $this->db->from('tbl_lead_items'); 
+                $this->db->where('lead_id',$result['lead_id']);
+                $result = $this->db->get()->result_array();
+                $return['lead_item'] = $result;  
+            }else{
+                $return['lead'] = [];
+                $return['lead_item'] = [];
+            }        
+            return $return; 
+        }else{
+            $return['lead'] = [];
+            $return['lead_item'] = [];
+             return $return; 
+        }
+    }
 }

@@ -15,7 +15,11 @@ class Order_history extends MY_Controller {
         {
             $data['history_tran'] =  $this->history_model->get_hstry_transaction($id);
             if(count($data['history_tran'])==0){
-                echo "No Record Found";die;
+                    $this->load->model('lead_model', 'lead_model');
+                    $data['lead_info'] =  $this->lead_model->lead_info($id);
+                    $data['view']      = 'lead_show';                    
+                    $this->load->view('lead_show',$data);
+
             }else{
                 $shipmentid=$data['history_tran'][0]['shipmentid'];
 			    $data['partial_deli_confirm'] =  $this->history_model->get_deli_confirm_transaction($data['history_tran'][0]['reference']);  //partial delivery details
@@ -27,9 +31,10 @@ class Order_history extends MY_Controller {
 				$data['runnerhistory'] =  $this->history_model->get_hstry_runner($t_id);
                 $data['fullhistory'] =  $this->history_model->get_order_history($t_id);
                 $data['is_avail_rto_his'] =  $this->history_model->get_hstry_rto_is_avail($id);
+                 $data['view']           = 'order_view';
+             $this->load->view('order_view', $data);
             }
-            $data['view']           = 'order_view';
-            $this->load->view('order_view', $data);
+           
 					
 
             

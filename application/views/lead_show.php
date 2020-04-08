@@ -37,8 +37,7 @@
                         <i class="fa fa-fw ti-credit-card"></i> Lead Details
                     </h3>
                     <span class="float-right">
-                        <i class="fa fa-fw ti-angle-up clickable"></i>
-                        <i class="fa fa-fw ti-close removecard"></i>
+                    <a href="<?php echo site_url("lead/list"); ?>" title="Back"><i class="fa fa-fw fa-lg fa-arrow-circle-left"></i></a>
                     </span>
                 </div>
                 <div class="card-body">
@@ -47,16 +46,17 @@
 
                         <div class="col-md-6 col-sm-12 col-12 col-lg-6 col-xl-6 invoice_bg"> 
                             <address> 
-                                <br /><strong>Customer name:</strong> <?php echo (isset($lead_info['lead']['cust_name'])) ? ucfirst($lead_info['lead']['cust_name']) : ''; ?>
-                                <br /><strong>Created on   :</strong> <?php echo (isset($lead_info['lead']['created_on'])) ? ucfirst($lead_info['lead']['created_on']) : ''; ?>
-                                
+                                <strong>Customer name:</strong> <?php echo (isset($lead_info['lead']['cust_name'])) ? ucfirst($lead_info['lead']['cust_name']) : ''; ?>
+                                <br /><strong>Customer Email:</strong> <?php echo (isset($lead_info['lead']['cust_email'])) ? $lead_info['lead']['cust_email'] : ''; ?>
+                                <br /><strong>Mobile Number:</strong> <?php echo (isset($lead_info['lead']['cust_phone'])) ? ucfirst($lead_info['lead']['cust_phone']) : ''; ?>
                             </address>
                         </div>
                         <div class="col-md-6 col-sm-12 col-12 col-lg-6 col-xl-6 invoice_bg text-right">
                             <div class="float-right"> 
                                 <address> 
-                                    <br /> <strong>Payment Type:</strong> <?php echo (isset($lead_info['lead']['payment_type'])) ? ucfirst($lead_info['lead']['payment_type']) : ''; ?>
+                                    <strong>Payment Type:</strong> <?php echo (isset($lead_info['lead']['payment_type'])) ? ucfirst($lead_info['lead']['payment_type']) : ''; ?>
                                     <br /> <strong>Payment Staus:</strong> <?php echo (isset($lead_info['lead']['payment_status'])) ? ucfirst($lead_info['lead']['payment_status']) : ''; ?>
+                                    <br /><strong>Created on   :</strong> <?php echo (isset($lead_info['lead']['created_on'])) ? ucfirst($lead_info['lead']['created_on']) : ''; ?>
                                 </address>
                                 <span></span>
                             </div>
@@ -69,29 +69,25 @@
                             <h5 class="h4pnl_font"><strong>Billing Details:</strong></h5>
                             <address>
 
-                                <br /> <?php echo (isset($lead_info['lead']['billing_address'])) ? ucfirst($lead_info['lead']['billing_address']) : ''; ?>
+                                <?php echo (isset($lead_info['lead']['billing_address'])) ? ucfirst($lead_info['lead']['billing_address']) : ''; ?>
                                 <br /> <?php echo (isset($lead_info['lead']['billing_city'])) ? ucfirst($lead_info['lead']['billing_city']) : ''; ?>
                                 <br /> <?php echo (isset($lead_info['lead']['billing_pincode'])) ? ucfirst($lead_info['lead']['billing_pincode']) : ''; ?>
-                                <br /> <strong>Phone:</strong> <?php echo (isset($lead_info['lead']['cust_phone'])) ? ucfirst($lead_info['lead']['cust_phone']) : ''; ?>
-                                <br /> <strong>Mail Id:</strong> <?php echo (isset($lead_info['lead']['cust_email'])) ? ucfirst($lead_info['lead']['cust_email']) : ''; ?>
+                                <?php if($lead_info['lead']['billing_contact_no']!='') { echo '<br />'.$lead_info['lead']['billing_contact_no']; } ?>       
                             </address>
                         </div>
                         <div class="col-md-6 col-sm-12 col-12 col-lg-6 col-xl-6 invoice_bg text-right">
                             <div class="float-right">
-
                                 <h5 class="h4pnl_font"><strong>Shipping Details:</strong></h5>
                                 <address>
-
-                                    <br /> <?php echo (isset($lead_info['lead']['shipping_address'])) ? ucfirst($lead_info['lead']['shipping_address']) : ''; ?>
+                                 <?php echo (isset($lead_info['lead']['shipping_address'])) ? ucfirst($lead_info['lead']['shipping_address']) : ''; ?>
                                     <br /> <?php echo (isset($lead_info['lead']['shipping_city'])) ? ucfirst($lead_info['lead']['shipping_city']) : ''; ?>
                                     <br /> <?php echo (isset($lead_info['lead']['shipping_pincode'])) ? ucfirst($lead_info['lead']['shipping_pincode']) : ''; ?>
-                                    <br /> <strong>Phone:</strong> <?php echo (isset($lead_info['lead']['cust_phone'])) ? ucfirst($lead_info['lead']['cust_phone']) : ''; ?>
-                                    <br /> <strong>Mail Id:</strong> <?php echo (isset($lead_info['lead']['cust_email'])) ? ucfirst($lead_info['lead']['cust_email']) : ''; ?>
+                                    <?php if($lead_info['lead']['shipping_contact_no']!='') { echo '<br />'.$lead_info['lead']['shipping_contact_no']; } ?>   
                                 </address>
                                 <span></span>
                             </div>
                         </div>
-                    </div>
+                    </div><br>
                     <div class="col-md-12">
                         <div class="table-responsive">
                             <table class="table table-striped table-condensed" id="customtable">

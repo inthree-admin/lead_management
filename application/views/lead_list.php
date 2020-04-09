@@ -47,11 +47,11 @@
                   </div>
                   <div class="card-body">
                      <div class="table-responsive">
-                     
-                            <div class="btn-group" style="float:right;margin-right:15px;">
-                                <button type="button" class="toggle-vis btn btn-default" onclick="downloadReport();"> <span class="ti-download"></span> Download CSV </button>
-                                 
-                            </div>
+
+                        <div class="btn-group" style="float:right;margin-right:15px;">
+                           <button type="button" class="toggle-vis btn btn-default" onclick="downloadReport();"> <span class="ti-download"></span> Download CSV </button>
+
+                        </div>
                         <table class="table table-striped table-bordered table-hover" id="tbl_list" style="width:100%">
                            <thead style="text-align: center;">
                               <tr>
@@ -68,7 +68,7 @@
                               </tr>
                            </thead>
                            <tbody>
-                               
+
 
                            </tbody>
                         </table>
@@ -91,89 +91,118 @@
    <script type="text/javascript" src="<?php echo base_url() ?>assets/js/custom_js/app/lead.js"></script>
    <script type="text/javascript" src="<?php echo base_url() ?>assets/vendors/datatables/js/jquery.dataTables.js"></script>
    <script type="text/javascript" src="<?php echo base_url() ?>assets/vendors/datatables/js/dataTables.bootstrap4.js"></script>
-    <script type="text/javascript" src="<?php echo base_url() ?>assets/vendors/sweetalert2/js/sweetalert2.min.js"></script>
+   <script type="text/javascript" src="<?php echo base_url() ?>assets/vendors/sweetalert2/js/sweetalert2.min.js"></script>
    <script>
       "use strict";
-      $(document).ready(function() {  
-           
+      $(document).ready(function() {
+
          leadList();
       });
-      function leadList(){ 
-          $('#tbl_list').DataTable().destroy();
-          var table = $('#tbl_list').DataTable({
+
+      function leadList() {
+         $('#tbl_list').DataTable().destroy();
+         var table = $('#tbl_list').DataTable({
             "dom": "<'row'<'col-md-5 col-12 float-left'l><'col-md-7 col-12'f>r><'table-responsive't><'row'<'col-md-5 col-12'i><'col-md-7 col-12'p>>", // datatable layout without  horizobtal scroll
             "processing": true,
             "serverSide": true,
-            "ajax": BASE_URL+"lead/lead_list",
+            "ajax": BASE_URL + "lead/lead_list",
             "responsive": true,
-            "order": [[ 7, "desc" ]],
-            "columns": [
-               { "width": "8%" },
-               { "width": "9%" },
-               { "width": "9%" },
-               { "width": "10%" },
-               { "width": "10%" },
-               { "width": "11%" },
-               { "width": "9%" },
-               { "width": "13%" },
-               { "width": "2%" },
+            "order": [
+               [7, "desc"]
             ],
-            "columnDefs": [ {
-            "targets": [3,4,5,6,8,9],
-            "orderable": false
-            } ],
+            "columns": [{
+                  "width": "8%"
+               },
+               {
+                  "width": "9%"
+               },
+               {
+                  "width": "9%"
+               },
+               {
+                  "width": "10%"
+               },
+               {
+                  "width": "10%"
+               },
+               {
+                  "width": "11%"
+               },
+               {
+                  "width": "9%"
+               },
+               {
+                  "width": "13%"
+               },
+               {
+                  "width": "2%"
+               },
+            ],
+            "columnDefs": [{
+               "targets": [3, 4, 5, 6, 8, 9],
+               "orderable": false
+            }],
 
          });
- 
+
       }
-      function cancelLead(lead_id){
-          swal({
+
+      function cancelLead(lead_id) {
+         swal({
             title: "",
             text: "Are you sure want to cancel this order?",
             type: "info",
             confirmButtonClass: 'btn btn-info',
-            confirmButtonText: 'Yes', 
+            confirmButtonText: 'Yes',
             showCancelButton: true,
             cancelButtonColor: '#ff6666',
             cancelButtonText: 'No',
             cancelButtonClass: 'btn btn-danger'
-         }).then(function (conrifm) {
-         if(conrifm['value'] == true){
+         }).then(function(conrifm) {
+            if (conrifm['value'] == true) {
                $.ajax({
-               type: "POST", 
-               url: BASE_URL+"/lead/change_status",
-               data: {
-                  lead_id : lead_id,
-                  status  : 2,
-               }, 
-               cache: false,
-               timeout: 800000,
-               success: function (data) { 
-                  var result = JSON.parse(data);
-                  if(result['success']){
+                  type: "POST",
+                  url: BASE_URL + "/lead/change_status",
+                  data: {
+                     lead_id: lead_id,
+                     status: 2,
+                  },
+                  cache: false,
+                  timeout: 800000,
+                  success: function(data) {
+                     var result = JSON.parse(data);
+                     if (result['success']) {
                         swal({
-                        title: "Success",
-                        text:  result['msg'],
-                        type: "success",
-                        confirmButtonColor: "#66cc99"
-                    }).then(function() {
-                         leadList();
-                    });
-                  }
-               },
-               error: function (e) {     
-               }
-           });
-         }            
-           
-        });
+                           title: "Success",
+                           text: result['msg'],
+                           type: "success",
+                           confirmButtonColor: "#66cc99"
+                        }).then(function() {
+                           leadList();
+                        });
+                     } else {
+                        swal({
+                           title: "Failed",
+                           text: result['msg'],
+                           type: "error",
+                           confirmButtonColor: "#66cc99"
+                        }).then(function() {
+                           leadList();
+                        });
+                     }
+                  },
+                  error: function(e) {}
+               });
+            }
+
+         });
       }
 
-   function downloadReport(){
-      let q =  $('.dataTables_filter').find('input').val().trim();
-      let url = BASE_URL+'lead/download?q='+q; 
-      window.open(url);
-   }
+      function downloadReport() {
+         let q = $('.dataTables_filter').find('input').val().trim();
+         let url = BASE_URL + 'lead/download?q=' + q;
+         window.open(url);
+      }
    </script>
 </body>
 

@@ -157,11 +157,11 @@ class Lead extends MY_Controller
 
 						if (isset($res_arr->id)) {
 							$payment_link_status = 1;
-							$rpay_order_id = $res_arr->order_id;
+							$rpay_inv_id = $res_arr->id;
 							$msg .= ' and payment link sent successfully';
 						} else {
 							$payment_link_status = 2;
-							$rpay_order_id = '';
+							$rpay_inv_id = '';
 							$msg .= ' and payment link failed';
 						}
 
@@ -169,7 +169,7 @@ class Lead extends MY_Controller
 							'payment_link_req' => $fields_string,
 							'payment_link_status' => $payment_link_status,
 							'payment_link_response' => $result,
-							'rpay_order_id' => $rpay_order_id
+							'rpay_inv_id' => $rpay_inv_id
 						);
 					} else {
 
@@ -177,7 +177,7 @@ class Lead extends MY_Controller
 							'payment_link_req' => $fields_string,
 							'payment_link_status' => 2,
 							'payment_link_response' => 'Empty Response',
-							'rpay_order_id' => ''
+							'rpay_inv_id' => ''
 						);
 
 						$msg .= ' and payment link failed';
@@ -196,13 +196,10 @@ class Lead extends MY_Controller
 				}
 
 				echo json_encode(array('success' => true, 'msg' => $msg));
-
 			} else {
-				
+
 				echo json_encode(array('success' => false, 'msg' => 'Lead generation failed'));
-
 			}
-
 		}
 	}
 
@@ -218,32 +215,34 @@ class Lead extends MY_Controller
 		$searchKey = (isset($_GET['search']['value'])) ? trim($_GET['search']['value']) : '';
 		$ordercolumn =  (isset($_GET['order'][0]['column'])) ? $_GET['order'][0]['column'] : 1;
 		$ordertype = (isset($_GET['order'][0]['dir'])) ? $_GET['order'][0]['dir'] : ''; //asc or desc  
-		$columnArray = array(0 => 'lead_no', 1 => 'cust_name',  2 => 'cust_phone', 
-			3 => 'payment_type',4 => 'payment_link_status', 5 => 'payment_status', 6 => 'order_total', 
-			7 => 'created_on', 8 => 'status');
+		$columnArray = array(
+			0 => 'lead_no', 1 => 'cust_name',  2 => 'cust_phone',
+			3 => 'payment_type', 4 => 'payment_link_status', 5 => 'payment_status', 6 => 'order_total',
+			7 => 'created_on', 8 => 'status'
+		);
 		$filter_arr = array('start' => $start, 'length' => $length, 'searchKey' => $searchKey, 'ordercolumn' => $columnArray[$ordercolumn], 'ordertype' => $ordertype);
 		$result = $this->Lead_model->lead_list($filter_arr);
 		$lead_total = $this->Lead_model->lead_total_count(array('searchKey' => $searchKey));
 		$returnData = array();
 		$returnData['data'] = [];
 		foreach ($result as $key => $data) {
-			$returnData['data'][$key][0] = '<a href="'.base_url().'order_history/get_history?id='.$data['lead_no'].'">'.$data['lead_no'].'</a>';
+			$returnData['data'][$key][0] = '<a href="' . base_url() . 'order_history/get_history?id=' . $data['lead_no'] . '">' . $data['lead_no'] . '</a>';
 			$returnData['data'][$key][1] = $data['cust_name'];
 			$returnData['data'][$key][2] = $data['cust_phone'];
-			$returnData['data'][$key][3] = $data['payment_type']; 
-			if($data['payment_type'] == 'COD') 
+			$returnData['data'][$key][3] = $data['payment_type'];
+			if ($data['payment_type'] == 'COD')
 				$returnData['data'][$key][4] = '-';
 			else
-				$returnData['data'][$key][4] = $data['payment_link_status']; 
+				$returnData['data'][$key][4] = $data['payment_link_status'];
 			$returnData['data'][$key][5] = $data['payment_status'];
 			$returnData['data'][$key][6] = $data['order_total'];
 			$returnData['data'][$key][7] = $data['created_on'];
 			$returnData['data'][$key][8] = $data['status'];
 
 			$actionbtn = '-';
-			if($data['status'] == 'Open') 
-				$actionbtn = '<i class="fa fa-fw ti-close text-danger actions_icon" title="Cancel" onclick="cancelLead('.$data['lead_id'].')"></i>';
-				//$actionbtn = '<button class="btn btn-primary btn-xs" onclick="cancelLead('.$data['lead_id'].')">Cancel</button>';
+			if ($data['status'] == 'Open')
+				$actionbtn = '<i class="fa fa-fw ti-close text-danger actions_icon" title="Cancel" onclick="cancelLead(' . $data['lead_id'] . ')"></i>';
+			//$actionbtn = '<button class="btn btn-primary btn-xs" onclick="cancelLead('.$data['lead_id'].')">Cancel</button>';
 			$returnData['data'][$key][9] = $actionbtn;
 		}
 		$returnData['recordsTotal'] = count($result);
@@ -256,57 +255,109 @@ class Lead extends MY_Controller
 		$product_info = $this->Lead_model->get_product_info('all');
 		echo json_encode($product_info);
 	}
-	public function change_status(){
+	public function change_status()
+	{
 		$post = $this->input->post();
-		$lead_id = (isset($post['lead_id'])) ? $post['lead_id'] :0;
-		$status = (isset($post['status'])) ? $post['status'] : 0 ; 
-		if(empty($lead_id) OR empty($status)){
-			echo json_encode(array('success'=>false,'msg'=>'Something went wrong'));
+		$lead_id = (isset($post['lead_id'])) ? $post['lead_id'] : 0;
+		$status = (isset($post['status'])) ? $post['status'] : 0;
+		if (empty($lead_id) or empty($status)) {
+			echo json_encode(array('success' => false, 'msg' => 'Something went wrong'));
 		}
-		if(!empty($lead_id) AND !empty($status)){
-				$username = $this->session->userdata('username');
-				$up_arr = array('status' => 2,'modified_on'=> date('Y-m-d G:i:s'),'modified_by'=>$username );
-				$result = $this->Lead_model->update_lead($up_arr, $lead_id);
-				if($result){
-					echo json_encode(array('success'=>true,'msg'=>'Lead Canceled Successfully'));
-					return true;
-				}else{
-					echo json_encode(array('success'=>true,'msg'=>'Failed to Lead Cancel'));
+		if (!empty($lead_id) and !empty($status)) {
+
+			$lead_info = $this->Lead_model->get_lead_by_lead_id($lead_id);
+			if (is_array($lead_info) && count($lead_info) > 0) {
+
+				$payment_type = $lead_info[0]['payment_type'];
+				$paid_status = $lead_info[0]['payment_status'];
+			
+				if ($payment_type == 1) { // only prepaid
+
+					if ($paid_status == 0) { // and not paid 
+
+						$rpay_inv_id = $lead_info[0]['rpay_inv_id'];
+
+						// Send Payment Link
+						$url = 'https://api.razorpay.com/v1/invoices/' . $rpay_inv_id . '/cancel';
+						$key_id = 'rzp_test_WIy9t4y8B55ivj';
+						$key_secret = 'zYx0UxiPQ9DdTYH0VWTvCWPj';
+						$fields_string = '';
+
+						//Prepare CURL Request for payment link
+						$ch = curl_init();
+						curl_setopt($ch, CURLOPT_URL, $url);
+						curl_setopt($ch, CURLOPT_USERPWD, $key_id . ':' . $key_secret);
+						curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+						curl_setopt($ch, CURLOPT_POST, 1);
+						curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
+						curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+						curl_setopt(
+							$ch,
+							CURLOPT_HTTPHEADER,
+							array(
+								'Content-Type: application/json',
+								'Content-Length: ' . strlen($fields_string)
+							)
+						);
+						$result = curl_exec($ch);
+
+						$username = $this->session->userdata('username');
+						$up_arr = array('status' => 2, 'payment_link_status' => 3, 'modified_on' => date('Y-m-d G:i:s'), 'modified_by' => $username);
+						$result = $this->Lead_model->update_lead($up_arr, $lead_id);
+						if ($result) {
+							echo json_encode(array('success' => true, 'msg' => 'Lead Canceled Successfully'));
+							return true;
+						} else {
+							echo json_encode(array('success' => false, 'msg' => 'Failed to Lead Cancel'));
+							return true;
+						}
+					} else {
+						echo json_encode(array('success' => false, 'msg' => 'Order cancellation failed. Customer already paid'));
+						return true;
+					}
+				} else {
+					echo json_encode(array('success' => false, 'msg' => 'Order cancellation failed. Its a COD order and already pushed to lastmile.'));
 					return true;
 				}
+			}
 		}
 	}
 
-	public function download(){
+	public function download()
+	{
 		$q = (isset($_GET['q'])) ? $_GET['q'] : '';
-		$filter_arr = array('searchKey'=> $q, 'ordercolumn' => 'created_on', 'ordertype' => 'DESC');
+		$filter_arr = array('searchKey' => $q, 'ordercolumn' => 'created_on', 'ordertype' => 'DESC');
 		$result = $this->Lead_model->lead_list($filter_arr);
-		header("Content-Disposition: attachment; filename=\"lead_list_".time().".xls\"");
-        header("Content-Type: application/vnd.ms-excel;");
-        header("Pragma: no-cache");
-        header("Expires: 0");
+		header("Content-Disposition: attachment; filename=\"lead_list_" . time() . ".xls\"");
+		header("Content-Type: application/vnd.ms-excel;");
+		header("Pragma: no-cache");
+		header("Expires: 0");
 		$handle = fopen("php://output", 'w');
-		$header =  array(0=> 'Order#',
-					1=>'Name',
-					2=>'Phone',
-					3=>'Payment Type',
-					4=>'Payment Link',
-					5=>'Payment Status',
-					6=>'Amount',
-					7=>'Created On',
-					8=>'Status' ); 
-		fputcsv($handle,  $header,"\t");
+		$header =  array(
+			0 => 'Order#',
+			1 => 'Name',
+			2 => 'Phone',
+			3 => 'Payment Type',
+			4 => 'Payment Link',
+			5 => 'Payment Status',
+			6 => 'Amount',
+			7 => 'Created On',
+			8 => 'Status'
+		);
+		fputcsv($handle,  $header, "\t");
 		foreach ($result as $key => $info) {
-			$data =  array(0=>$info['lead_no'],
-					1=>$info['cust_name'],
-					2=>$info['cust_phone'],
-					3=>$info['payment_type'],
-					4=>$info['payment_link_status'],
-					5=>$info['payment_status'],
-					6=>$info['order_total'],
-					7=>$info['created_on'],
-					8=>$info['status'] );
-			 fputcsv($handle, $data,"\t");
-		  }
-	}	
+			$data =  array(
+				0 => $info['lead_no'],
+				1 => $info['cust_name'],
+				2 => $info['cust_phone'],
+				3 => $info['payment_type'],
+				4 => $info['payment_link_status'],
+				5 => $info['payment_status'],
+				6 => $info['order_total'],
+				7 => $info['created_on'],
+				8 => $info['status']
+			);
+			fputcsv($handle, $data, "\t");
+		}
+	}
 }

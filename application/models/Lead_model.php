@@ -50,6 +50,14 @@ class Lead_model extends CI_Model
         return $this->db->get()->result_array();
     }
 
+    public function get_lead_by_lead_id($lead_id)
+    {
+        $this->db->select('*');
+        $this->db->from('tbl_lead');
+        $this->db->where('lead_id', $lead_id);
+        return $this->db->get()->result_array();
+    }
+
     public function insert_payment_details($ins_arr)
     {
         $this->db->insert('tbl_lead_payments', $ins_arr);
@@ -62,6 +70,7 @@ class Lead_model extends CI_Model
         CASE
             WHEN payment_link_status = 0 THEN "Not Send"
             WHEN payment_link_status = 1 THEN "Send"
+            WHEN payment_link_status = 3 THEN "Cancelled"
             ELSE "Failed"
         END AS payment_link_status,
         CASE

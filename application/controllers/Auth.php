@@ -47,7 +47,7 @@ class Auth extends CI_Controller
 
 
 					$this->session->set_userdata($admin_data);
-					redirect(base_url('lead'), 'refresh');
+					redirect(base_url('home'), 'refresh');
 				} else {
 
 					$data['msg'] = 'Invalid Credential!';

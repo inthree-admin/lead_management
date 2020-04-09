@@ -53,7 +53,7 @@
                      </span>
                   </div>
                   <div class="card-body">
-                     <form id="form-validation" name="form-validation" enctype="multipart/form-data" action="javascript:void(0);" method="post" class="form-horizontal" >
+                     <form id="form-validation" name="form-validation" enctype="multipart/form-data" action="javascript:void(0);" method="post" class="form-horizontal">
                         <input type="hidden" name="prod_price" id="prod_price">
                         <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Customer Personal Details</b></h6>
                         <div class="form-group row">
@@ -172,22 +172,7 @@
                            </div>
                         </div><br>
 
-                        <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Payment & Product Details</b></h6>
-                     
-
-                        <div class="form-group has-pretty-child">
-                           <label class="test_radio">Payment Type <span class="text-danger">*</span></label>                         
-                           <div class="clearfix prettyradio labelright margin-right blue">
-                              <input type="radio" class="" value="1" id="prepaid" name="payment_type" checked="checked" style="display: none;">
-                              <a href="javascript:void(0);" onclick="choosePaymode(this);" class='checked' id='prepaid_a'></a>
-                              <label for="prepaid">Prepaid</label></div>
-                           <div class="clearfix prettyradio labelright  blue">
-                              <input type="radio" class="" value="2" id="cod" name="payment_type" style="display: none;">
-                              <a href="javascript:void(0);" onclick="choosePaymode(this);" id='cod_a'></a>
-                              <label for="cod">COD</label></div>
-                        </div>
-
-
+                        <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Product Details & Payment</b></h6>
 
 
                         <div class="form-group row">
@@ -231,14 +216,22 @@
 
                         <div class="form-group row">
 
-                           <div class="col-3">
 
+                           <div class="col-sm-3">
+                              <div class="form-group has-pretty-child">
+                                 <label class="test_radio">Payment Type <span class="text-danger">*</span></label>
+                                 <div class="clearfix prettyradio labelright margin-right blue">
+                                    <input type="radio" class="" value="1" id="prepaid" name="payment_type" checked="checked" style="display: none;">
+                                    <a href="javascript:void(0);" onclick="choosePaymode(this);" class='checked' id='prepaid_a'></a>
+                                    <label for="prepaid">Prepaid</label></div>
+                                 <div class="clearfix prettyradio labelright  blue">
+                                    <input type="radio" class="" value="2" id="cod" name="payment_type" style="display: none;">
+                                    <a href="javascript:void(0);" onclick="choosePaymode(this);" id='cod_a'></a>
+                                    <label for="cod">COD</label></div>
+                              </div>
                            </div>
                            <div class="col-sm-3">
-
-                           </div>
-                           <div class="col-sm-3">
-                              <div class="alert alert-info  m-t-10" style="font-weight: bold;font-size: 20px;">
+                              <div class="alert alert-info" style="margin-top:3px; font-weight: bold;font-size: 20px;">
                                  Total : <i class="fa fa-inr"></i> <span id='total_amount'>00.00</span>
                               </div>
                            </div>
@@ -246,11 +239,11 @@
 
                            </div>
 
-                        </div>
+                        </div><br>
 
                         <div class="form-group form-actions">
                            <div class="col-md-8 ml-auto">
-                              <button type="submit" class="btn btn-effect-ripple btn-primary" id="btn_submit">Submit</button>
+                              <button type="submit" class="btn btn-effect-ripple btn-primary" id="btn_submit">Submit</button>&nbsp;
                               <button type="reset" class="btn btn-effect-ripple btn-default reset_btn">Reset
                               </button>
                            </div>

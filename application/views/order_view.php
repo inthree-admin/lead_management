@@ -18,7 +18,7 @@
 <script>
    var BASE_URL = "<?php echo base_url() ?>";
 </script>
-
+<?php $proof = base_url() . 'assets/img/no_image.png'; ?>
 <body class="skin-default">
    <div class="preloader">
       <div class="loader_img"><img src="<?php echo base_url() ?>assets/img/loader.gif" alt="loading..." height="64" width="64"></div>
@@ -796,7 +796,7 @@
                                           <?php } ?>
                                        </td>
                                        <?php
-                                       $proof = base_url() . 'assets/img/no_image.png';
+                                       
                                        $delivery_proof = (!empty($row['delivery_proof'])) ? $row['delivery_proof'] : $proof;
                                        $invoice_proof = (!empty($row['invoice_proof'])) ? $row['invoice_proof'] : $proof;
                                        $address_proof = (!empty($row['address_proof'])) ? $row['address_proof'] : $proof;

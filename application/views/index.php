@@ -47,16 +47,18 @@
                                     <i class="ti-eye text-warning"></i>
                                 </div>
                                 <div class="text-right">
-                                    <h3 class="text-dark"><b>3752</b></h3>
-                                    <p>Leads</p>
+                                    <h3 class="text-dark"><b><?php echo $lead_open_count;?></b></h3>
+                                    <p>Open Leads</p>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
                             <div class="widget-bg-color-icon card-box back">
-                                <div class="text-center">
-                                    <span id="loadspark-chart"></span>
-                                    <hr>
-                                    <p>Check summary</p>
+                            <div class="bg-icon float-left">
+                                    <i class="ti-shopping-cart text-success"></i>
+                                </div>
+                                <div class="text-right">
+                                    <h3 class="text-dark"><b><?php echo $lead_cancel_count;?></b></h3>
+                                    <p>Cancel Leads</p>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
@@ -71,7 +73,7 @@
                                     <i class="ti-thumb-up text-danger"></i>
                                 </div>
                                 <div class="text-right">
-                                    <h3 class="text-dark"><b>1532</b></h3>
+                                    <h3 class="text-dark"><b><?php echo $order_total;?></b></h3>
                                     <p>Orders</p>
                                 </div>
                                 <div class="clearfix"></div>
@@ -94,7 +96,7 @@
                                     <i class="ti-shopping-cart text-success"></i>
                                 </div>
                                 <div class="text-right">
-                                    <h3><b id="widget_count3">3251</b></h3>
+                                    <h3><b id="widget_count3"><?php echo $sales_total;?></b></h3>
                                     <p>Sales</p>
                                 </div>
                                 <div class="clearfix"></div>
@@ -117,7 +119,7 @@
                                     <i class="ti-user text-info"></i>
                                 </div>
                                 <div class="text-right">
-                                    <h3 class="text-dark"><b>1252</b></h3>
+                                    <h3 class="text-dark"><b><?php echo $customer_count;?></b></h3>
                                     <p>Customers</p>
                                 </div>
                                 <div class="clearfix"></div>

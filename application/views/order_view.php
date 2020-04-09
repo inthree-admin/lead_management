@@ -543,7 +543,7 @@
                                     <?php if ($history_tran[0]['order_type'] != 2) { ?>
                                        <th>Payment Mode
                                        </th>
-                                       <td style="text-align: left;">
+                                       <td style="text-align: center;">
                                           <?= $row['payment_mode']; ?>
                                        </td>
 
@@ -565,6 +565,9 @@
                                           ?>
                                        </td>
                                     <?php } ?>
+                                    <td> </td>
+                                    <td><strong>Order Amount</strong></td>
+                                    <td style="text-align: center;"><strong><i class="fa fa-inr"></i> <?php echo $row['amount']?><strong></td>
                                  </tr>
                                  <?php if ($row['received_at'] != "00-00-0000") { ?>
                                     <tr>

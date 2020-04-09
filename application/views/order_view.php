@@ -866,7 +866,6 @@
                      <div class="box-body table-responsive">
                         <p>
                            <h2 class="card-title">
-                              <i class="ti-layout-grid3"></i>
                               <font color="blue"><b>Undelivered Attempt Details</b></font>
                            </h2>
                            <p></p>
@@ -908,7 +907,6 @@
                      <div class="box-body table-responsive">
                         <p>
                            <h2 class="card-title">
-                              <i class="ti-layout-grid3"></i>
                               <font color="blue"><b>Runners Details</b></font>
                            </h2>
                            <p></p>

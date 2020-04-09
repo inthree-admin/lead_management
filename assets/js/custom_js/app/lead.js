@@ -134,13 +134,7 @@ $(document).ready(function () {
 	        //         }
             //     }
             // },
-            order_type: {
-                validators: {
-                    notEmpty: {
-                        message: 'Please select order type'
-                    }
-                }
-            }, 
+          
            'product[]': { 
 	            validators: {
 	            	notEmpty: {
@@ -164,14 +158,13 @@ $(document).ready(function () {
         submitHandler: function (validator, form, submitButton) {
             // $("#btn_submit").attr("disabled", true);
         }
-    }).on('success.form.bv', function (e) {
-    	if($('.plist_error').length > 0) {
-    		 $("#btn_submit").attr("disabled", false);
-    		return false;	
-    	}
-        // Prevent form submission
-        var cust_name = $('#cust_name').val().trim(); 
-         swal({
+    }).on('submit', function (e) {
+        if($('.plist_error').length > 0) {
+             $("#btn_submit").attr("disabled", false);
+            return false;   
+        }
+        if(e.isDefaultPrevented() == false){
+             swal({
             title: '',
             text: 'Are you sure Want to place your order?',
             type: 'warning',
@@ -183,18 +176,25 @@ $(document).ready(function () {
             confirmButtonClass: 'btn btn-success',
             cancelButtonClass: 'btn btn-danger'
         }).then(function (conrifm) {
-        	if(conrifm['value'] == true){
-        		e.preventDefault();  
-        		var form = $('#form-validation')[0];  
-		        var data = new FormData(form); 
-		        save(data);
-        	}else{
-        		 
-        	}        	 
+            if(conrifm['value'] == true){
+                $("#btn_submit").attr("disabled", true);
+                e.preventDefault();  
+                var form = $('#form-validation')[0];  
+                var data = new FormData(form); 
+                save(data);
+            }else{
+                $("#btn_submit").attr("disabled", false);
+            }         
            
         });
 
-		
+        }
+
+    }).on('success.form.bv', function (e) {
+    	if($('.plist_error').length > 0) {
+    		 $("#btn_submit").attr("disabled", false);
+    		return false;	
+    	}
 
     });
 

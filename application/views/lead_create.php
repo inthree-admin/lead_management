@@ -53,7 +53,7 @@
                      </span>
                   </div>
                   <div class="card-body">
-                     <form id="form-validation" name="form-validation" enctype="multipart/form-data" action="javascript:void(0);" method="post" class="form-horizontal">
+                     <form id="form-validation" name="form-validation" enctype="multipart/form-data" action="javascript:void(0);" method="post" class="form-horizontal" >
                         <input type="hidden" name="prod_price" id="prod_price">
                         <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>Customer Personal Details</b></h6>
                         <div class="form-group row">

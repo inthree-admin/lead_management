@@ -59,7 +59,7 @@
                                 </div>
                                 <a href="javascript:void(0);" id="forgot" class="forgot"> Forgot Password ? </a>
 
-                                <span class="float-right sign-up">New ? <a href="javascript:void(0);">Sign Up</a></span>
+                                <span class="float-right sign-up">New ? <a href="<?php echo site_url("account/signup"); ?>">Sign Up</a></span>
                             </form>
                         </div>
                     </div>

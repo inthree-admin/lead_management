@@ -23,7 +23,7 @@
             <div class="col-lg-4  col-10 col-sm-8 m-auto login-form">
 
                     <h2 class="text-center logo_h2">
-                        <img src="<?php echo base_url() ?>assets/img/pages/clear_black.png" alt="Logo">
+                        <img src="<?php echo base_url() ?>assets/img/logo.png" alt="Logo" width="250px;">
                     </h2>
 
                 <div class="card-body">
@@ -56,6 +56,13 @@
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
+                                    <label for="email" class="sr-only">Username</label>
+                                    <input type="text" class="form-control  " id="username" name="username"
+                                           placeholder="Username">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
                                     <label for="password" class="sr-only">Password</label>
                                     <input type="password" class="form-control " id="password"
                                            name="password" placeholder="Password">
@@ -69,14 +76,14 @@
                                            name="password_confirm" placeholder="Confirm Password">
                                 </div>
                             </div>
-                            <div class="col-12">
+                            <!-- <div class="col-12">
                                 <div class="form-group checkbox">
                                     <label for="terms">
                                         <input type="checkbox" name="terms" id="terms">&nbsp; I accept the <a href="javascript:void(0)">terms &amp; Conditions</a>
                                     </label>
                                 </div>
-                            </div>
-                            <div class="col-12">
+                            </div> -->
+                            <div class="col-12 " style="margin-top: 5px;">
                                 <div class="form-group">
                                     <input type="submit" value="Sign Up" class="btn btn-primary btn-block"/>
                                 </div>

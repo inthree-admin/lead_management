@@ -45,7 +45,7 @@ class Lead extends MY_Controller
 				'cust_phone' 		=> $cust_phone,
 				'receipt_no' 		=> $receipt,
 				'created_on' 		=> date('Y-m-d G:i:s'),
-				'created_by' 		=> $this->session->userdata('username'),
+				'created_by' 		=> $login_id,
 				'billing_address'	=> $billing_address,
 				'billing_city'		=> $billing_city,
 				'billing_pincode'	=> $billing_pincode,
@@ -54,7 +54,7 @@ class Lead extends MY_Controller
 				'shipping_city'		=> $shipping_city,
 				'shipping_pincode'	=> $shipping_pincode,
 				'shipping_contact_no' => $shipping_contact_no,
-				'lmp_id' 		    => $login_id,
+				'lmp_id' 		    => 145,
 				'payment_type' 		=> $payment_type
 			);
 

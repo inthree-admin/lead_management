@@ -37,7 +37,7 @@ class Auth extends CI_Controller
 				$result = $this->auth_model->login($data);  
 				if ($result == TRUE) {
 					$admin_data = array(
-						'admin_id' 		=> 145,//$result['lm_id'],
+						'admin_id' 		=> $result['lm_id'],
 						'name' 			=> ucfirst($result['lmu_username']),
 						'role' 			=> 1,
 						'owner_name' 	=> ucfirst($result['lmu_username']),

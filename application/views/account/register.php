@@ -1,7 +1,8 @@
+   
     <!DOCTYPE html>
     <html>
     <head>
-        <title>::Admin Register::</title>
+        <title>::Register::</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" href="<?php echo base_url() ?>assets/img/favicon.ico"/>
         <!-- global css -->
@@ -12,8 +13,10 @@
         <link href="<?php echo base_url() ?>assets/vendors/iCheck/css/all.css" rel="stylesheet">
         <link href="<?php echo base_url() ?>assets/vendors/bootstrapvalidator/css/bootstrapValidator.min.css" rel="stylesheet"/>
         <link href="<?php echo base_url() ?>assets/css/login.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/vendors/sweetalert2/css/sweetalert2.min.css" />
         <!--end of page level css-->
     </head>
+    <script type="text/javascript">var BASE_URL = "<?php echo base_url() ?>";</script>
     <body id="sign-up">
     <div class="preloader">
         <div class="loader_img"><img src="<?php echo base_url() ?>assets/img/loader.gif" alt="loading..." height="64" width="64"></div>
@@ -28,7 +31,7 @@
 
                 <div class="card-body">
 
-                        <form action="" id="authentication" method="post" class="signup_validator">
+                        <form action="javascript:void(0);" id="authentication" method="POST" class="signup_validator">
                          <div class="row">
                                 <div class="col-6">
                                     <div class="form-group">
@@ -103,8 +106,9 @@
     <script src="<?php echo base_url() ?>assets/js/bootstrap.min.js" type="text/javascript"></script>
     
     <script src="<?php echo base_url() ?>assets/vendors/iCheck/js/icheck.js"></script>
-    <script src="<?php echo base_url() ?>assets/vendors/bootstrapvalidator/js/bootstrapValidator.min.js" type="<?php echo base_url() ?>assets/text/javascript"></script>
-    <script src="<?php echo base_url() ?>assets/js/custom_js/register.js"></script>
+    <script src="<?php echo base_url() ?>assets/vendors/bootstrapvalidator/js/bootstrapValidator.min.js" ></script>
+       <script type="text/javascript" src="<?php echo base_url() ?>assets/vendors/sweetalert2/js/sweetalert2.min.js"></script>
+    <script src="<?php echo base_url() ?>assets/js/custom_js/app/register.js"></script>
     <!-- end of page level js -->
     </body>
 

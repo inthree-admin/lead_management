@@ -68,8 +68,8 @@ class Lead_model extends CI_Model
     {
          $this->db->select('lead_id,cust_name,cust_email,cust_phone,lead_no,order_total,receipt_no,
         CASE
-            WHEN payment_link_status = 0 THEN "Not Send"
-            WHEN payment_link_status = 1 THEN "Send"
+            WHEN payment_link_status = 0 THEN "Not Sent"
+            WHEN payment_link_status = 1 THEN "Sent"
             WHEN payment_link_status = 3 THEN "Cancelled"
             ELSE "Failed"
         END AS payment_link_status,

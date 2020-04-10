@@ -152,7 +152,7 @@
                            </div>
                            <div class="col-md-4">
                               <label class="form-control-label" for="shipping_pincode">
-                                 Pin Codes
+                                 Pin Code
                                  <span class="text-danger">*</span>
                               </label>
                               <div class="input-group">

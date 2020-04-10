@@ -359,5 +359,6 @@ class Lead extends MY_Controller
 			);
 			fputcsv($handle, $data, "\t");
 		}
+		fclose($handle);
 	}
 }

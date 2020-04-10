@@ -31,6 +31,52 @@ class Auth extends CI_Controller
 			} else {
 				$data = array(
 					'username' => $this->input->post('username'),
+					'password' => md5(trim($this->input->post('password')))
+				);
+
+				$result = $this->auth_model->login($data);  
+				if ($result == TRUE) {
+					$admin_data = array(
+						'admin_id' 		=> 145,//$result['lm_id'],
+						'name' 			=> ucfirst($result['lmu_username']),
+						'role' 			=> 1,
+						'owner_name' 	=> ucfirst($result['lmu_username']),
+						'username' 		=> ucfirst($result['lmu_username']),
+						'profile_pic' 	=> base_url().'img/user.jpg',
+
+					);
+
+
+					$this->session->set_userdata($admin_data);
+					redirect(base_url('home'), 'refresh');
+				} else {
+
+					$data['msg'] = 'Invalid Credential!';
+					$this->load->view('auth/login', $data);
+				}
+			}
+		} else {
+			$this->load->view('auth/login');
+		}
+	}
+
+	public function logout()
+	{
+		$this->session->sess_destroy();
+		redirect(base_url('auth/login'), 'refresh');
+	}
+
+	public function login_old()
+	{
+
+		if ($this->input->post('signin')) {
+			$this->form_validation->set_rules('username', 'username', 'trim|required');
+			$this->form_validation->set_rules('password', 'Password', 'trim|required');
+			if ($this->form_validation->run() == FALSE) {
+				$this->load->view('auth/login');
+			} else {
+				$data = array(
+					'username' => $this->input->post('username'),
 					'password' => $this->input->post('password')
 				);
 				$result = $this->auth_model->login($data);
@@ -57,11 +103,5 @@ class Auth extends CI_Controller
 		} else {
 			$this->load->view('auth/login');
 		}
-	}
-
-	public function logout()
-	{
-		$this->session->sess_destroy();
-		redirect(base_url('auth/login'), 'refresh');
 	}
 }

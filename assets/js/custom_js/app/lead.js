@@ -274,6 +274,8 @@ function resetInput(){
          $(this)[0].reset();
          
     });
+    
+    $('.delrow').trigger('click');
 }
 
  

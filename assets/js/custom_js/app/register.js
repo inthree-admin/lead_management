@@ -81,7 +81,7 @@ $(document).ready(function () {
                         url: BASE_URL+'/account/verify/'
                     },
                     notEmpty: {
-                        message: 'The email address is required'
+                        message: 'The username is required'
                     },
                 }
             }

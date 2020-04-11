@@ -80,7 +80,8 @@ class Leadlibrary {
 				if($trans_id){
 					$item_list   = $this->CI->Lead_order_model->get_lead_item($leadid);
 					foreach($item_list as $item){
-						$amount=$item['item_price'];
+						$amount=$item['item_unit_price'];
+						$item_total=$item['item_price'];
 						$quantity=$item['item_qty'];
 						$itemdata = array(
 								'id' => '',
@@ -90,7 +91,7 @@ class Leadlibrary {
 								'qty' =>$quantity ,
 								'order_item_id' => $item['lead_item_id'],
 								'price' => $amount,
-								'row_total' => $amount * $quantity,
+								'row_total' => $item_total,
 								'created' => $time,
 								);
 						 $trans_item_id = $this->CI->Lead_order_model->add_transaction_item($itemdata);

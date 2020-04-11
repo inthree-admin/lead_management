@@ -82,6 +82,7 @@ class Lead_model extends CI_Model
         CASE
             WHEN status = 1 THEN "Open"
             WHEN status = 2 THEN "Cancelled"
+            WHEN status = 3 THEN "Pushed to LMP"
             ELSE "-"
         END AS status,
         CASE

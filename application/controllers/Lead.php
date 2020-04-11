@@ -34,6 +34,7 @@ class Lead extends MY_Controller
 			$shipping_pincode	= (isset($post['shipping_pincode'])) ? trim($post['shipping_pincode']) : '';
 			$shipping_contact_no = (isset($post['shipping_contact_no'])) ? trim($post['shipping_contact_no']) : '';
 			$payment_type 		= (isset($post['payment_type'])) ? trim($post['payment_type']) : '';
+			$lead_status 		= ($payment_type == 2)?3:1;
 			$login_id 			= $this->session->userdata('admin_id');
 			$receipt 			= 'BB' . time();
 
@@ -55,7 +56,8 @@ class Lead extends MY_Controller
 				'shipping_pincode'	=> $shipping_pincode,
 				'shipping_contact_no' => $shipping_contact_no,
 				'lmp_id' 		    => 145,
-				'payment_type' 		=> $payment_type
+				'payment_type' 		=> $payment_type,
+				'status'			=> $lead_status
 			);
 
 			// Save lead

@@ -31,7 +31,7 @@ class Lead_order extends CI_Controller
 				$lead_no = $lead_info[0]['lead_no'];
 
 				// Update lead table
-				$up_arr = array('payment_status' => 1);
+				$up_arr = array('payment_status' => 1, 'status' => 3);
 				$this->Lead_model->update_lead($up_arr, $lead_id);
 
 				// Insert payment details
@@ -42,7 +42,7 @@ class Lead_order extends CI_Controller
 					'rzpy_invoice_status' => $rz_invoice_status,
 					'rzpy_invoice_receipt' => $rz_invoice_receipt,
 					'rzpy_signature' => $rz_signature,
-					'created_on' => date('Y-m-d G:i:s'),
+					'created_on' => date('Y-m-d G:i:s')
 				);
 				$payment_id = $this->Lead_model->insert_payment_details($insert_arr);
 

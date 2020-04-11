@@ -31,7 +31,7 @@
 
                 <div class="card-body">
 
-                        <form action="javascript:void(0);" id="authentication" method="POST" class="signup_validator">
+                        <form action="javascript:void(0);" id="form_sinup" method="POST" class="signup_validator">
                          <div class="row">
                                 <div class="col-6">
                                     <div class="form-group">
@@ -88,7 +88,7 @@
                             </div> -->
                             <div class="col-12 " style="margin-top: 5px;">
                                 <div class="form-group">
-                                    <input type="submit" value="Sign Up" class="btn btn-primary btn-block"/>
+                                    <input type="submit" value="Sign Up" id="btn_submit" class="btn btn-primary btn-block"/>
                                 </div>
                                 <span class="sign-in">Already a member? <a href="<?php echo site_url("auth/login"); ?>">Sign In</a></span>
                             </div>

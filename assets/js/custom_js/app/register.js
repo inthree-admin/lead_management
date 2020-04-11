@@ -7,7 +7,7 @@ $(document).ready(function () {
     });
     //=================end of Preloader===========// 
  
-    $('#authentication').bootstrapValidator({
+    $('#form_sinup').bootstrapValidator({
         fields: {
             first_name: {
                 validators: {
@@ -48,14 +48,10 @@ $(document).ready(function () {
             },
             email: {
                  validators: {
-                    remote: {
-                        message: 'Email is not available',
-                        url: 'verify',
-                        data: {
-                            email: $('#email').val().trim(),
-                        },
-                        type: 'GET'
-                    }, 
+                     remote: {
+                        message: 'The Email is not available',
+                        url: BASE_URL+'/account/verify/'
+                    },
                     notEmpty: {
                         message: 'The email address is required'
                     },
@@ -78,52 +74,36 @@ $(document).ready(function () {
                 }
             },
             username: {
-                validators: {
-                    notEmpty: {
-                        message: 'The username is required and cannot be empty'
-                    },
+                message: 'The username is not valid',
+                validators: { 
                     remote: {
-                        message: 'Username is not available',
-                        url: 'verify',
-                        data: {
-                            username: $('#username').val().trim(),
-                        },
-                        type: 'GET'
-                    }, 
-                   stringLength: {
-                    min: 5,
-                    max: 20,
-                    message: 'The number must be between 8 and above'
-                 },
+                        message: 'The username is not available',
+                        url: BASE_URL+'/account/verify/'
+                    },
+                    notEmpty: {
+                        message: 'The email address is required'
+                    },
                 }
             }
-        },
-
-    }).on('submit', function (e) {
-         if(e.isDefaultPrevented() == true){
-            var form = $('#authentication')[0];  
-            var data = new FormData(form); 
-            addUser(data);
-         }
-          
+        }
     }).on('success.form.bv', function (e) {
-        
-
+            e.preventDefault();
+            var form = $('#form_sinup')[0];  
+            var data = new FormData(form); 
+            addUser(data);  
     });
  
     
-    $("[type='reset']").on("click", function () {
-        $('.signup_validator').bootstrapValidator("resetForm");
-    });
+     
     //password validation
     $('#password').on('keyup', function () {
         var pswd = $("#password input[name='password']").val();
         var pswd_cnf = $("#confirm-password input[name='password_confirm']").val();
         if (pswd != '') {
-            $('.signup_validator').bootstrapValidator('revalidateField', $('#password'));
+            $('#form_sinup').bootstrapValidator('revalidateField', $('#password'));
         }
         if (pswd_cnf != '') {
-            $('.signup_validator').bootstrapValidator('revalidateField', $('#confirm-password'));
+            $('#form_sinup').bootstrapValidator('revalidateField', $('#confirm-password'));
         }
     })
 

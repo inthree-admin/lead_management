@@ -54,7 +54,7 @@ class Auth_model extends CI_Model
 		if(isset($condition['lmu_username']) and !empty($condition['lmu_username']))
 			$this->db->where('lmu_username',$condition['lmu_username']);
 		$query = $this->db->get();
-		if($query->num_rows() == 0) return false;  
-		else return true; 	 
+		if($query->num_rows() == 0) return true;  
+		else return false; 	 
 	}
 }

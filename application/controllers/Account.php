@@ -59,10 +59,16 @@ class Account extends CI_Controller
 		$email = (isset($_GET['email'])) ? trim($_GET['email']) : '';
 		$username = (isset($_GET['username'])) ? trim($_GET['username']) : '';
 		if($email){ 
-			echo $this->auth_modal->check_already_exist(array('lmu_email'=>$email));
+			$result = $this->auth_modal->check_already_exist(array('lmu_email'=>$email));
+			echo json_encode(array(
+			    'valid' => $result,
+			));
 		}
 		if($username){ 
-			echo $this->auth_modal->check_already_exist(array('lmu_username'=>$username));
+			$result = $this->auth_modal->check_already_exist(array('lmu_username'=>$username));
+			echo json_encode(array(
+			    'valid' => $result,
+			));
 		}
 	}
 

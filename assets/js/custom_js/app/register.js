@@ -129,7 +129,7 @@ function addUser(data){
                     type: "success",
                     confirmButtonColor: "#66cc99"
                 }).then(function() {
-                    location.href = BASE_URL+'/auth/login';
+                    location.href = BASE_URL+'auth/login';
                 });
             }
         },

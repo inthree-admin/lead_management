@@ -122,7 +122,7 @@
                   "width": "10%"
                },
                 {
-                  "width": "9%"
+                  "width": "5%"
                },
                {
                   "width": "9%"
@@ -131,7 +131,7 @@
                   "width": "2%"
                },
                {
-                  "width": "2%"
+                  "width": "6%"
                },
                <?php if($this->session->userdata('role') == 1) { ?>
                {

@@ -83,6 +83,7 @@ class Lead_model extends CI_Model
             WHEN approval_status = 1 THEN "Waiting For Approval"
             WHEN approval_status = 2 THEN "Approved"
             WHEN approval_status = 3 THEN "Cancelled"
+            WHEN approval_status = 4 THEN "Delivered"
             ELSE "-"
         END AS status,
         CASE

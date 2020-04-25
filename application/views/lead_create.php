@@ -67,7 +67,7 @@
                               </div>
                            </div>
 
-                           <div class="col-md-4">
+                           <div class="col-md-4" style="display: none;">
                               <label class="form-control-label" for="email">
                                  Email
                                  <span class="text-danger">*</span>
@@ -118,10 +118,28 @@
                         <div class="form-group row">
                            <div class="col-md-4">
                               <label class="form-control-label" for="billing_contact_no">
-                                 Contact Number
+                                 Alternate Contact Number
                               </label>
                               <div class="input-group">
                                  <input type="text" id="billing_contact_no" name="billing_contact_no" class="form-control bill" placeholder="Billing Contact Number">
+                              </div>
+                           </div>
+
+                           <div class="col-md-4">
+                              <label class="form-control-label" for="customer_id">
+                              Customer ID
+                              </label>
+                              <div class="input-group">
+                                 <input type="text" id="customer_id" name="customer_id" class="form-control bill" placeholder="Customer ID">
+                              </div>
+                           </div>
+
+                           <div class="col-md-4">
+                              <label class="form-control-label" for="lrn">
+                               LRN
+                              </label>
+                              <div class="input-group">
+                                 <input type="text" id="lrn" name="lrn" class="form-control bill" placeholder="LRN">
                               </div>
                            </div>
 
@@ -164,7 +182,7 @@
                         <div class="form-group row">
                            <div class="col-md-4">
                               <label class="form-control-label" for="shipping_contact_no">
-                                 Contact Number
+                                 Alternate Contact Number
                               </label>
                               <div class="input-group">
                                  <input type="text" id="shipping_contact_no" name="shipping_contact_no" class="form-control" placeholder="Shipping Contact Number">
@@ -217,7 +235,7 @@
                         <div class="form-group row">
 
 
-                           <div class="col-sm-3">
+                           <div class="col-sm-3"  style="display: none;">
                               <div class="form-group has-pretty-child">
                                  <label class="test_radio">Payment Type <span class="text-danger">*</span></label>
                                  <div class="clearfix prettyradio labelright margin-right blue">

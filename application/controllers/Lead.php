@@ -212,40 +212,43 @@ class Lead extends MY_Controller
 
 	public function lead_list()
 	{
+		 
+		$role = $this->session->userdata('role');
+		$user_id = $this->session->userdata('admin_id');
 		$start  = (isset($_GET['start'])) ? $_GET['start'] : '';
 		$length  = (isset($_GET['length'])) ? $_GET['length'] : '';
 		$searchKey = (isset($_GET['search']['value'])) ? trim($_GET['search']['value']) : '';
 		$ordercolumn =  (isset($_GET['order'][0]['column'])) ? $_GET['order'][0]['column'] : 1;
 		$ordertype = (isset($_GET['order'][0]['dir'])) ? $_GET['order'][0]['dir'] : ''; //asc or desc  
+
 		$columnArray = array(
 			0 => 'lead_no', 1 => 'cust_name',  2 => 'cust_phone',
-			3 => 'payment_type', 4 => 'payment_link_status', 5 => 'payment_status', 6 => 'order_total',
-			7 => 'created_on', 8 => 'status'
+			3 => 'payment_type',  4 => 'order_total',
+			5 => 'created_on',6 => 'lmu_username' ,7 => 'status'
 		);
+
 		$filter_arr = array('start' => $start, 'length' => $length, 'searchKey' => $searchKey, 'ordercolumn' => $columnArray[$ordercolumn], 'ordertype' => $ordertype);
+		if($role != 1 )  $filter_arr['created_by'] = $user_id;
+
 		$result = $this->Lead_model->lead_list($filter_arr);
-		$lead_total = $this->Lead_model->lead_total_count(array('searchKey' => $searchKey));
+		$lead_total = $this->Lead_model->lead_total_count($filter_arr);
 		$returnData = array();
 		$returnData['data'] = [];
 		foreach ($result as $key => $data) {
 			$returnData['data'][$key][0] = '<a href="' . base_url() . 'order_history/get_history?id=' . $data['lead_no'] . '">' . $data['lead_no'] . '</a>';
 			$returnData['data'][$key][1] = $data['cust_name'];
 			$returnData['data'][$key][2] = $data['cust_phone'];
-			$returnData['data'][$key][3] = $data['payment_type'];
-			if ($data['payment_type'] == 'COD')
-				$returnData['data'][$key][4] = '-';
-			else
-				$returnData['data'][$key][4] = $data['payment_link_status'];
-			$returnData['data'][$key][5] = $data['payment_status'];
-			$returnData['data'][$key][6] = $data['order_total'];
-			$returnData['data'][$key][7] = $data['created_on'];
-			$returnData['data'][$key][8] = $data['status'];
+			$returnData['data'][$key][3] = $data['payment_type']; 
+			$returnData['data'][$key][4] = $data['order_total'];
+			$returnData['data'][$key][5] = $data['created_on'];
+			$returnData['data'][$key][6] = ucfirst($data['lmu_username']);
+			$returnData['data'][$key][7] = $data['status'];
 
 			$actionbtn = '-';
 			if ($data['status'] == 'Waiting For Approval')
 				$actionbtn = '<i class="fa fa-fw fa-thumbs-o-up fa-lg actions_icon" title="Approve" onclick="approveLead(' . $data['lead_id'] . ')"></i>&nbsp&nbsp<i class="fa fa-fw ti-close text-danger actions_icon" title="Cancel" onclick="cancelLead(' . $data['lead_id'] . ')"></i>';
 			//$actionbtn = '<button class="btn btn-primary btn-xs" onclick="cancelLead('.$data['lead_id'].')">Cancel</button>';
-			$returnData['data'][$key][9] = $actionbtn;
+			if($role == 1 ) $returnData['data'][$key][8] = $actionbtn;
 		}
 		$returnData['recordsTotal'] = count($result);
 		$returnData['recordsFiltered'] = $lead_total['total_lead'];
@@ -374,8 +377,11 @@ class Lead extends MY_Controller
 
 	public function download()
 	{
+		$role = $this->session->userdata('role');
+		$user_id = $this->session->userdata('admin_id');
 		$q = (isset($_GET['q'])) ? $_GET['q'] : '';
 		$filter_arr = array('searchKey' => $q, 'ordercolumn' => 'created_on', 'ordertype' => 'DESC');
+		if($role != 1 )  $filter_arr['created_by'] = $user_id;
 		$result = $this->Lead_model->lead_list($filter_arr);
 		header("Content-Disposition: attachment; filename=\"lead_list_" . time() . ".xls\"");
 		header("Content-Type: application/vnd.ms-excel;");
@@ -386,12 +392,11 @@ class Lead extends MY_Controller
 			0 => 'Order#',
 			1 => 'Name',
 			2 => 'Phone',
-			3 => 'Payment Type',
-			4 => 'Payment Link',
-			5 => 'Payment Status',
-			6 => 'Amount',
-			7 => 'Created On',
-			8 => 'Status'
+			3 => 'Payment Type', 
+			4 => 'Amount',
+			5 => 'Created On',
+			6 => 'Created By',
+			7 => 'Status'
 		);
 		fputcsv($handle,  $header, "\t");
 		foreach ($result as $key => $info) {
@@ -400,11 +405,10 @@ class Lead extends MY_Controller
 				1 => $info['cust_name'],
 				2 => $info['cust_phone'],
 				3 => $info['payment_type'],
-				4 => $info['payment_link_status'],
-				5 => $info['payment_status'],
-				6 => $info['order_total'],
-				7 => $info['created_on'],
-				8 => $info['status']
+				4 => $info['order_total'],
+				5 => $info['created_on'],
+				6 => $info['lmu_username'],
+				7 => $info['status'] 
 			);
 			fputcsv($handle, $data, "\t");
 		}

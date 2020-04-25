@@ -58,13 +58,12 @@
                                  <th>Order #</th>
                                  <th>Customer</th>
                                  <th>Phone</th>
-                                 <th>Payment Type</th>
-                                 <th>Payment Link</th>
-                                 <th>Payment Status</th>
+                                 <th>Payment Type</th> 
                                  <th>Amount</th>
                                  <th>Created On</th>
+                                 <th>Created By</th>
                                  <th>Status</th>
-                                 <th>Action</th>
+                                <?php if($this->session->userdata('role') == 1) echo '<th>Action</th>'; ?>
                               </tr>
                            </thead>
                            <tbody>
@@ -108,7 +107,7 @@
             "ajax": BASE_URL + "lead/lead_list",
             "responsive": true,
             "order": [
-               [7, "desc"]
+               [5, "desc"]
             ],
             "columns": [{
                   "width": "8%"
@@ -122,25 +121,27 @@
                {
                   "width": "10%"
                },
-               {
-                  "width": "10%"
-               },
-               {
-                  "width": "11%"
+                {
+                  "width": "9%"
                },
                {
                   "width": "9%"
                },
                {
-                  "width": "13%"
+                  "width": "2%"
                },
                {
                   "width": "2%"
                },
+               <?php if($this->session->userdata('role') == 1) { ?>
+               {
+                  "width": "2%"
+               },
+            <?php } ?>
             ],
             "columnDefs": [{
-               "targets": [3, 4, 5, 6, 8, 9],
-               "orderable": false
+               "targets": [0,1,2,3,4,5,6],
+               "orderable": true
             }],
 
          });

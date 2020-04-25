@@ -66,7 +66,7 @@ class Lead_model extends CI_Model
 
     public function lead_list($filter)
     {
-         $this->db->select('lead_id,cust_name,cust_email,cust_phone,lead_no,order_total,receipt_no,
+         $this->db->select('lead_id,cust_name,cust_email,cust_phone,lead_no,order_total,receipt_no,lmu_username,created_by,
         CASE
             WHEN payment_link_status = 0 THEN "Not Sent"
             WHEN payment_link_status = 1 THEN "Sent"
@@ -92,13 +92,17 @@ class Lead_model extends CI_Model
         END AS payment_type
         ', FALSE);
         $this->db->from(' tbl_lead');
+        $this->db->join(' tbl_lead_users','tbl_lead.created_by = tbl_lead_users.lm_id','LEFT');
+        if (isset($filter['created_by']) and !empty($filter['created_by'])) {
+              $this->db->where( 'created_by',$filter['created_by']);
+        }
         if (isset($filter['searchKey']) and !empty($filter['searchKey'])) {
-            $this->db->where("
+            $this->db->where("(
             cust_name LIKE '%" . $filter['searchKey'] . "%' 
             OR lead_no LIKE '%" . $filter['searchKey'] . "%' 
             OR cust_email LIKE '%" . $filter['searchKey'] . "%' 
             OR cust_phone  LIKE '%" . $filter['searchKey'] . "%'  
-			OR receipt_no LIKE '%" . $filter['searchKey'] . "%'
+			OR receipt_no LIKE '%" . $filter['searchKey'] . "%')
         ");
         }
         if (!empty($filter['ordercolumn']))
@@ -106,20 +110,27 @@ class Lead_model extends CI_Model
         if (!empty($filter['length']))
             $this->db->limit($filter['length'], $filter['start']);
         return $this->db->get()->result_array();
+    
     }
     public function lead_total_count($filter)
     {
+        
         $this->db->select('count(*) total_lead');
         $this->db->from(' tbl_lead');
+        if(isset($filter['created_by']) AND !empty($filter['created_by']))
+            $this->db->where( 'created_by',$filter['created_by']);
         if (isset($filter['searchKey']) and !empty($filter['searchKey'])) {
-            $this->db->where("
+            $this->db->where("(
             cust_name LIKE '%" . $filter['searchKey'] . "%' 
+            OR lead_no LIKE '%" . $filter['searchKey'] . "%' 
             OR cust_email LIKE '%" . $filter['searchKey'] . "%' 
             OR cust_phone  LIKE '%" . $filter['searchKey'] . "%'  
-			OR receipt_no LIKE '%" . $filter['searchKey'] . "%'
+            OR receipt_no LIKE '%" . $filter['searchKey'] . "%')
         ");
+            
         }
-        return $this->db->get()->row_array();
+           return $this->db->get()->row_array(); 
+               
     }
 
     public function lead_info($lead_no=false){

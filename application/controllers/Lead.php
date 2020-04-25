@@ -242,7 +242,7 @@ class Lead extends MY_Controller
 			$returnData['data'][$key][8] = $data['status'];
 
 			$actionbtn = '-';
-			if ($data['status'] == 'Open')
+			if ($data['status'] == 'Waiting For Approval')
 				$actionbtn = '<i class="fa fa-fw fa-thumbs-o-up fa-lg actions_icon" title="Approve" onclick="approveLead(' . $data['lead_id'] . ')"></i>&nbsp&nbsp<i class="fa fa-fw ti-close text-danger actions_icon" title="Cancel" onclick="cancelLead(' . $data['lead_id'] . ')"></i>';
 			//$actionbtn = '<button class="btn btn-primary btn-xs" onclick="cancelLead('.$data['lead_id'].')">Cancel</button>';
 			$returnData['data'][$key][9] = $actionbtn;
@@ -343,7 +343,7 @@ class Lead extends MY_Controller
 				if ($approval_status == 1) { // waiting for approval
 
 					$username = $this->session->userdata('username');
-					$up_arr = array('approval_status' => 2, 'modified_on' => date('Y-m-d G:i:s'), 'modified_by' => $username);
+					$up_arr = array('approval_status' => $status, 'modified_on' => date('Y-m-d G:i:s'), 'modified_by' => $username);
 					$result = $this->Lead_model->update_lead($up_arr, $lead_id);
 					if ($result) {
 
@@ -352,11 +352,13 @@ class Lead extends MY_Controller
 						$this->load->library('leadlibrary', $params);
 						$this->leadlibrary->push_order();
 
-						echo json_encode(array('success' => true, 'msg' => 'Lead Approved Successfully'));
+						$msg = ($status == 2)?'Lead Approved Successfully':'Lead Cancelled Successfully';
+
+						echo json_encode(array('success' => true, 'msg' => $msg));
 						return true;
 
 					} else {
-						echo json_encode(array('success' => false, 'msg' => 'Approval Failed'));
+						echo json_encode(array('success' => false, 'msg' => 'Action Failed'));
 						return true;
 					}
 

@@ -162,10 +162,10 @@
             if (conrifm['value'] == true) {
                $.ajax({
                   type: "POST",
-                  url: BASE_URL + "/lead/change_status",
+                  url: BASE_URL + "/lead/approve_lead",
                   data: {
                      lead_id: lead_id,
-                     status: 2,
+                     status: 3,
                   },
                   cache: false,
                   timeout: 800000,

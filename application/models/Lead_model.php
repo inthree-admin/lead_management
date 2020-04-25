@@ -80,9 +80,9 @@ class Lead_model extends CI_Model
         END AS payment_status,
         DATE_FORMAT(created_on, "%d-%m-%Y %h:%i %p") AS created_on,
         CASE
-            WHEN status = 1 THEN "Open"
-            WHEN status = 2 THEN "Cancelled"
-            WHEN status = 3 THEN "Pushed to LMP"
+            WHEN approval_status = 1 THEN "Waiting For Approval"
+            WHEN approval_status = 2 THEN "Approved"
+            WHEN approval_status = 3 THEN "Cancelled"
             ELSE "-"
         END AS status,
         CASE

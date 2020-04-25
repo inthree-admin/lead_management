@@ -34,7 +34,7 @@ class Lead extends MY_Controller
 			$shipping_pincode	= (isset($post['shipping_pincode'])) ? trim($post['shipping_pincode']) : '';
 			$shipping_contact_no = (isset($post['shipping_contact_no'])) ? trim($post['shipping_contact_no']) : '';
 			$payment_type 		= (isset($post['payment_type'])) ? trim($post['payment_type']) : '';
-			$lead_status 		= ($payment_type == 2)?3:1;
+			$lead_status 		= 1; //($payment_type == 2)?3:1;
 			$login_id 			= $this->session->userdata('admin_id');
 			$receipt 			= 'BB' . time();
 
@@ -107,7 +107,7 @@ class Lead extends MY_Controller
 				$msg = 'Lead generated';
 
 				// Send details to payment gateway for prepaid orders
-				if ($payment_type == 1) {
+				/*if ($payment_type == 1) {
 
 					$tot_amount_paisa = $total_amount * 100;
 					$discription = 'Boonbox Product';
@@ -195,7 +195,7 @@ class Lead extends MY_Controller
 					$this->load->library('leadlibrary', $params);
 					$this->leadlibrary->push_order();
 					$msg .= " and order pushed to lastmile";
-				}
+				}*/
 
 				echo json_encode(array('success' => true, 'msg' => $msg));
 			} else {
@@ -243,7 +243,7 @@ class Lead extends MY_Controller
 
 			$actionbtn = '-';
 			if ($data['status'] == 'Open')
-				$actionbtn = '<i class="fa fa-fw ti-close text-danger actions_icon" title="Cancel" onclick="cancelLead(' . $data['lead_id'] . ')"></i>';
+				$actionbtn = '<i class="fa fa-fw fa-thumbs-o-up fa-lg actions_icon" title="Approve" onclick="approveLead(' . $data['lead_id'] . ')"></i>&nbsp&nbsp<i class="fa fa-fw ti-close text-danger actions_icon" title="Cancel" onclick="cancelLead(' . $data['lead_id'] . ')"></i>';
 			//$actionbtn = '<button class="btn btn-primary btn-xs" onclick="cancelLead('.$data['lead_id'].')">Cancel</button>';
 			$returnData['data'][$key][9] = $actionbtn;
 		}
@@ -324,6 +324,51 @@ class Lead extends MY_Controller
 			}
 		}
 	}
+
+	public function approve_lead()
+	{
+		$post = $this->input->post();
+		$lead_id = (isset($post['lead_id'])) ? $post['lead_id'] : 0;
+		$status = (isset($post['status'])) ? $post['status'] : 0;
+		if (empty($lead_id) or empty($status)) {
+			echo json_encode(array('success' => false, 'msg' => 'Something went wrong'));
+		}
+		if (!empty($lead_id) and !empty($status)) {
+
+			$lead_info = $this->Lead_model->get_lead_by_lead_id($lead_id);
+			if (is_array($lead_info) && count($lead_info) > 0) {
+
+				$approval_status = $lead_info[0]['approval_status'];
+			
+				if ($approval_status == 1) { // waiting for approval
+
+					$username = $this->session->userdata('username');
+					$up_arr = array('approval_status' => 2, 'modified_on' => date('Y-m-d G:i:s'), 'modified_by' => $username);
+					$result = $this->Lead_model->update_lead($up_arr, $lead_id);
+					if ($result) {
+
+						// Push orders to lastmile
+						$params = array('lead_id' => $lead_id);
+						$this->load->library('leadlibrary', $params);
+						$this->leadlibrary->push_order();
+
+						echo json_encode(array('success' => true, 'msg' => 'Lead Approved Successfully'));
+						return true;
+
+					} else {
+						echo json_encode(array('success' => false, 'msg' => 'Approval Failed'));
+						return true;
+					}
+
+					
+				} else {
+					echo json_encode(array('success' => false, 'msg' => 'Lead already approved.'));
+					return true;
+				}
+			}
+		}
+	}
+
 
 	public function download()
 	{

@@ -42,6 +42,7 @@ class Account extends CI_Controller
 				'lmu_password'=> isset($post['password']) ? md5(trim($post['password'])) : '',
 				'lmu_created_on' => date('Y-m-d G:i:s'), 
 				'lmu_status' => 1, 
+				'lmu_role_id' => 2
 			);
 			$result = $this->auth_modal->insert_new_user($ins_arr);
 			if($result){

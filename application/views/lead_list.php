@@ -198,6 +198,57 @@
          });
       }
 
+      function approveLead(lead_id) {
+         swal({
+            title: "",
+            text: "Are you sure want to approve this order?",
+            type: "info",
+            confirmButtonClass: 'btn btn-info',
+            confirmButtonText: 'Yes',
+            showCancelButton: true,
+            cancelButtonColor: '#ff6666',
+            cancelButtonText: 'No',
+            cancelButtonClass: 'btn btn-danger'
+         }).then(function(conrifm) {
+            if (conrifm['value'] == true) {
+               $.ajax({
+                  type: "POST",
+                  url: BASE_URL + "/lead/approve_lead",
+                  data: {
+                     lead_id: lead_id,
+                     status: 2,
+                  },
+                  cache: false,
+                  timeout: 800000,
+                  success: function(data) {
+                     var result = JSON.parse(data);
+                     if (result['success']) {
+                        swal({
+                           title: "Success",
+                           text: result['msg'],
+                           type: "success",
+                           confirmButtonColor: "#66cc99"
+                        }).then(function() {
+                           leadList();
+                        });
+                     } else {
+                        swal({
+                           title: "Failed",
+                           text: result['msg'],
+                           type: "error",
+                           confirmButtonColor: "#66cc99"
+                        }).then(function() {
+                           leadList();
+                        });
+                     }
+                  },
+                  error: function(e) {}
+               });
+            }
+
+         });
+      }
+
       function downloadReport() {
          let q = $('.dataTables_filter').find('input').val().trim();
          let url = BASE_URL + 'lead/download?q=' + q;

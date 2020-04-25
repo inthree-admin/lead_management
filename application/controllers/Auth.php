@@ -39,7 +39,7 @@ class Auth extends CI_Controller
 					$admin_data = array(
 						'admin_id' 		=> $result['lm_id'],
 						'name' 			=> ucfirst($result['lmu_username']),
-						'role' 			=> 1,
+						'role' 			=> $result['lmu_role_id'],
 						'owner_name' 	=> ucfirst($result['lmu_username']),
 						'username' 		=> ucfirst($result['lmu_username']),
 						'profile_pic' 	=> base_url().'img/user.jpg',

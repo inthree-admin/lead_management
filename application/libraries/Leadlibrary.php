@@ -73,6 +73,7 @@ class Leadlibrary {
 							'lmdp' => $lmdp,
 							'created_at' => $time
 					);
+
 				$data = $this->CI->security->xss_clean($data);
 
 				$trans_id = $this->CI->Lead_order_model->add_transaction($data);

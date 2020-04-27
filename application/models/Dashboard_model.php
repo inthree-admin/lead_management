@@ -12,8 +12,8 @@ class Dashboard_model extends CI_Model
                $this->db->where_in('approval_status', $condition['status']);
           }
 
-          if ($this->session->userdata('role') == 2) {
-               $this->db->where('created_by', $this->session->userdata('admin_id'));
+          if ($this->session->userdata('lm_role') == 2) {
+               $this->db->where('created_by', $this->session->userdata('lm_admin_id'));
           }
 
           $query = $this->db->get();

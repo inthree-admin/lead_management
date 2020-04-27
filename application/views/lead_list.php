@@ -58,12 +58,12 @@
                                  <th>Order #</th>
                                  <th>Customer</th>
                                  <th>Phone</th>
-                                 <th>Payment Type</th> 
+                                 <th>Cust ID</th> 
                                  <th>Amount</th>
                                  <th>Created On</th>
                                  <th>Created By</th>
                                  <th>Status</th>
-                                <?php if($this->session->userdata('role') == 1) echo '<th>Action</th>'; ?>
+                                <?php if($this->session->userdata('lm_role') == 1) echo '<th>Action</th>'; ?>
                               </tr>
                            </thead>
                            <tbody>
@@ -113,29 +113,29 @@
                   "width": "8%"
                },
                {
-                  "width": "9%"
+                  "width": "10%"
                },
                {
-                  "width": "9%"
+                  "width": "10%"
                },
                {
                   "width": "10%"
                },
                 {
-                  "width": "5%"
+                  "width": "12%"
                },
                {
-                  "width": "9%"
+                  "width": "14%"
                },
                {
-                  "width": "2%"
+                  "width": "12%"
                },
                {
-                  "width": "6%"
+                  "width": "12%"
                },
-               <?php if($this->session->userdata('role') == 1) { ?>
+               <?php if($this->session->userdata('lm_role') == 1) { ?>
                {
-                  "width": "2%"
+                  "width": "12%"
                },
             <?php } ?>
             ],

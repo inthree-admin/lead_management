@@ -6,7 +6,7 @@
 
 			parent::__construct(); 
 			$this->load->library('session');
-			if(!$this->session->has_userdata('role'))
+			if(!$this->session->has_userdata('lm_role'))
 			{
 				redirect('auth/login');
 			}

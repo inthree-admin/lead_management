@@ -15,8 +15,8 @@ class Proof extends MY_Controller {
 
    
      public function delivery_proof_list(){
-        $role = $this->session->userdata('role');
-        $user_id = $this->session->userdata('admin_id');
+        $role = $this->session->userdata('lm_role');
+        $user_id = $this->session->userdata('lm_admin_id');
         $start  = (isset($_GET['start'])) ? $_GET['start'] : '';
         $length  = (isset($_GET['length'])) ? $_GET['length'] : '';
         $searchKey = (isset($_GET['search']['value'])) ? trim($_GET['search']['value']) : '';
@@ -31,9 +31,9 @@ class Proof extends MY_Controller {
         $to_date = (isset($_POST['to_date'])) ? $_POST['to_date'] : '';
 
         // Get the user session values
-        $logintype = $this->session->userdata('admin_id');
-        $loginname = $this->session->userdata('name');
-        $role = $this->session->userdata('role');   
+        $logintype = $this->session->userdata('lm_admin_id');
+        $loginname = $this->session->userdata('lm_name');
+        $role = $this->session->userdata('lm_role');   
 
         // Default Load
        if($from_date =='' && $to_date =='')

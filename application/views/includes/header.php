@@ -21,7 +21,7 @@
                          <img src="<?php echo base_url() ?>assets/img/user.jpg" width="35" class="rounded-circle img-fluid float-left" height="35" alt="User Image">
                          <div class="riot">
                              <div>
-                                 <?php echo $this->session->userdata('name'); ?>
+                                 <?php echo $this->session->userdata('lm_name'); ?>
                                  <span><i class="fa fa-sort-down"></i></span>
                              </div>
                          </div>
@@ -30,7 +30,7 @@
                          <!-- User image -->
                          <li class="user-header">
                              <img src="<?php echo base_url() ?>assets/img/user.jpg" class="rounded-circle" alt="User Image">
-                             <p>   <?php echo $this->session->userdata('username'); ?></p>
+                             <p>   <?php echo $this->session->userdata('lm_username'); ?></p>
                          </li>
                          <!-- Menu Body -->
                          <li class="p-t-3"><a href="javascript:void(0);" class="dropdown-item"> <i class="fa fa-fw ti-user"></i> My Profile </a>

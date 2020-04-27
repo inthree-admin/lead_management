@@ -29,13 +29,15 @@ class Lead extends MY_Controller
 			$billing_city		= (isset($post['billing_city'])) ? trim($post['billing_city']) : '';
 			$billing_pincode	= (isset($post['billing_pincode'])) ? trim($post['billing_pincode']) : '';
 			$billing_contact_no	= (isset($post['billing_contact_no'])) ? trim($post['billing_contact_no']) : '';
+			$cust_id			= (isset($post['customer_id'])) ? trim($post['customer_id']) : '';
+			$lrn_no				= (isset($post['lrn'])) ? trim($post['lrn']) : '';
 			$shipping_address	= (isset($post['shipping_address'])) ? trim($post['shipping_address']) : '';
 			$shipping_city		= (isset($post['shipping_city'])) ? trim($post['shipping_city']) : '';
 			$shipping_pincode	= (isset($post['shipping_pincode'])) ? trim($post['shipping_pincode']) : '';
 			$shipping_contact_no = (isset($post['shipping_contact_no'])) ? trim($post['shipping_contact_no']) : '';
 			$payment_type 		= (isset($post['payment_type'])) ? trim($post['payment_type']) : '';
 			$lead_status 		= 1; //($payment_type == 2)?3:1;
-			$login_id 			= $this->session->userdata('admin_id');
+			$login_id 			= $this->session->userdata('lm_admin_id');
 			$receipt 			= 'BB' . time();
 
 
@@ -51,6 +53,8 @@ class Lead extends MY_Controller
 				'billing_city'		=> $billing_city,
 				'billing_pincode'	=> $billing_pincode,
 				'billing_contact_no' => $billing_contact_no,
+				'cust_id' 			=> $cust_id,
+				'lrn' 				=> $lrn_no,
 				'shipping_address'	=> $shipping_address,
 				'shipping_city'		=> $shipping_city,
 				'shipping_pincode'	=> $shipping_pincode,
@@ -213,8 +217,8 @@ class Lead extends MY_Controller
 	public function lead_list()
 	{
 		 
-		$role = $this->session->userdata('role');
-		$user_id = $this->session->userdata('admin_id');
+		$role = $this->session->userdata('lm_role');
+		$user_id = $this->session->userdata('lm_admin_id');
 		$start  = (isset($_GET['start'])) ? $_GET['start'] : '';
 		$length  = (isset($_GET['length'])) ? $_GET['length'] : '';
 		$searchKey = (isset($_GET['search']['value'])) ? trim($_GET['search']['value']) : '';
@@ -223,7 +227,7 @@ class Lead extends MY_Controller
 
 		$columnArray = array(
 			0 => 'lead_no', 1 => 'cust_name',  2 => 'cust_phone',
-			3 => 'payment_type',  4 => 'order_total',
+			3 => 'cust_id',  4 => 'order_total',
 			5 => 'created_on',6 => 'lmu_username' ,7 => 'status'
 		);
 
@@ -238,7 +242,7 @@ class Lead extends MY_Controller
 			$returnData['data'][$key][0] = '<a href="' . base_url() . 'order_history/get_history?id=' . $data['lead_no'] . '">' . $data['lead_no'] . '</a>';
 			$returnData['data'][$key][1] = $data['cust_name'];
 			$returnData['data'][$key][2] = $data['cust_phone'];
-			$returnData['data'][$key][3] = $data['payment_type']; 
+			$returnData['data'][$key][3] = $data['cust_id']; 
 			$returnData['data'][$key][4] = $data['order_total'];
 			$returnData['data'][$key][5] = $data['created_on'];
 			$returnData['data'][$key][6] = ucfirst($data['lmu_username']);
@@ -306,7 +310,7 @@ class Lead extends MY_Controller
 						);
 						$result = curl_exec($ch);
 
-						$username = $this->session->userdata('username');
+						$username = $this->session->userdata('lm_username');
 						$up_arr = array('status' => 2, 'payment_link_status' => 3, 'modified_on' => date('Y-m-d G:i:s'), 'modified_by' => $username);
 						$result = $this->Lead_model->update_lead($up_arr, $lead_id);
 						if ($result) {
@@ -345,7 +349,7 @@ class Lead extends MY_Controller
 			
 				if ($approval_status == 1) { // waiting for approval
 
-					$username = $this->session->userdata('username');
+					$username = $this->session->userdata('lm_username');
 					$up_arr = array('approval_status' => $status, 'modified_on' => date('Y-m-d G:i:s'), 'modified_by' => $username);
 					$result = $this->Lead_model->update_lead($up_arr, $lead_id);
 					if ($result) {
@@ -377,8 +381,8 @@ class Lead extends MY_Controller
 
 	public function download()
 	{
-		$role = $this->session->userdata('role');
-		$user_id = $this->session->userdata('admin_id');
+		$role = $this->session->userdata('lm_role');
+		$user_id = $this->session->userdata('lm_admin_id');
 		$q = (isset($_GET['q'])) ? $_GET['q'] : '';
 		$filter_arr = array('searchKey' => $q, 'ordercolumn' => 'created_on', 'ordertype' => 'DESC');
 		if($role != 1 )  $filter_arr['created_by'] = $user_id;

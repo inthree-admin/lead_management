@@ -3,8 +3,8 @@
 
         public function get_hstry_transaction($id) {
             $this->db->query("SET SESSION sql_mode=''");
-            $loginname = $this->session->userdata('name');
-            $role = $this->session->userdata('role');
+            $loginname = $this->session->userdata('lm_name');
+            $role = $this->session->userdata('lm_role');
             $this->db->select('*,DATE_FORMAT(tran.created_at,"%d-%m-%Y") as created_at,DATE_FORMAT(tran.received_at,"%d-%m-%Y") as received_at,DATE_FORMAT(tran.assigned_at,"%d-%m-%Y") as assigned_at,ld.owner_name as lmdp,
             if(tran.received_at="0000-00-00 00:00:00",tran.created_at,tran.received_at) as received_date,
             SUM(titem.qty),SUM(qty_received),SUM(qty_delivered),SUM(qty_returned),titem.open_order_status,tran.status as tran_status,delivery_to,client_branch_name,client_branch_code,tran.delivery_status');

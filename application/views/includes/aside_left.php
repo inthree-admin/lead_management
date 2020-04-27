@@ -7,7 +7,7 @@
                      <a class="float-left profile-thumb" href="javascript:void(0);">
                          <img src="<?php echo base_url(); ?>assets/img/user.jpg" class="rounded-circle" alt="User Image"></a>
                      <div class="content-profile">
-                         <h4 class="media-heading"><?php echo $this->session->userdata('username'); ?></h4>
+                         <h4 class="media-heading"><?php echo $this->session->userdata('lm_username'); ?></h4>
                          <ul class="icon-list">
                              <li>
                                  <a href="javascript:void(0);" title="user">

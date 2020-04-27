@@ -58,6 +58,12 @@
                          <span class="mm-text ">Lead List</span>
                      </a>
                  </li>
+                 <li class="<?php if($seg1=="proof") echo "active"; ?>"  >
+                     <a href="<?php echo site_url("proof"); ?>">
+                         <i class="menu-icon ti-gallery"></i>
+                         <span class="mm-text ">POD List</span>
+                     </a>
+                 </li>
 
              </ul>
              <!-- / .navigation -->

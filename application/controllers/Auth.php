@@ -55,10 +55,9 @@ class Auth extends CI_Controller
 			}
 		} else {
 
-			$url_user_id = $this->uri->segment(3);
-			$url_user_name = $this->uri->segment(4);
+			$url_user_name = $this->uri->segment(3);
 
-			if($url_user_id!='' && $url_user_name!='') {
+			if($url_user_name!='') {
 
 				$result_exist = $this->auth_model->check_already_exist(array('lmu_username'=>$url_user_name));
 

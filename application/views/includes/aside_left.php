@@ -65,6 +65,14 @@
                      </a>
                  </li>
 
+                 <?php if($role = $this->session->userdata('role') == 1){ ?>
+                  <li class="<?php if($seg2=="proof") echo "active"; ?>"  >
+                     <a href="<?php echo site_url("proof"); ?>">
+                         <i class="menu-icon ti-image"></i>
+                         <span class="mm-text ">POD List</span>
+                     </a>
+                 </li>
+             <?php } ?>
              </ul>
              <!-- / .navigation -->
          </div>

@@ -130,7 +130,7 @@ class Leadlibrary {
 		$json_data['billing'] = array(
 									'billing_first_name'  => $order_list['cust_name'],
 									'billing_middle_name'  => '',
-									'billing_last_name'  => '',
+									'billing_last_name'  => $order_list['cust_name'],
 									'billing_street_1'  => $order_list['billing_address'],
 									'billing_street_2'  => '',
 									'billing_city'  => $order_list['billing_city'],
@@ -142,7 +142,7 @@ class Leadlibrary {
 		$json_data['shipping'] = array(
 									'shipping_first_name' => $order_list['cust_name'],
 									'shipping_middle_name' => '',
-									'shipping_last_name' => '',
+									'shipping_last_name' => $order_list['cust_name'],
 									'shipping_street_1' => $order_list['shipping_address'],
 									'shipping_street_2' => '',
 									'shipping_city' => $order_list['shipping_city'],
@@ -171,9 +171,28 @@ class Leadlibrary {
 		 
 		$json_data['note'] = '';
 
-		print_r(json_encode($json_data));
+		//Save log 
+		$post_data = json_encode($json_data);
+		$log_data = array('curl_name' => 'push_order_to_seller_portal','send_data'=> $post_data,'started_at'=> date('Y-m-d h:m:s'));
+		$log_id = $this->CI->Lead_order_model->add_log($log_data);
+		//Send data 
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_POST, 1);
+		curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);
+		curl_setopt($curl, CURLOPT_HTTPHEADER, array("Content-Type: application/json","token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkb21haW4iOiJsYXN0bWlsZS5jb20iLCJjbGllbnRuYW1lIjoibGFzdG1pbGUiLCJwbGF0Zm9ybSI6ImFwaSIsInRva2VuX2NyZWF0ZWQiOiIyMDIwLTA0LTA3IDEyOjQ2OjMzIn0.TkOxjKimN_UFR7P2bwjlivkVRSNSjX_wEop1-EqA01o"));
+		curl_setopt($curl, CURLOPT_URL, 'http://dev.in3access.in/in3pos/client/newOrder');
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+		$result = curl_exec($curl);
+		if(!$result){ $result = "Connection Failure"; }
+		curl_close($curl);		
+		//Update end time in log table
+		$this->CI->Lead_order_model->update_log(array('response_data'=> $result,'end_at'=> date('Y-m-d h:m:s')),$log_id);
+
 	}
-      
+    
+
+
 
 }
 

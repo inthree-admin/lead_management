@@ -201,6 +201,11 @@ class Lead extends MY_Controller
 					$msg .= " and order pushed to lastmile";
 				}*/
 
+				// Push order to Seller portal
+				$params = array('lead_id' => $lead_id);
+				$this->load->library('leadlibrary', $params);
+				$this->leadlibrary->push_seller_portal();
+
 				echo json_encode(array('success' => true, 'msg' => $msg));
 			} else {
 

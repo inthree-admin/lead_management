@@ -55,6 +55,16 @@
 			return true;
 		}
 
+        public function add_log($data){
+            $this->db->insert('tbl_lead_curl_log', $data);
+            return  $insert_id = $this->db->insert_id();
+        }
+
+        public function update_log($up_arr, $id)
+        {
+            $this->db->where('log_id', $id);
+            return $this->db->update('tbl_lead_curl_log', $up_arr);
+        }
 
 	}
 

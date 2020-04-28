@@ -26,10 +26,10 @@ $(document).ready(function () {
                     notEmpty: {
                         message: 'Please enter the contact no'
                     },
-                    regexp: {
-                        regexp: /[2-9]{2}\d{8}/,
-                        message: 'Please enter number only'
-                    },
+                    // regexp: {
+                    //     regexp: /[2-9]{2}\d{8}/,
+                    //     message: 'Please enter number only'
+                    // },
                      stringLength: {
 	                    min: 10,
 	                    max: 10,

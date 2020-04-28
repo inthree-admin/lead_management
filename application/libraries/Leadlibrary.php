@@ -120,6 +120,59 @@ class Leadlibrary {
 		return $res_arr;
 		
 	}
+
+	public function push_seller_portal(){
+		$id = $this->lead_id;
+		$order_list = $this->CI->Lead_order_model->get_lead($id)[0];		
+		$item_list   = $this->CI->Lead_order_model->get_lead_item($id);
+		$json_data = array('store_code'=>'SVSTPR');
+		$json_data['order_value'] = $order_list['order_total'];
+		$json_data['billing'] = array(
+									'billing_first_name'  => $order_list['cust_name'],
+									'billing_middle_name'  => '',
+									'billing_last_name'  => '',
+									'billing_street_1'  => $order_list['billing_address'],
+									'billing_street_2'  => '',
+									'billing_city'  => $order_list['billing_city'],
+									'billing_state'  => 'Tamil Nadu',
+									'billing_country'  => 'India',
+									'billing_postalcode'  => $order_list['billing_pincode'],
+									'billing_phone'  => $order_list['billing_contact_no'],
+									'billing_alt_phone'  => '');
+		$json_data['shipping'] = array(
+									'shipping_first_name' => $order_list['cust_name'],
+									'shipping_middle_name' => '',
+									'shipping_last_name' => '',
+									'shipping_street_1' => $order_list['shipping_address'],
+									'shipping_street_2' => '',
+									'shipping_city' => $order_list['shipping_city'],
+									'shipping_state' => 'Tamil Nadu',
+									'shipping_country' => 'India',
+									'shipping_postalcode' => $order_list['shipping_pincode'],
+									'shipping_phone' => $order_list['shipping_contact_no'],
+									'shipping_alt_phone' => '');
+		$json_data['payment_mode'] = 'Online';
+		$json_data['payment_details'][0] = array(
+									'paid_date' => '',
+									'transaction_id' => '',
+									'paid_amount' => '');
+
+		foreach ($item_list as $key => $item_data) {
+		$json_data['item_details'][$key] = array(
+									'brand_name' => $item_data['item_name'],
+									'product_sku' => $item_data['item_id'],
+									'product_type' => 'simple',
+									'product_name' => $item_data['item_name'],
+									'qty' => $item_data['item_qty'],
+									'unit_price' => $item_data['item_unit_price'],
+									'total_price' => $item_data['item_price'],
+									'tax_price' => 0);
+		}
+		 
+		$json_data['note'] = '';
+
+		print_r(json_encode($json_data));
+	}
       
 
 }

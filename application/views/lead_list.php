@@ -46,6 +46,37 @@
                      </span>
                   </div>
                   <div class="card-body">
+
+                     <!-- <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                           <div class="d-flex w-100 justify-content-between">
+                              <h8>Order No: 100010</h8>
+                              <small>27-04-2020</small>
+                           </div>
+                           <div>Customer Name: Perumal</div>
+                           <div>Customer Mobile: 9874758785</div>
+                           <div>Customer ID: 55555555</div>
+                           <div>Order Amount: 1500 Rs</div>
+                           <div>Status: Waiting for approval.</div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                           <div class="d-flex w-100 justify-content-between">
+                              <h5 class="mb-1">100011</h5>
+                              <small class="text-muted">27-04-2020</small>
+                           </div>
+                           <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                           <small class="text-muted">Donec id elit non mi porta.</small>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                           <div class="d-flex w-100 justify-content-between">
+                              <h5 class="mb-1">100012</h5>
+                              <small class="text-muted">27-04-2020</small>
+                           </div>
+                           <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                           <small class="text-muted">Donec id elit non mi porta.</small>
+                        </a>
+                     </div> -->
+
                      <div class="table-responsive">
 
                         <div class="btn-group" style="float:right;margin-right:15px;">
@@ -58,12 +89,12 @@
                                  <th>Order #</th>
                                  <th>Customer</th>
                                  <th>Phone</th>
-                                 <th>Payment Type</th> 
+                                 <th>Cust ID</th>
                                  <th>Amount</th>
                                  <th>Created On</th>
                                  <th>Created By</th>
                                  <th>Status</th>
-                                <?php if($this->session->userdata('role') == 1) echo '<th>Action</th>'; ?>
+                                 <?php if ($this->session->userdata('lm_role') == 1) echo '<th>Action</th>'; ?>
                               </tr>
                            </thead>
                            <tbody>
@@ -113,34 +144,33 @@
                   "width": "8%"
                },
                {
-                  "width": "9%"
-               },
-               {
-                  "width": "9%"
+                  "width": "10%"
                },
                {
                   "width": "10%"
                },
-                {
-                  "width": "9%"
+               {
+                  "width": "10%"
                },
                {
-                  "width": "9%"
+                  "width": "12%"
                },
                {
-                  "width": "2%"
+                  "width": "14%"
                },
                {
-                  "width": "2%"
+                  "width": "12%"
                },
-               <?php if($this->session->userdata('role') == 1) { ?>
                {
-                  "width": "2%"
+                  "width": "12%"
                },
-            <?php } ?>
+               <?php if ($this->session->userdata('lm_role') == 1) { ?> {
+                     "width": "12%"
+                  },
+               <?php } ?>
             ],
             "columnDefs": [{
-               "targets": [0,1,2,3,4,5,6],
+               "targets": [0, 1, 2, 3, 4, 5, 6],
                "orderable": true
             }],
 

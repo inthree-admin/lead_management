@@ -26,17 +26,17 @@
         <div class="loader_img"><img src="<?php echo base_url() ?>assets/img/loader.gif" alt="loading..." height="64" width="64"></div>
     </div>
     <!-- header logo: style can be found in header-->
-    <?php include('includes/header.php');?>
+    <?php include('includes/header.php'); ?>
     <div class="wrapper row-offcanvas row-offcanvas-left">
         <!-- Left side column. contains the logo and sidebar -->
         <?php include('includes/aside_left.php'); ?>
         <aside class="right-side">
 
-<!-- Content Header (Page header) -->
-<section class="content-header">
-    <h1>Dashboard</h1>
-</section>
-            
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>Dashboard</h1>
+            </section>
+
 
             <section class="content">
                 <div class="row">
@@ -44,43 +44,17 @@
                         <div class="flip">
                             <div class="widget-bg-color-icon card-box front">
                                 <div class="bg-icon float-left">
-                                    <i class="ti-eye text-warning"></i>
-                                </div>
-                                <div class="text-right">
-                                    <h3 class="text-dark"><b><?php echo $lead_open_count;?></b></h3>
-                                    <p>Open Leads</p>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="widget-bg-color-icon card-box back">
-                            <div class="bg-icon float-left">
-                                    <i class="ti-shopping-cart text-success"></i>
-                                </div>
-                                <div class="text-right">
-                                    <h3 class="text-dark"><b><?php echo $lead_cancel_count;?></b></h3>
-                                    <p>Cancel Leads</p>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                        </div>
-                    </div>
-                    
-
-                    <div class="col-sm-6 col-md-6 col-xl-3">
-                        <div class="flip">
-                            <div class="widget-bg-color-icon card-box front">
-                                <div class="bg-icon float-left">
                                     <i class="ti-thumb-up text-danger"></i>
                                 </div>
                                 <div class="text-right">
-                                    <h3 class="text-dark"><b><?php echo $order_total;?></b></h3>
-                                    <p>Orders</p>
+                                    <h3 class="text-dark"><b><?php echo $lead_open_count; ?></b></h3>
+                                    <p>Order To Approve</p>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
                             <div class="widget-bg-color-icon card-box back">
                                 <div class="text-center">
-                                    <span id="visitsspark-chart"></span>
+                                    <span id="loadspark-chart"></span>
                                     <hr>
                                     <p>Check summary</p>
                                 </div>
@@ -89,15 +63,17 @@
                         </div>
                     </div>
 
+
                     <div class="col-sm-6 col-md-6 col-xl-3">
                         <div class="flip">
                             <div class="widget-bg-color-icon card-box front">
                                 <div class="bg-icon float-left">
-                                    <i class="ti-shopping-cart text-success"></i>
+                                    <i class="ti-eye text-warning"></i>
                                 </div>
+
                                 <div class="text-right">
-                                    <h3><b id="widget_count3"><?php echo $sales_total;?></b></h3>
-                                    <p>Sales</p>
+                                    <h3 class="text-dark"><b><?php echo $lead_approved_count; ?></b></h3>
+                                    <p>Pending Orders</p>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
@@ -116,11 +92,34 @@
                         <div class="flip">
                             <div class="widget-bg-color-icon card-box front">
                                 <div class="bg-icon float-left">
-                                    <i class="ti-user text-info"></i>
+                                    <i class="ti-shopping-cart text-success"></i>
                                 </div>
                                 <div class="text-right">
-                                    <h3 class="text-dark"><b><?php echo $customer_count;?></b></h3>
-                                    <p>Customers</p>
+                                    <h3><b id="widget_count3"><?php echo $lead_delivered_count; ?></b></h3>
+                                    <p>Delivered Orders</p>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="widget-bg-color-icon card-box back">
+                                <div class="text-center">
+                                    <span id="visitsspark-chart"></span>
+                                    <hr>
+                                    <p>Check summary</p>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-md-6 col-xl-3">
+                        <div class="flip">
+                            <div class="widget-bg-color-icon card-box front">
+                                <div class="bg-icon float-left">
+                                    <i class="ti-thumb-down text-danger"></i>
+                                </div>
+                                <div class="text-right">
+                                    <h3 class="text-dark"><b><?php echo $lead_cancel_count; ?></b></h3>
+                                    <p>Cancelled Orders</p>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>

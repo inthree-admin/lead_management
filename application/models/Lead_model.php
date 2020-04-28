@@ -66,7 +66,7 @@ class Lead_model extends CI_Model
 
     public function lead_list($filter)
     {
-         $this->db->select('lead_id,cust_name,cust_email,cust_phone,lead_no,order_total,receipt_no,lmu_username,created_by,
+         $this->db->select('lead_id,cust_name,cust_email,cust_phone,cust_id,lead_no,order_total,receipt_no,lmu_username,created_by,
         CASE
             WHEN payment_link_status = 0 THEN "Not Sent"
             WHEN payment_link_status = 1 THEN "Sent"
@@ -83,13 +83,9 @@ class Lead_model extends CI_Model
             WHEN approval_status = 1 THEN "Waiting For Approval"
             WHEN approval_status = 2 THEN "Approved"
             WHEN approval_status = 3 THEN "Cancelled"
+            WHEN approval_status = 4 THEN "Delivered"
             ELSE "-"
         END AS status,
-        CASE
-            WHEN payment_type = 1 THEN "Prepaid"
-            WHEN payment_type = 2 THEN "COD"
-            ELSE "-"
-        END AS payment_type
         ', FALSE);
         $this->db->from(' tbl_lead');
         $this->db->join(' tbl_lead_users','tbl_lead.created_by = tbl_lead_users.lm_id','LEFT');
@@ -102,6 +98,7 @@ class Lead_model extends CI_Model
             OR lead_no LIKE '%" . $filter['searchKey'] . "%' 
             OR cust_email LIKE '%" . $filter['searchKey'] . "%' 
             OR cust_phone  LIKE '%" . $filter['searchKey'] . "%'  
+            OR cust_id  LIKE '%" . $filter['searchKey'] . "%'  
 			OR receipt_no LIKE '%" . $filter['searchKey'] . "%')
         ");
         }
@@ -125,6 +122,7 @@ class Lead_model extends CI_Model
             OR lead_no LIKE '%" . $filter['searchKey'] . "%' 
             OR cust_email LIKE '%" . $filter['searchKey'] . "%' 
             OR cust_phone  LIKE '%" . $filter['searchKey'] . "%'  
+            OR cust_id  LIKE '%" . $filter['searchKey'] . "%'  
             OR receipt_no LIKE '%" . $filter['searchKey'] . "%')
         ");
             

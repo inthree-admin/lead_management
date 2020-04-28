@@ -16,6 +16,28 @@
     var BASE_URL = "<?php echo base_url() ?>";
 </script>
 
+<?php
+
+if(isset($lead_info['lead']['approval_status']) && $lead_info['lead']['approval_status']!='') {
+    if($lead_info['lead']['approval_status'] == 1) {
+        $approval_status = 'Waiting For Approval';
+    } 
+    
+    if($lead_info['lead']['approval_status'] == 2) {
+        $approval_status = 'Approved';
+    } 
+    
+    if($lead_info['lead']['approval_status'] == 3) {
+        $approval_status = 'Cancelled';
+    } 
+
+    if($lead_info['lead']['approval_status'] == 4) {
+        $approval_status = 'Delivered';
+    } 
+}
+    
+?>
+
 <body class="skin-default">
     <div class="preloader">
         <div class="loader_img"><img src="<?php echo base_url() ?>assets/img/loader.gif" alt="loading..." height="64" width="64"></div>
@@ -54,8 +76,8 @@
                         <div class="col-md-6 col-sm-12 col-12 col-lg-6 col-xl-6 invoice_bg text-right">
                             <div class="float-right"> 
                                 <address> 
-                                    <strong>Payment Type:</strong> <?php echo (isset($lead_info['lead']['payment_type'])) ? ucfirst($lead_info['lead']['payment_type']) : ''; ?>
-                                    <br /> <strong>Payment Staus:</strong> <?php echo (isset($lead_info['lead']['payment_status'])) ? ucfirst($lead_info['lead']['payment_status']) : ''; ?>
+                                    <strong>Cust ID:</strong> <?php echo (isset($lead_info['lead']['cust_id'])) ? $lead_info['lead']['cust_id'] : ''; ?>
+                                    <br /> <strong>Order Staus:</strong> <?php echo (isset($approval_status)) ? ucfirst($approval_status) : ''; ?>
                                     <br /><strong>Created on   :</strong> <?php echo (isset($lead_info['lead']['created_on'])) ? ucfirst($lead_info['lead']['created_on']) : ''; ?>
                                 </address>
                                 <span></span>

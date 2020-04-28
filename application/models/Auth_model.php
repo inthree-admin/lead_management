@@ -57,4 +57,14 @@ class Auth_model extends CI_Model
 		if($query->num_rows() == 0) return true;  
 		else return false; 	 
 	}
+
+	public function get_user_details($data)
+	{
+		$this->db->select('*');
+		$this->db->from('tbl_lead_users'); 
+		$this->db->where('lmu_username', $data['username']);
+		$query = $this->db->get();
+		return  $query->row_array(); 
+	}
+
 }

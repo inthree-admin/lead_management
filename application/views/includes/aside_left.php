@@ -7,7 +7,7 @@
                      <a class="float-left profile-thumb" href="javascript:void(0);">
                          <img src="<?php echo base_url(); ?>assets/img/user.jpg" class="rounded-circle" alt="User Image"></a>
                      <div class="content-profile">
-                         <h4 class="media-heading"><?php echo $this->session->userdata('username'); ?></h4>
+                         <h4 class="media-heading"><?php echo $this->session->userdata('lm_username'); ?></h4>
                          <ul class="icon-list">
                              <li>
                                  <a href="javascript:void(0);" title="user">
@@ -56,6 +56,12 @@
                      <a href="<?php echo site_url("lead/list"); ?>">
                          <i class="menu-icon ti-layout-grid4"></i>
                          <span class="mm-text ">Lead List</span>
+                     </a>
+                 </li>
+                 <li class="<?php if($seg1=="proof") echo "active"; ?>"  >
+                     <a href="<?php echo site_url("proof"); ?>">
+                         <i class="menu-icon ti-gallery"></i>
+                         <span class="mm-text ">POD List</span>
                      </a>
                  </li>
 

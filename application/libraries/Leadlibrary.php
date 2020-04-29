@@ -175,6 +175,7 @@ class Leadlibrary {
 		$post_data = json_encode($json_data);
 		$log_data = array('curl_name' => 'push_order_to_seller_portal','send_data'=> $post_data,'started_at'=> date('Y-m-d h:m:s'));
 		$log_id = $this->CI->Lead_order_model->add_log($log_data);
+
 		//Send data 
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_POST, 1);
@@ -184,8 +185,17 @@ class Leadlibrary {
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 		$result = curl_exec($curl);
+
 		if(!$result){ $result = "Connection Failure"; }
 		curl_close($curl);		
+
+		if($result) {
+			// update order id
+			$res_arr = json_decode($result);
+			$this->CI->Lead_order_model->update_lead(array('seller_order_id'=> $res_arr['order_id']),$id);
+
+		}
+
 		//Update end time in log table
 		$this->CI->Lead_order_model->update_log(array('response_data'=> $result,'end_at'=> date('Y-m-d h:m:s')),$log_id);
 

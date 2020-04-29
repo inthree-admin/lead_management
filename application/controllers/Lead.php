@@ -259,12 +259,15 @@ class Lead extends MY_Controller
 		echo json_encode($returnData);
 	}
 
+
 	public function load_products()
 	{
 		$product_info = $this->Lead_model->get_product_info('all');
 		echo json_encode($product_info);
 	}
-	public function change_status()
+
+
+	/*public function change_status()
 	{
 		$post = $this->input->post();
 		$lead_id = (isset($post['lead_id'])) ? $post['lead_id'] : 0;
@@ -282,17 +285,17 @@ class Lead extends MY_Controller
 			
 				if ($payment_type == 1) { // only prepaid
 
-					if ($paid_status == 0) { // and not paid 
+					if ($paid_status == 0) { // only paid 
 
 						$rpay_inv_id = $lead_info[0]['rpay_inv_id'];
 
-						// Send Payment Link
+						// Cancel Payment Link
 						$url = 'https://api.razorpay.com/v1/invoices/' . $rpay_inv_id . '/cancel';
 						$key_id = 'rzp_test_WIy9t4y8B55ivj';
 						$key_secret = 'zYx0UxiPQ9DdTYH0VWTvCWPj';
 						$fields_string = '';
 
-						//Prepare CURL Request for payment link
+						//Prepare CURL Request for cancel payment link
 						$ch = curl_init();
 						curl_setopt($ch, CURLOPT_URL, $url);
 						curl_setopt($ch, CURLOPT_USERPWD, $key_id . ':' . $key_secret);
@@ -330,7 +333,7 @@ class Lead extends MY_Controller
 				}
 			}
 		}
-	}
+	}*/
 
 	public function approve_lead()
 	{
@@ -354,17 +357,22 @@ class Lead extends MY_Controller
 					$result = $this->Lead_model->update_lead($up_arr, $lead_id);
 					if ($result) {
 
-						// Push orders to lastmile
-						$params = array('lead_id' => $lead_id);
-						$this->load->library('leadlibrary', $params);
-						$this->leadlibrary->push_order();
+						if($status == 2) {
+							// Push orders to lastmile
+							$params = array('lead_id' => $lead_id);
+							$this->load->library('leadlibrary', $params);
+							$this->leadlibrary->push_order();
 
-						// Push order to Seller portal
-						$params = array('lead_id' => $lead_id);
-						$this->load->library('leadlibrary', $params);
-						$this->leadlibrary->push_seller_portal();
+							// Push order to Seller portal
+							$params = array('lead_id' => $lead_id);
+							$this->load->library('leadlibrary', $params);
+							$this->leadlibrary->push_seller_portal();
+							$msg = 'Lead Approved Successfully';
+						}	
 
-						$msg = ($status == 2)?'Lead Approved Successfully':'Lead Cancelled Successfully';
+						if($status == 3) {
+							$msg = 'Lead Cancelled Successfully';
+						} 
 
 						echo json_encode(array('success' => true, 'msg' => $msg));
 						return true;

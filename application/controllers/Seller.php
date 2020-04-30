@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Client extends CI_Controller {
+class Seller extends CI_Controller {
 
     public function __construct() {
       	parent::__construct();
@@ -12,7 +12,7 @@ class Client extends CI_Controller {
  	public function isJSON($string){
 	    return is_string($string) && is_array(json_decode($string, true)) ? true : false;
 	}
-    public function updateOrderStatus(){
+    public function update_order_starus(){
     		$raw_data = file_get_contents("php://input"); 
     		// Insert log table
     		$log_data = array('curl_name' => 'change_order_status_from_seller_portal','send_data'=> $raw_data,'started_at'=> date('Y-m-d h:m:s'));
@@ -26,7 +26,7 @@ class Client extends CI_Controller {
 			 	 $seller_order_status = $data->order_status;
 			 	 $seller_order_history = json_encode($data->order_history); 
 			 	 $result = $this->Lead_model->getLead(array('seller_order_id'=>$seller_order_id));
-			 	 if(is_array($result) AND count($result) ==0) {
+			 	 if(!($result)) {
 			 	 	$response_data = array('success' => false, 'message'=> 'Invalid order id' );
 			 	 }else{
 			 	 	$lead_id = $result->lead_id;

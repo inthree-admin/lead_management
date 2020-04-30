@@ -189,15 +189,20 @@ class Leadlibrary {
 		if(!$result){ $result = "Connection Failure"; }
 		curl_close($curl);		
 
+		//Update end time in log table
+		$this->CI->Lead_order_model->update_log(array('response_data'=> $result,'end_at'=> date('Y-m-d h:m:s')),$log_id);
+
 		if($result) {
 			// update order id
 			$res_arr = json_decode($result);
-			$this->CI->Lead_order_model->update_lead(array('seller_order_id'=> $res_arr['order_id']),$id);
+			$seller_order_id = $res_arr->order_id;
+		
+			$this->CI->Lead_model->update_lead(array('seller_order_id'=>$seller_order_id),$id);
 
 		}
 
-		//Update end time in log table
-		$this->CI->Lead_order_model->update_log(array('response_data'=> $result,'end_at'=> date('Y-m-d h:m:s')),$log_id);
+		return true;
+		
 
 	}
     

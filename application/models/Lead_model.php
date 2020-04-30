@@ -178,4 +178,12 @@ class Lead_model extends CI_Model
              return $return; 
         }
     }
+
+    public function getLead($filter=array()){
+            $this->db->select('*');
+            $this->db->from('tbl_lead');
+            if(isset($filter['seller_order_id']) AND !empty($filter['seller_order_id']))
+                $this->db->where('seller_order_id', $filter['seller_order_id']);
+            return $this->db->get()->row(); 
+    }
 }

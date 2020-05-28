@@ -227,7 +227,16 @@ function save(data) {
 			        }).then(function() {
 			            location.href = BASE_URL+'/lead/list';
 			        });
-            	}
+            	} else {
+                    swal({
+                        title: "Failed",
+                        text: result['msg'],
+                        type: "error",
+                        confirmButtonColor: "#66cc99"
+                     }).then(function() {
+                        $("#btn_submit").attr("disabled", false);
+			        });
+                }
             },
             error: function (e) { 
  

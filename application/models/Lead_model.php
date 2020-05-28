@@ -27,6 +27,7 @@ class Lead_model extends CI_Model
         $this->db->select('*');
         $this->db->from('tbl_lead_products');
         if ($prod_id == 'all') {
+            $this->db->where('status', 1);
             $query = $this->db->get();
             return $result = $query->result_array();
         }
@@ -40,6 +41,15 @@ class Lead_model extends CI_Model
             $query = $this->db->get();
             return $result = $query->row_array();
         }
+    }
+
+    public function get_lmp_info($prod_ids)
+    {
+        $this->db->select('lmp_id');
+        $this->db->from('tbl_lead_products');
+        $this->db->where("prod_id IN (".$prod_ids.")",NULL, false);
+        $this->db->group_by('lmp_id');
+        return $this->db->get()->result_array();
     }
 
     public function get_lead_by_receipt($receipt_no)

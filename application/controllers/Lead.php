@@ -40,78 +40,83 @@ class Lead extends MY_Controller
 			$login_id 			= $this->session->userdata('lm_admin_id');
 			$receipt 			= 'BB' . time();
 
+			// Check all products from the same LMP
+			$prod_list = rtrim(implode(',', $post['product']), ',');
+			$lmp_info = $this->Lead_model->get_lmp_info($prod_list);
 
-			// Prepre lead data for insert
-			$insert_arr = array(
-				'cust_name' 		=> $cust_name,
-				'cust_email' 		=> $cust_email,
-				'cust_phone' 		=> $cust_phone,
-				'receipt_no' 		=> $receipt,
-				'created_on' 		=> date('Y-m-d G:i:s'),
-				'created_by' 		=> $login_id,
-				'billing_address'	=> $billing_address,
-				'billing_city'		=> $billing_city,
-				'billing_pincode'	=> $billing_pincode,
-				'billing_contact_no' => $billing_contact_no,
-				'cust_id' 			=> $cust_id,
-				'lrn' 				=> $lrn_no,
-				'shipping_address'	=> $shipping_address,
-				'shipping_city'		=> $shipping_city,
-				'shipping_pincode'	=> $shipping_pincode,
-				'shipping_contact_no' => $shipping_contact_no,
-				'lmp_id' 		    => 145,
-				'payment_type' 		=> $payment_type,
-				'status'			=> $lead_status
-			);
+			if (count($lmp_info) == 1) {
 
-			// Save lead
-			$lead_id = $this->Lead_model->insert_new_lead($insert_arr);
-			if ($lead_id) {
+				// Prepre lead data for insert
+				$insert_arr = array(
+					'cust_name' 		=> $cust_name,
+					'cust_email' 		=> $cust_email,
+					'cust_phone' 		=> $cust_phone,
+					'receipt_no' 		=> $receipt,
+					'created_on' 		=> date('Y-m-d G:i:s'),
+					'created_by' 		=> $login_id,
+					'billing_address'	=> $billing_address,
+					'billing_city'		=> $billing_city,
+					'billing_pincode'	=> $billing_pincode,
+					'billing_contact_no' => $billing_contact_no,
+					'cust_id' 			=> $cust_id,
+					'lrn' 				=> $lrn_no,
+					'shipping_address'	=> $shipping_address,
+					'shipping_city'		=> $shipping_city,
+					'shipping_pincode'	=> $shipping_pincode,
+					'shipping_contact_no' => $shipping_contact_no,
+					'lmp_id' 		    => $lmp_info[0]['lmp_id'],
+					'payment_type' 		=> $payment_type,
+					'status'			=> $lead_status
+				);
 
-				// Group order items 
-				$order_data = array();
-				foreach ($post['product'] as $key => $pid) {
-					if (!empty($pid)) {
-						if (isset($order_data[$pid]))
-							$order_data[$pid] += $post['quantity'][$key];
-						else
-							$order_data[$pid] = $post['quantity'][$key];
+				// Save lead
+				$lead_id = $this->Lead_model->insert_new_lead($insert_arr);
+				if ($lead_id) {
+
+					// Group order items 
+					$order_data = array();
+					foreach ($post['product'] as $key => $pid) {
+						if (!empty($pid)) {
+							if (isset($order_data[$pid]))
+								$order_data[$pid] += $post['quantity'][$key];
+							else
+								$order_data[$pid] = $post['quantity'][$key];
+						}
 					}
-				}
 
-				// Prepare order item 
-				$product_info = $this->Lead_model->get_product_info(array_keys($order_data));
-				$total_amount = 0;
-				$insert_item_arr = array();
-				foreach ($product_info as $key => $pdata) {
-					$qty = $order_data[$pdata['prod_id']];
-					$price =  $pdata['prod_price'];
-					$subtotal = $qty * $price;
-					$total_amount = $total_amount + $subtotal;
-					$item_arr = array(
-						'lead_id' 			=> $lead_id,
-						'item_name' 		=> $pdata['prod_name'],
-						'item_id' 			=> $pdata['prod_id'],
-						'item_unit_price' 	=> $price,
-						'item_qty' 			=> $qty,
-						'item_price' 		=> $subtotal
-					);
-					array_push($insert_item_arr, $item_arr);
-				}
+					// Prepare order item 
+					$product_info = $this->Lead_model->get_product_info(array_keys($order_data));
+					$total_amount = 0;
+					$insert_item_arr = array();
+					foreach ($product_info as $key => $pdata) {
+						$qty = $order_data[$pdata['prod_id']];
+						$price =  $pdata['prod_price'];
+						$subtotal = $qty * $price;
+						$total_amount = $total_amount + $subtotal;
+						$item_arr = array(
+							'lead_id' 			=> $lead_id,
+							'item_name' 		=> $pdata['prod_name'],
+							'item_id' 			=> $pdata['prod_id'],
+							'item_unit_price' 	=> $price,
+							'item_qty' 			=> $qty,
+							'item_price' 		=> $subtotal
+						);
+						array_push($insert_item_arr, $item_arr);
+					}
 
-				// Save lead item
-				$this->Lead_model->insert_new_lead_items($insert_item_arr);
+					// Save lead item
+					$this->Lead_model->insert_new_lead_items($insert_item_arr);
 
-				// Generate lead number and update to lead table
-				$lead_no =  '1' . sprintf("%'.06d", $lead_id);
-				$up_arr = array('lead_no' => $lead_no, 'order_total' => $total_amount);
-				$this->Lead_model->update_lead($up_arr, $lead_id);
+					// Generate lead number and update to lead table
+					$lead_no =  '1' . sprintf("%'.06d", $lead_id);
+					$up_arr = array('lead_no' => $lead_no, 'order_total' => $total_amount);
+					$this->Lead_model->update_lead($up_arr, $lead_id);
 
-				// Lead generation completed
-				$msg = 'Lead generated';
+					// Lead generation completed
+					$msg = 'Lead ID '.$lead_no.' generated.';
 
-				// Send details to payment gateway for prepaid orders
-				/*if ($payment_type == 1) {
+					// Send details to payment gateway for prepaid orders
+					/*if ($payment_type == 1) {
 
 					$tot_amount_paisa = $total_amount * 100;
 					$discription = 'Boonbox Product';
@@ -201,10 +206,15 @@ class Lead extends MY_Controller
 					$msg .= " and order pushed to lastmile";
 				}*/
 
-				echo json_encode(array('success' => true, 'msg' => $msg));
+					echo json_encode(array('success' => true, 'msg' => $msg));
+				} else {
+
+					echo json_encode(array('success' => false, 'msg' => 'Lead generation failed'));
+				}
 			} else {
 
-				echo json_encode(array('success' => false, 'msg' => 'Lead generation failed'));
+				echo json_encode(array('success' => false, 'msg' => 'You cannot select products from multiple LMP'));
+
 			}
 		}
 	}
@@ -216,7 +226,7 @@ class Lead extends MY_Controller
 
 	public function lead_list()
 	{
-		 
+
 		$role = $this->session->userdata('lm_role');
 		$user_id = $this->session->userdata('lm_admin_id');
 		$start  = (isset($_GET['start'])) ? $_GET['start'] : '';
@@ -228,11 +238,11 @@ class Lead extends MY_Controller
 		$columnArray = array(
 			0 => 'lead_no', 1 => 'cust_name',  2 => 'cust_phone',
 			3 => 'cust_id',  4 => 'order_total',
-			5 => 'created_on',6 => 'lmu_username' ,7 => 'status'
+			5 => 'created_on', 6 => 'lmu_username', 7 => 'status'
 		);
 
 		$filter_arr = array('start' => $start, 'length' => $length, 'searchKey' => $searchKey, 'ordercolumn' => $columnArray[$ordercolumn], 'ordertype' => $ordertype);
-		if($role != 1 )  $filter_arr['created_by'] = $user_id;
+		if ($role != 1)  $filter_arr['created_by'] = $user_id;
 
 		$result = $this->Lead_model->lead_list($filter_arr);
 		$lead_total = $this->Lead_model->lead_total_count($filter_arr);
@@ -242,7 +252,7 @@ class Lead extends MY_Controller
 			$returnData['data'][$key][0] = '<a href="' . base_url() . 'order_history/get_history?id=' . $data['lead_no'] . '">' . $data['lead_no'] . '</a>';
 			$returnData['data'][$key][1] = $data['cust_name'];
 			$returnData['data'][$key][2] = $data['cust_phone'];
-			$returnData['data'][$key][3] = $data['cust_id']; 
+			$returnData['data'][$key][3] = $data['cust_id'];
 			$returnData['data'][$key][4] = $data['order_total'];
 			$returnData['data'][$key][5] = $data['created_on'];
 			$returnData['data'][$key][6] = ucfirst($data['lmu_username']);
@@ -252,7 +262,7 @@ class Lead extends MY_Controller
 			if ($data['status'] == 'Waiting For Approval')
 				$actionbtn = '<i class="fa fa-fw fa-thumbs-o-up fa-lg actions_icon" title="Approve" onclick="approveLead(' . $data['lead_id'] . ')"></i>&nbsp&nbsp<i class="fa fa-fw ti-close text-danger actions_icon" title="Cancel" onclick="cancelLead(' . $data['lead_id'] . ')"></i>';
 			//$actionbtn = '<button class="btn btn-primary btn-xs" onclick="cancelLead('.$data['lead_id'].')">Cancel</button>';
-			if($role == 1 ) $returnData['data'][$key][8] = $actionbtn;
+			if ($role == 1) $returnData['data'][$key][8] = $actionbtn;
 		}
 		$returnData['recordsTotal'] = count($result);
 		$returnData['recordsFiltered'] = $lead_total['total_lead'];
@@ -349,7 +359,7 @@ class Lead extends MY_Controller
 			if (is_array($lead_info) && count($lead_info) > 0) {
 
 				$approval_status = $lead_info[0]['approval_status'];
-			
+
 				if ($approval_status == 1) { // waiting for approval
 
 					$username = $this->session->userdata('lm_username');
@@ -357,7 +367,7 @@ class Lead extends MY_Controller
 					$result = $this->Lead_model->update_lead($up_arr, $lead_id);
 					if ($result) {
 
-						if($status == 2) {
+						if ($status == 2) {
 							// Push orders to lastmile
 							$params = array('lead_id' => $lead_id);
 							$this->load->library('leadlibrary', $params);
@@ -368,21 +378,18 @@ class Lead extends MY_Controller
 							$this->load->library('leadlibrary', $params);
 							$this->leadlibrary->push_seller_portal();
 							$msg = 'Lead Approved Successfully';
-						}	
+						}
 
-						if($status == 3) {
+						if ($status == 3) {
 							$msg = 'Lead Cancelled Successfully';
-						} 
+						}
 
 						echo json_encode(array('success' => true, 'msg' => $msg));
 						return true;
-
 					} else {
 						echo json_encode(array('success' => false, 'msg' => 'Action Failed'));
 						return true;
 					}
-
-					
 				} else {
 					echo json_encode(array('success' => false, 'msg' => 'Lead already approved.'));
 					return true;
@@ -398,7 +405,7 @@ class Lead extends MY_Controller
 		$user_id = $this->session->userdata('lm_admin_id');
 		$q = (isset($_GET['q'])) ? $_GET['q'] : '';
 		$filter_arr = array('searchKey' => $q, 'ordercolumn' => 'created_on', 'ordertype' => 'DESC');
-		if($role != 1 )  $filter_arr['created_by'] = $user_id;
+		if ($role != 1)  $filter_arr['created_by'] = $user_id;
 		$result = $this->Lead_model->lead_list($filter_arr);
 		header("Content-Disposition: attachment; filename=\"lead_list_" . time() . ".xls\"");
 		header("Content-Type: application/vnd.ms-excel;");
@@ -409,7 +416,7 @@ class Lead extends MY_Controller
 			0 => 'Order#',
 			1 => 'Name',
 			2 => 'Phone',
-			3 => 'Payment Type', 
+			3 => 'Payment Type',
 			4 => 'Amount',
 			5 => 'Created On',
 			6 => 'Created By',
@@ -425,7 +432,7 @@ class Lead extends MY_Controller
 				4 => $info['order_total'],
 				5 => $info['created_on'],
 				6 => $info['lmu_username'],
-				7 => $info['status'] 
+				7 => $info['status']
 			);
 			fputcsv($handle, $data, "\t");
 		}

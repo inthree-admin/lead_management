@@ -116,9 +116,9 @@ class Lead_model extends CI_Model
             $this->db->order_by($filter['ordercolumn'], $filter['ordertype']);
         if (!empty($filter['length']))
             $this->db->limit($filter['length'], $filter['start']);
-        return $this->db->get()->result_array();
-    
+        return $this->db->get()->result_array();  
     }
+    
     public function lead_total_count($filter)
     {
         

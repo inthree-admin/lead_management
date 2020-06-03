@@ -19,10 +19,6 @@ class Lead extends MY_Controller
 	{
 		$post = $this->input->post();
 
-		// echo '<pre>';
-		// print_r($post);
-		// exit;
-
 		if (is_array($post) && count($post) > 0) {
 
 			// Get the form values
@@ -87,11 +83,6 @@ class Lead extends MY_Controller
 								$order_data[$pid] = $post['quantity'][$key];
 						}
 					}
-
-					echo '<pre>';
-					print_r($order_data);
-					exit;
-
 
 					// Prepare order item 
 					$product_info = $this->Lead_model->get_product_info(array_keys($order_data));
@@ -223,7 +214,6 @@ class Lead extends MY_Controller
 			} else {
 
 				echo json_encode(array('success' => false, 'msg' => 'You cannot select products from multiple LMP'));
-
 			}
 		}
 	}
@@ -278,13 +268,11 @@ class Lead extends MY_Controller
 		echo json_encode($returnData);
 	}
 
-
 	public function load_products()
 	{
 		$product_info = $this->Lead_model->get_product_info('all');
 		echo json_encode($product_info);
 	}
-
 
 	/*public function change_status()
 	{
@@ -383,9 +371,9 @@ class Lead extends MY_Controller
 							$this->leadlibrary->push_order();
 
 							// Push order to Seller portal
-							$params = array('lead_id' => $lead_id);
-							$this->load->library('leadlibrary', $params);
-							$this->leadlibrary->push_seller_portal();
+							// $params = array('lead_id' => $lead_id);
+							// $this->load->library('leadlibrary', $params);
+							// $this->leadlibrary->push_seller_portal();
 							$msg = 'Lead Approved Successfully';
 						}
 

@@ -112,11 +112,17 @@ class Lead_model extends CI_Model
 			OR receipt_no LIKE '%" . $filter['searchKey'] . "%')
         ");
         }
+        if(isset($filter['from_date']) AND isset($filter['to_date'])){
+            $this->db->where(" ( DATE(created_on)  >= '".$filter['from_date']."' AND DATE(created_on)  <= '".$filter['to_date']."') ");
+
+        }
+
         if (!empty($filter['ordercolumn']))
             $this->db->order_by($filter['ordercolumn'], $filter['ordertype']);
         if (!empty($filter['length']))
             $this->db->limit($filter['length'], $filter['start']);
-        return $this->db->get()->result_array();  
+          return $this->db->get()->result_array();  
+            
     }
     
     public function lead_total_count($filter)

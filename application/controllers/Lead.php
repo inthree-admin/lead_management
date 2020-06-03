@@ -233,6 +233,9 @@ class Lead extends MY_Controller
 		$searchKey = (isset($_GET['search']['value'])) ? trim($_GET['search']['value']) : '';
 		$ordercolumn =  (isset($_GET['order'][0]['column'])) ? $_GET['order'][0]['column'] : 1;
 		$ordertype = (isset($_GET['order'][0]['dir'])) ? $_GET['order'][0]['dir'] : ''; //asc or desc  
+		$from_date = (isset($_GET['from_date']) AND !empty($_GET['from_date'])) ? $_GET['from_date'] : date('Y-m-d'); 
+		$to_date = (isset($_GET['to_date']) AND !empty($_GET['to_date'])) ? $_GET['to_date'] : date('Y-m-d'); 
+
 
 		$columnArray = array(
 			0 => 'lead_no', 1 => 'cust_name',  2 => 'cust_phone',
@@ -240,7 +243,8 @@ class Lead extends MY_Controller
 			5 => 'created_on', 6 => 'lmu_username', 7 => 'status'
 		);
 
-		$filter_arr = array('start' => $start, 'length' => $length, 'searchKey' => $searchKey, 'ordercolumn' => $columnArray[$ordercolumn], 'ordertype' => $ordertype);
+		$filter_arr = array('start' => $start, 'length' => $length, 'searchKey' => $searchKey, 'ordercolumn' => $columnArray[$ordercolumn], 
+		'ordertype' => $ordertype,'from_date' => $from_date,'to_date' => $to_date);
 		if ($role != 1)  $filter_arr['created_by'] = $user_id;
 
 		$result = $this->Lead_model->lead_list($filter_arr);
@@ -347,6 +351,7 @@ class Lead extends MY_Controller
 		$post = $this->input->post();
 		$lead_id = (isset($post['lead_id'])) ? $post['lead_id'] : 0;
 		$status = (isset($post['status'])) ? $post['status'] : 0;
+		$reason = (isset($post['reason'])) ? $post['reason'] : '';
 		if (empty($lead_id) or empty($status)) {
 			echo json_encode(array('success' => false, 'msg' => 'Something went wrong'));
 		}
@@ -361,6 +366,7 @@ class Lead extends MY_Controller
 
 					$username = $this->session->userdata('lm_username');
 					$up_arr = array('approval_status' => $status, 'modified_on' => date('Y-m-d G:i:s'), 'modified_by' => $username);
+					if(!empty($reason)) $up_arr['cancel_reason'] = $reason;
 					$result = $this->Lead_model->update_lead($up_arr, $lead_id);
 					if ($result) {
 
@@ -401,7 +407,9 @@ class Lead extends MY_Controller
 		$role = $this->session->userdata('lm_role');
 		$user_id = $this->session->userdata('lm_admin_id');
 		$q = (isset($_GET['q'])) ? $_GET['q'] : '';
-		$filter_arr = array('searchKey' => $q, 'ordercolumn' => 'created_on', 'ordertype' => 'DESC');
+		$from_date = (isset($_GET['from_date'])) ? $_GET['from_date'] : '';
+		$to_date = (isset($_GET['to_date'])) ? $_GET['to_date'] : '';
+		$filter_arr = array('searchKey' => $q, 'ordercolumn' => 'created_on', 'from_date' => $from_date,'to_date' => $to_date,'ordertype' => 'DESC');
 		if ($role != 1)  $filter_arr['created_by'] = $user_id;
 		$result = $this->Lead_model->lead_list($filter_arr);
 		header("Content-Disposition: attachment; filename=\"lead_list_" . time() . ".xls\"");

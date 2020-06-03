@@ -16,6 +16,8 @@
    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/css/custom_css/datatables_custom.css">
    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/vendors/sweetalert2/css/sweetalert2.min.css" />
    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/css/custom_css/sweet_alert2.css">
+   <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/vendors/jquerydaterangepicker/css/daterangepicker.min.css">
+   <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/css/datepicker.css">
 </head>
 <script>
    var BASE_URL = "<?php echo base_url() ?>";
@@ -34,51 +36,81 @@
       <section class="content">
          <!--main content-->
          <div class="row">
-            <div class="col-lg-12">
-               <div class="card ">
-                  <div class="card-header">
+            <div class="col-md-12">
+               <div class="card mrgn_top">
+                  <div class="card-header txt_padding">
                      <h3 class="card-title">
-                        <i class="ti-layout-grid3"></i> Lead List
+                        <i class="fa fa-fw ti-pencil"></i> Lead List
                      </h3>
-                     <span class="float-right">
+                     <span class="float-right d-none d-sm-block fnt_size txt_font">
                         <i class="fa fa-fw ti-angle-up clickable"></i>
                         <i class="fa fa-fw ti-close removecard"></i>
                      </span>
                   </div>
+                  <?php
+                  $today      = date('Y-m-d');
+                  $datetime   = new DateTime($today);
+                  $datetime->modify('-1 day');
+                  $from_date   = $datetime->format('Y-m-d');
+                  $to_date     = $today;
+
+                  ?>
                   <div class="card-body">
+                     <form id="search_form" method="get">
+                        <div class="row">
 
-                     <!-- <div class="list-group">
-                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                           <div class="d-flex w-100 justify-content-between">
-                              <h8>Order No: 100010</h8>
-                              <small>27-04-2020</small>
-                           </div>
-                           <div>Customer Name: Perumal</div>
-                           <div>Customer Mobile: 9874758785</div>
-                           <div>Customer ID: 55555555</div>
-                           <div>Order Amount: 1500 Rs</div>
-                           <div>Status: Waiting for approval.</div>
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                           <div class="d-flex w-100 justify-content-between">
-                              <h5 class="mb-1">100011</h5>
-                              <small class="text-muted">27-04-2020</small>
-                           </div>
-                           <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                           <small class="text-muted">Donec id elit non mi porta.</small>
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                           <div class="d-flex w-100 justify-content-between">
-                              <h5 class="mb-1">100012</h5>
-                              <small class="text-muted">27-04-2020</small>
-                           </div>
-                           <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                           <small class="text-muted">Donec id elit non mi porta.</small>
-                        </a>
-                     </div> -->
+                           <div class="col-3">
+                              <div class="form-group">
 
+                                 <div class="input-group">
+                                    <div class="input-group-addon">
+                                       <i class="fa fa-fw ti-calendar"></i>
+                                    </div>
+                                    <input class="form-control" id="from_date" size="40" placeholder="From date" value="<?php echo $from_date; ?>">
+                                 </div>
+                                 <!-- /.input group -->
+                              </div>
+                           </div>
+                           <div class="col-3">
+                              <div class="form-group">
+
+                                 <div class="input-group">
+                                    <div class="input-group-addon">
+                                       <i class="fa fa-fw ti-calendar"></i>
+                                    </div>
+                                    <input class="form-control" id="to_date" size="40" placeholder="To date" value="<?php echo $to_date; ?>">
+                                 </div>
+                                 <!-- /.input group -->
+                              </div>
+                           </div>
+                           <div class="col-5">
+
+                              <button type="button" class="btn btn-effect-ripple btn-primary" onclick="leadList();">
+                                 Search
+                              </button>
+                              <!-- <button type="reset" class="btn btn-effect-ripple btn-default reset_btn">Reset
+                              </button> -->
+
+                           </div>
+                        </div>
+
+                        <div class="form-group form-actions">
+
+                        </div>
+                     </form>
+                  </div>
+               </div>
+            </div>
+
+         </div> <br>
+
+
+         <div class="row">
+            <div class="col-lg-12">
+               <div class="card ">
+                   
+                  <div class="card-body">
                      <div class="table-responsive">
-
                         <?php if ($role = $this->session->userdata('lm_role') == 1) { ?>
                            <div class="btn-group" style="float:right;margin-right:15px;">
                               <button type="button" class="toggle-vis btn btn-default" onclick="downloadReport();"> <span class="ti-download"></span> Download CSV </button>
@@ -116,6 +148,7 @@
    </div>
    <!-- ./wrapper -->
    <script src="<?php echo base_url() ?>assets/js/app.js" type="text/javascript"></script>
+   <script src="<?php echo base_url() ?>assets/vendors/moment/js/moment.min.js" type="text/javascript"></script>
    <script type="text/javascript" src="<?php echo base_url() ?>assets/vendors/bootstrapvalidator/js/bootstrapValidator.min.js"></script>
    <script type="text/javascript" src="<?php echo base_url() ?>assets/vendors/sweetalert2/js/sweetalert2.min.js"></script>
    <script type="text/javascript" src="<?php echo base_url() ?>assets/js/custom_js/sweetalert.js"></script>
@@ -124,6 +157,10 @@
    <script type="text/javascript" src="<?php echo base_url() ?>assets/vendors/datatables/js/jquery.dataTables.js"></script>
    <script type="text/javascript" src="<?php echo base_url() ?>assets/vendors/datatables/js/dataTables.bootstrap4.js"></script>
    <script type="text/javascript" src="<?php echo base_url() ?>assets/vendors/sweetalert2/js/sweetalert2.min.js"></script>
+   <script type="text/javascript" src="<?php echo base_url() ?>assets/vendors/jquerydaterangepicker/js/jquery.daterangepicker.min.js"></script>
+   <script src="<?php echo base_url() ?>assets/vendors/datedropper/datedropper.js" type="text/javascript"></script>
+   <script type="text/javascript" src="<?php echo base_url() ?>assets/js/jquery.datetimepicker.js"></script>
+
    <script>
       "use strict";
       $(document).ready(function() {
@@ -131,13 +168,41 @@
          leadList();
       });
 
+      // For search box
+      $('#from_date').dateRangePicker({
+         singleDate: true,
+         showShortcuts: false,
+         singleMonth: true,
+         getValue: function() {
+            $(this).val("");
+         }
+      });
+
+      $('#to_date').dateRangePicker({
+         singleDate: true,
+         showShortcuts: false,
+         singleMonth: true,
+         getValue: function() {
+            $(this).val("");
+         }
+      });
+
+      //end
+
       function leadList() {
          $('#tbl_list').DataTable().destroy();
          var table = $('#tbl_list').DataTable({
             "dom": "<'row'<'col-md-5 col-12 float-left'l><'col-md-7 col-12'f>r><'table-responsive't><'row'<'col-md-5 col-12'i><'col-md-7 col-12'p>>", // datatable layout without  horizobtal scroll
             "processing": true,
             "serverSide": true,
-            "ajax": BASE_URL + "lead/lead_list",
+            "ajax": {
+               "url": BASE_URL + "lead/lead_list",
+               "data": {
+                  "from_date": $('#from_date').val(),
+                  "to_date": $('#to_date').val(),
+
+               }
+            },
             "responsive": true,
             "order": [
                [5, "desc"]
@@ -182,53 +247,63 @@
 
       function cancelLead(lead_id) {
          swal({
-            title: "",
-            text: "Are you sure want to cancel this order?",
-            type: "info",
+            title: '<span style="color:red;font-size:20px;">Are you sure, want to cancel this order? <br>Please enter the Reason<b>',
+            input: 'text', 
+            inputPlacehokder: 'Reason',
             confirmButtonClass: 'btn btn-info',
             confirmButtonText: 'Yes',
             showCancelButton: true,
             cancelButtonColor: '#ff6666',
             cancelButtonText: 'No',
-            cancelButtonClass: 'btn btn-danger'
-         }).then(function(conrifm) {
-            if (conrifm['value'] == true) {
-               $.ajax({
-                  type: "POST",
-                  url: BASE_URL + "/lead/approve_lead",
-                  data: {
-                     lead_id: lead_id,
-                     status: 3,
-                  },
-                  cache: false,
-                  timeout: 800000,
-                  success: function(data) {
-                     var result = JSON.parse(data);
-                     if (result['success']) {
-                        swal({
-                           title: "Success",
-                           text: result['msg'],
-                           type: "success",
-                           confirmButtonColor: "#66cc99"
-                        }).then(function() {
-                           leadList();
-                        });
-                     } else {
-                        swal({
-                           title: "Failed",
-                           text: result['msg'],
-                           type: "error",
-                           confirmButtonColor: "#66cc99"
-                        }).then(function() {
-                           leadList();
-                        });
-                     }
-                  },
-                  error: function(e) {}
+            cancelButtonClass: 'btn btn-danger',
+            inputValidator: function(value) {
+               return new Promise(function(resolve, reject) {
+                  if (value) {
+                     resolve();
+                     $.ajax({
+                        type: "POST",
+                        url: BASE_URL + "/lead/approve_lead",
+                        data: {
+                           lead_id: lead_id,
+                           status: 3,
+                           reason: value,
+                        },
+                        cache: false,
+                        timeout: 800000,
+                        success: function(data) {
+                           var result = JSON.parse(data);
+                           if (result['success']) {
+                              swal({
+                                 title: "Success",
+                                 text: result['msg'],
+                                 type: "success",
+                                 confirmButtonColor: "#66cc99"
+                              }).then(function() {
+                                 leadList();
+                              });
+                           } else {
+                              swal({
+                                 title: "Failed",
+                                 text: result['msg'],
+                                 type: "error",
+                                 confirmButtonColor: "#66cc99"
+                              }).then(function() {
+                                 leadList();
+                              });
+                           }
+                        },
+                        error: function(e) {}
+                     });
+                  } else {
+                     alert('Please enter the reason');
+                     cancelLead(lead_id) 
+                   //  reject();
+                     
+                     
+                  }
                });
             }
-
-         });
+         })
       }
 
       function approveLead(lead_id) {
@@ -283,8 +358,8 @@
       }
 
       function downloadReport() {
-         let q = $('.dataTables_filter').find('input').val().trim();
-         let url = BASE_URL + 'lead/download?q=' + q;
+         let q = $('.dataTables_filter').find('input').val().trim(); 
+         let url = BASE_URL + 'lead/download?q=' + q+'&from_date='+$('#from_date').val()+'&to_date='+$('#to_date').val();
          window.open(url);
       }
    </script>

@@ -33,46 +33,46 @@
                      </div>
                  </div>
              </div>
-             <?php 
+             <?php
 
-            $seg1 = $this->uri->segment(1);
-            $seg2 = $this->uri->segment(2);
- 
-            ?>
+                $seg1 = $this->uri->segment(1);
+                $seg2 = $this->uri->segment(2);
+
+                ?>
              <ul class="navigation">
-                 <li class="<?php if($seg1=="home" and empty($seg2)) echo "active"; ?>" >
+                 <li class="<?php if ($seg1 == "home" and empty($seg2)) echo "active"; ?>">
                      <a href="<?php echo site_url("home"); ?>">
                          <i class="menu-icon ti-desktop"></i>
                          <span class="mm-text ">Dashboard</span>
                      </a>
                  </li>
-                 <li class="<?php if($seg1=="lead" and empty($seg2)) echo "active"; ?>"  >
+                 <li class="<?php if ($seg1 == "lead" and empty($seg2)) echo "active"; ?>">
                      <a href="<?php echo site_url("lead"); ?>">
                          <i class="menu-icon ti-check-box"></i>
                          <span class="mm-text ">New Lead</span>
                      </a>
                  </li>
-				 <li class="<?php if($seg2=="list") echo "active"; ?>"  >
+                 <li class="<?php if ($seg2 == "list") echo "active"; ?>">
                      <a href="<?php echo site_url("lead/list"); ?>">
                          <i class="menu-icon ti-layout-grid4"></i>
                          <span class="mm-text ">Lead List</span>
                      </a>
                  </li>
-                 <li class="<?php if($seg1=="proof") echo "active"; ?>"  >
+                 <li class="<?php if ($seg1 == "proof") echo "active"; ?>">
                      <a href="<?php echo site_url("proof"); ?>">
                          <i class="menu-icon ti-gallery"></i>
                          <span class="mm-text ">POD List</span>
                      </a>
                  </li>
 
-                 <?php if($role = $this->session->userdata('role') == 1){ ?>
-                  <li class="<?php if($seg2=="proof") echo "active"; ?>"  >
-                     <a href="<?php echo site_url("proof"); ?>">
-                         <i class="menu-icon ti-image"></i>
-                         <span class="mm-text ">POD List</span>
-                     </a>
-                 </li>
-             <?php } ?>
+                 <?php if ($role = $this->session->userdata('lm_role') == 1) { ?>
+                     <li class="<?php if ($seg2 == "proof") echo "active"; ?>">
+                         <a href="<?php echo site_url("proof"); ?>">
+                             <i class="menu-icon ti-image"></i>
+                             <span class="mm-text ">POD List</span>
+                         </a>
+                     </li>
+                 <?php } ?>
              </ul>
              <!-- / .navigation -->
          </div>

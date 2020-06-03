@@ -13,6 +13,7 @@
             $this->db->join('runner_details rd', ' tran.runner_id =rd.ci_id', 'left');
             $this->db->join('lp_details ld', 'ld.employee_code = tran.lmdp', 'left');
             $this->db->where('tran.orderid', $id);
+            $this->db->where('tran.ad_id', 3);
             //if ($role == 2)
             //$this->db->where('tran.lmdp', $loginname);
             $this->db->group_by('tran.id');

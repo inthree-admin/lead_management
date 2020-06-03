@@ -88,7 +88,7 @@ class Auth extends CI_Controller
 				);
 
 				$this->session->set_userdata($admin_data);
-				redirect(base_url('home'), 'refresh');
+				redirect(base_url('lead'), 'refresh');
 
 			} else {
 				$this->load->view('auth/login');

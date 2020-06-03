@@ -19,6 +19,10 @@ class Lead extends MY_Controller
 	{
 		$post = $this->input->post();
 
+		// echo '<pre>';
+		// print_r($post);
+		// exit;
+
 		if (is_array($post) && count($post) > 0) {
 
 			// Get the form values
@@ -83,6 +87,11 @@ class Lead extends MY_Controller
 								$order_data[$pid] = $post['quantity'][$key];
 						}
 					}
+
+					echo '<pre>';
+					print_r($order_data);
+					exit;
+
 
 					// Prepare order item 
 					$product_info = $this->Lead_model->get_product_info(array_keys($order_data));
@@ -416,11 +425,10 @@ class Lead extends MY_Controller
 			0 => 'Order#',
 			1 => 'Name',
 			2 => 'Phone',
-			3 => 'Payment Type',
-			4 => 'Amount',
-			5 => 'Created On',
-			6 => 'Created By',
-			7 => 'Status'
+			3 => 'Amount',
+			4 => 'Created On',
+			5 => 'Created By',
+			6 => 'Status'
 		);
 		fputcsv($handle,  $header, "\t");
 		foreach ($result as $key => $info) {
@@ -428,14 +436,14 @@ class Lead extends MY_Controller
 				0 => $info['lead_no'],
 				1 => $info['cust_name'],
 				2 => $info['cust_phone'],
-				3 => $info['payment_type'],
-				4 => $info['order_total'],
-				5 => $info['created_on'],
-				6 => $info['lmu_username'],
-				7 => $info['status']
+				3 => $info['order_total'],
+				4 => $info['created_on'],
+				5 => $info['lmu_username'],
+				6 => $info['status']
 			);
 			fputcsv($handle, $data, "\t");
 		}
 		fclose($handle);
 	}
+	
 }

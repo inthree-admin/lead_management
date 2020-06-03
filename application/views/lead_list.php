@@ -79,10 +79,12 @@
 
                      <div class="table-responsive">
 
-                        <div class="btn-group" style="float:right;margin-right:15px;">
-                           <button type="button" class="toggle-vis btn btn-default" onclick="downloadReport();"> <span class="ti-download"></span> Download CSV </button>
+                        <?php if ($role = $this->session->userdata('lm_role') == 1) { ?>
+                           <div class="btn-group" style="float:right;margin-right:15px;">
+                              <button type="button" class="toggle-vis btn btn-default" onclick="downloadReport();"> <span class="ti-download"></span> Download CSV </button>
+                           </div>
+                        <?php } ?>
 
-                        </div>
                         <table class="table table-striped table-bordered table-hover" id="tbl_list" style="width:100%">
                            <thead style="text-align: center;">
                               <tr>

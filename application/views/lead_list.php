@@ -78,7 +78,7 @@ $to_date     = $today;
                            </div>
                            <div class="col-3">
                               <div class="form-group">
-                                 <label class="form-control-label text-info"> Created TO</label>
+                                 <label class="form-control-label text-info"> Created To</label>
                                    
                                  <div class="input-group">
 

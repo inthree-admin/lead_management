@@ -23,6 +23,15 @@
    var BASE_URL = "<?php echo base_url() ?>";
 </script>
 
+<?php
+$today      = date('Y-m-d');
+$datetime   = new DateTime($today);
+$datetime->modify('-1 day');
+$from_date   = $datetime->format('Y-m-d');
+$to_date     = $today;
+
+?>
+
 <body class="skin-default">
    <div class="preloader">
       <div class="loader_img"><img src="<?php echo base_url() ?>assets/img/loader.gif" alt="loading..." height="64" width="64"></div>
@@ -36,36 +45,32 @@
       <section class="content">
          <!--main content-->
          <div class="row">
+
             <div class="col-md-12">
                <div class="card mrgn_top">
                   <div class="card-header txt_padding">
                      <h3 class="card-title">
-                        <i class="fa fa-fw ti-pencil"></i> Lead List
+                        <i class="fa fa-fw ti-search"></i> Search Lead
                      </h3>
                      <span class="float-right d-none d-sm-block fnt_size txt_font">
                         <i class="fa fa-fw ti-angle-up clickable"></i>
                         <i class="fa fa-fw ti-close removecard"></i>
                      </span>
                   </div>
-                  <?php
-                  $today      = date('Y-m-d');
-                  $datetime   = new DateTime($today);
-                  $datetime->modify('-1 day');
-                  $from_date   = $datetime->format('Y-m-d');
-                  $to_date     = $today;
-
-                  ?>
                   <div class="card-body">
                      <form id="search_form" method="get">
                         <div class="row">
 
                            <div class="col-3">
                               <div class="form-group">
-
+                                 <label class="form-control-label text-info"> Created From</label>
+                                   
                                  <div class="input-group">
+
                                     <div class="input-group-addon">
                                        <i class="fa fa-fw ti-calendar"></i>
                                     </div>
+
                                     <input class="form-control" id="from_date" size="40" placeholder="From date" value="<?php echo $from_date; ?>">
                                  </div>
                                  <!-- /.input group -->
@@ -73,8 +78,10 @@
                            </div>
                            <div class="col-3">
                               <div class="form-group">
-
+                                 <label class="form-control-label text-info"> Created TO</label>
+                                   
                                  <div class="input-group">
+
                                     <div class="input-group-addon">
                                        <i class="fa fa-fw ti-calendar"></i>
                                     </div>
@@ -83,7 +90,7 @@
                                  <!-- /.input group -->
                               </div>
                            </div>
-                           <div class="col-5">
+                           <div class="col-5" style="margin-top: 28px;">
 
                               <button type="button" class="btn btn-effect-ripple btn-primary" onclick="leadList();">
                                  Search
@@ -94,21 +101,19 @@
                            </div>
                         </div>
 
-                        <div class="form-group form-actions">
 
-                        </div>
                      </form>
                   </div>
                </div>
             </div>
 
-         </div> <br>
 
+         </div> <br>
 
          <div class="row">
             <div class="col-lg-12">
                <div class="card ">
-                   
+
                   <div class="card-body">
                      <div class="table-responsive">
                         <?php if ($role = $this->session->userdata('lm_role') == 1) { ?>
@@ -141,6 +146,9 @@
                </div>
             </div>
          </div>
+
+
+
       </section>
       <!-- /.content -->
       </aside>
@@ -248,7 +256,7 @@
       function cancelLead(lead_id) {
          swal({
             title: '<span style="color:red;font-size:20px;">Are you sure, want to cancel this order? <br>Please enter the Reason<b>',
-            input: 'text', 
+            input: 'text',
             inputPlacehokder: 'Reason',
             confirmButtonClass: 'btn btn-info',
             confirmButtonText: 'Yes',
@@ -296,10 +304,10 @@
                      });
                   } else {
                      alert('Please enter the reason');
-                     cancelLead(lead_id) 
-                   //  reject();
-                     
-                     
+                     cancelLead(lead_id)
+                     //  reject();
+
+
                   }
                });
             }
@@ -358,8 +366,8 @@
       }
 
       function downloadReport() {
-         let q = $('.dataTables_filter').find('input').val().trim(); 
-         let url = BASE_URL + 'lead/download?q=' + q+'&from_date='+$('#from_date').val()+'&to_date='+$('#to_date').val();
+         let q = $('.dataTables_filter').find('input').val().trim();
+         let url = BASE_URL + 'lead/download?q=' + q + '&from_date=' + $('#from_date').val() + '&to_date=' + $('#to_date').val();
          window.open(url);
       }
    </script>

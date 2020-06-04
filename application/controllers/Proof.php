@@ -9,12 +9,8 @@ class Proof extends MY_Controller {
     } 
 
     public function index(){
-			if($this->session->userdata('role') == 1){
-                $this->load->view('delivery_proof');    
-            }else{
-                redirect('home');
-            }
-			
+			 
+			$this->load->view('delivery_proof');
     }
 
    

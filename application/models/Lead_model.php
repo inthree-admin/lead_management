@@ -17,7 +17,7 @@ class Lead_model extends CI_Model
 
     public function insert_new_lead_items($ins_arr)
     {
-        $this->db->insert_batch('tbl_lead_items', $ins_arr); 
+        $this->db->insert_batch('tbl_lead_items', $ins_arr);
         return $this->db->insert_id();
     }
 
@@ -47,7 +47,7 @@ class Lead_model extends CI_Model
     {
         $this->db->select('lmp_id');
         $this->db->from('tbl_lead_products');
-        $this->db->where("prod_id IN (".$prod_ids.")",NULL, false);
+        $this->db->where("prod_id IN (" . $prod_ids . ")", NULL, false);
         $this->db->group_by('lmp_id');
         return $this->db->get()->result_array();
     }
@@ -76,7 +76,7 @@ class Lead_model extends CI_Model
 
     public function lead_list($filter)
     {
-         $this->db->select('lead_id,cust_name,cust_email,cust_phone,cust_id,lead_no,order_total,receipt_no,lmu_username,created_by,
+        $this->db->select('lead_id,cust_name,cust_email,cust_phone,cust_id,lead_no,order_total,receipt_no,lmu_username,created_by,
         CASE
             WHEN payment_link_status = 0 THEN "Not Sent"
             WHEN payment_link_status = 1 THEN "Sent"
@@ -98,9 +98,9 @@ class Lead_model extends CI_Model
         END AS status,
         ', FALSE);
         $this->db->from(' tbl_lead');
-        $this->db->join(' tbl_lead_users','tbl_lead.created_by = tbl_lead_users.lm_id','LEFT');
+        $this->db->join(' tbl_lead_users', 'tbl_lead.created_by = tbl_lead_users.lm_id', 'LEFT');
         if (isset($filter['created_by']) and !empty($filter['created_by'])) {
-              $this->db->where( 'created_by',$filter['created_by']);
+            $this->db->where('created_by', $filter['created_by']);
         }
         if (isset($filter['searchKey']) and !empty($filter['searchKey'])) {
             $this->db->where("(
@@ -112,26 +112,25 @@ class Lead_model extends CI_Model
 			OR receipt_no LIKE '%" . $filter['searchKey'] . "%')
         ");
         }
-        if(isset($filter['from_date']) AND isset($filter['to_date'])){
-            $this->db->where(" ( DATE(created_on)  >= '".$filter['from_date']."' AND DATE(created_on)  <= '".$filter['to_date']."') ");
-
+        if (isset($filter['from_date']) and isset($filter['to_date'])) {
+            $this->db->where(" ( DATE(created_on)  >= '" . $filter['from_date'] . "' AND DATE(created_on)  <= '" . $filter['to_date'] . "') ");
         }
 
         if (!empty($filter['ordercolumn']))
             $this->db->order_by($filter['ordercolumn'], $filter['ordertype']);
         if (!empty($filter['length']))
             $this->db->limit($filter['length'], $filter['start']);
-          return $this->db->get()->result_array();  
-            
+
+        return $this->db->get()->result_array();
     }
-    
+
     public function lead_total_count($filter)
     {
-        
+
         $this->db->select('count(*) total_lead');
         $this->db->from(' tbl_lead');
-        if(isset($filter['created_by']) AND !empty($filter['created_by']))
-            $this->db->where( 'created_by',$filter['created_by']);
+        if (isset($filter['created_by']) and !empty($filter['created_by']))
+            $this->db->where('created_by', $filter['created_by']);
         if (isset($filter['searchKey']) and !empty($filter['searchKey'])) {
             $this->db->where("(
             cust_name LIKE '%" . $filter['searchKey'] . "%' 
@@ -141,16 +140,19 @@ class Lead_model extends CI_Model
             OR cust_id  LIKE '%" . $filter['searchKey'] . "%'  
             OR receipt_no LIKE '%" . $filter['searchKey'] . "%')
         ");
-            
         }
-           return $this->db->get()->row_array(); 
-               
+        if (isset($filter['from_date']) and isset($filter['to_date'])) {
+            $this->db->where(" ( DATE(created_on)  >= '" . $filter['from_date'] . "' AND DATE(created_on)  <= '" . $filter['to_date'] . "') ");
+        }
+
+        return $this->db->get()->row_array();
     }
 
-    public function lead_info($lead_no=false){
-        $return =array();
-        if($lead_no){
-           $this->db->select('*,
+    public function lead_info($lead_no = false)
+    {
+        $return = array();
+        if ($lead_no) {
+            $this->db->select('*,
             CASE
                 WHEN payment_link_status = 0 THEN "Not Send"
                 WHEN payment_link_status = 1 THEN "Send"
@@ -173,33 +175,34 @@ class Lead_model extends CI_Model
                 ELSE "-"
             END AS payment_type
             ', FALSE);
-            $this->db->from('tbl_lead'); 
-            $this->db->where('lead_no',$lead_no);
+            $this->db->from('tbl_lead');
+            $this->db->where('lead_no', $lead_no);
             $result = $this->db->get()->row_array();
-            if($result){
+            if ($result) {
                 $return['lead'] = $result;
                 $this->db->select('*');
-                $this->db->from('tbl_lead_items'); 
-                $this->db->where('lead_id',$result['lead_id']);
+                $this->db->from('tbl_lead_items');
+                $this->db->where('lead_id', $result['lead_id']);
                 $result = $this->db->get()->result_array();
-                $return['lead_item'] = $result;  
-            }else{
+                $return['lead_item'] = $result;
+            } else {
                 $return['lead'] = [];
                 $return['lead_item'] = [];
-            }        
-            return $return; 
-        }else{
+            }
+            return $return;
+        } else {
             $return['lead'] = [];
             $return['lead_item'] = [];
-             return $return; 
+            return $return;
         }
     }
 
-    public function getLead($filter=array()){
-            $this->db->select('*');
-            $this->db->from('tbl_lead');
-            if(isset($filter['seller_order_id']) AND !empty($filter['seller_order_id']))
-                $this->db->where('seller_order_id', $filter['seller_order_id']);
-            return $this->db->get()->row(); 
+    public function getLead($filter = array())
+    {
+        $this->db->select('*');
+        $this->db->from('tbl_lead');
+        if (isset($filter['seller_order_id']) and !empty($filter['seller_order_id']))
+            $this->db->where('seller_order_id', $filter['seller_order_id']);
+        return $this->db->get()->row();
     }
 }

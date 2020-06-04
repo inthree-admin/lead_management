@@ -60,17 +60,28 @@ $to_date     = $today;
                   <div class="card-body">
                      <form id="search_form" method="get">
                         <div class="row">
-
+                           <div class="col-3">
+                              <div class="form-group">
+                                 <label class="form-control-label text-info"> Status</label>
+                                 <div class="input-group">
+                                    <select class="form-control" id="fltr_status" name="fltr_status">
+                                       <option value="0" selected>All</option>
+                                       <option value="1">Waiting For Approval</option>
+                                       <option value="2">Approved</option>
+                                       <option value="3">Cancelled</option>
+                                       <option value="4">Delivered</option>                       
+                                    </select>
+                                 </div>
+                                 <!-- /.input group -->
+                              </div>
+                           </div>
                            <div class="col-3">
                               <div class="form-group">
                                  <label class="form-control-label text-info"> Created From</label>
-                                   
                                  <div class="input-group">
-
                                     <div class="input-group-addon">
                                        <i class="fa fa-fw ti-calendar"></i>
                                     </div>
-
                                     <input class="form-control" id="from_date" size="40" placeholder="From date" value="<?php echo $from_date; ?>">
                                  </div>
                                  <!-- /.input group -->
@@ -79,9 +90,7 @@ $to_date     = $today;
                            <div class="col-3">
                               <div class="form-group">
                                  <label class="form-control-label text-info"> Created To</label>
-                                   
                                  <div class="input-group">
-
                                     <div class="input-group-addon">
                                        <i class="fa fa-fw ti-calendar"></i>
                                     </div>
@@ -90,24 +99,18 @@ $to_date     = $today;
                                  <!-- /.input group -->
                               </div>
                            </div>
-                           <div class="col-5" style="margin-top: 28px;">
-
+                           <div class="col-3" style="margin-top: 28px;">
                               <button type="button" class="btn btn-effect-ripple btn-primary" onclick="leadList();">
                                  Search
                               </button>
                               <!-- <button type="reset" class="btn btn-effect-ripple btn-default reset_btn">Reset
                               </button> -->
-
                            </div>
                         </div>
-
-
                      </form>
                   </div>
                </div>
             </div>
-
-
          </div> <br>
 
          <div class="row">
@@ -198,6 +201,7 @@ $to_date     = $today;
       //end
 
       function leadList() {
+         var fltr_status = $('#fltr_status').val();
          $('#tbl_list').DataTable().destroy();
          var table = $('#tbl_list').DataTable({
             "dom": "<'row'<'col-md-5 col-12 float-left'l><'col-md-7 col-12'f>r><'table-responsive't><'row'<'col-md-5 col-12'i><'col-md-7 col-12'p>>", // datatable layout without  horizobtal scroll
@@ -208,7 +212,7 @@ $to_date     = $today;
                "data": {
                   "from_date": $('#from_date').val(),
                   "to_date": $('#to_date').val(),
-
+                  "fltr_status": fltr_status,
                }
             },
             "responsive": true,

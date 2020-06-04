@@ -76,6 +76,7 @@ class Lead_model extends CI_Model
 
     public function lead_list($filter)
     {
+
         $this->db->select('lead_id,cust_name,cust_email,cust_phone,cust_id,lead_no,order_total,receipt_no,lmu_username,created_by,
         CASE
             WHEN payment_link_status = 0 THEN "Not Sent"
@@ -112,6 +113,11 @@ class Lead_model extends CI_Model
 			OR receipt_no LIKE '%" . $filter['searchKey'] . "%')
         ");
         }
+
+        if ($filter['fltr_status']) {
+            $this->db->where('approval_status', $filter['fltr_status']);
+        }
+
         if (isset($filter['from_date']) and isset($filter['to_date'])) {
             $this->db->where(" ( DATE(created_on)  >= '" . $filter['from_date'] . "' AND DATE(created_on)  <= '" . $filter['to_date'] . "') ");
         }
@@ -143,6 +149,10 @@ class Lead_model extends CI_Model
         }
         if (isset($filter['from_date']) and isset($filter['to_date'])) {
             $this->db->where(" ( DATE(created_on)  >= '" . $filter['from_date'] . "' AND DATE(created_on)  <= '" . $filter['to_date'] . "') ");
+        }
+
+        if (isset($filter['fltr_status']) and $filter['fltr_status']!='') {
+            $this->db->where('approval_status', $filter['fltr_status']);
         }
 
         return $this->db->get()->row_array();

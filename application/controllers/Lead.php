@@ -225,7 +225,7 @@ class Lead extends MY_Controller
 
 	public function lead_list()
 	{
-
+	
 		$role = $this->session->userdata('lm_role');
 		$user_id = $this->session->userdata('lm_admin_id');
 		$start  = (isset($_GET['start'])) ? $_GET['start'] : '';
@@ -233,7 +233,8 @@ class Lead extends MY_Controller
 		$searchKey = (isset($_GET['search']['value'])) ? trim($_GET['search']['value']) : '';
 		$ordercolumn =  (isset($_GET['order'][0]['column'])) ? $_GET['order'][0]['column'] : 1;
 		$ordertype = (isset($_GET['order'][0]['dir'])) ? $_GET['order'][0]['dir'] : ''; //asc or desc  
-		$from_date = (isset($_GET['from_date']) AND !empty($_GET['from_date'])) ? $_GET['from_date'] : date('Y-m-d'); 
+		$fltr_status = ($_GET['fltr_status'])?$_GET['fltr_status']:'';
+		$from_date = (isset($_GET['from_date']) AND !empty($_GET['from_date'])) ? $_GET['from_date'] : date('Y-m-d');
 		$to_date = (isset($_GET['to_date']) AND !empty($_GET['to_date'])) ? $_GET['to_date'] : date('Y-m-d'); 
 
 
@@ -244,7 +245,7 @@ class Lead extends MY_Controller
 		);
 
 		$filter_arr = array('start' => $start, 'length' => $length, 'searchKey' => $searchKey, 'ordercolumn' => $columnArray[$ordercolumn], 
-		'ordertype' => $ordertype,'from_date' => $from_date,'to_date' => $to_date);
+		'ordertype' => $ordertype,'from_date' => $from_date,'to_date' => $to_date, 'fltr_status' => $fltr_status);
 		if ($role != 1)  $filter_arr['created_by'] = $user_id;
 
 		$result = $this->Lead_model->lead_list($filter_arr);

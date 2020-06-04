@@ -73,7 +73,7 @@
 
                                 <div class="text-right">
                                     <h3 class="text-dark"><b><?php echo $lead_approved_count; ?></b></h3>
-                                    <p>Pending Orders</p>
+                                    <p>Delivery Pending</p>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>

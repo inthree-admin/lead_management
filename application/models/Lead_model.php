@@ -114,7 +114,7 @@ class Lead_model extends CI_Model
         ");
         }
 
-        if ($filter['fltr_status']) {
+        if (isset($filter['fltr_status']) && $filter['fltr_status']!='') {
             $this->db->where('approval_status', $filter['fltr_status']);
         }
 
@@ -147,13 +147,16 @@ class Lead_model extends CI_Model
             OR receipt_no LIKE '%" . $filter['searchKey'] . "%')
         ");
         }
-        if (isset($filter['from_date']) and isset($filter['to_date'])) {
-            $this->db->where(" ( DATE(created_on)  >= '" . $filter['from_date'] . "' AND DATE(created_on)  <= '" . $filter['to_date'] . "') ");
-        }
 
         if (isset($filter['fltr_status']) and $filter['fltr_status']!='') {
             $this->db->where('approval_status', $filter['fltr_status']);
         }
+
+        if (isset($filter['from_date']) and isset($filter['to_date'])) {
+            $this->db->where(" ( DATE(created_on)  >= '" . $filter['from_date'] . "' AND DATE(created_on)  <= '" . $filter['to_date'] . "') ");
+        }
+
+        
 
         return $this->db->get()->row_array();
     }

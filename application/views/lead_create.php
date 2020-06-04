@@ -127,7 +127,7 @@
 
                            <div class="col-md-4">
                               <label class="form-control-label" for="customer_id">
-                              Customer ID
+                                 Customer ID
                               </label>
                               <div class="input-group">
                                  <input type="text" id="customer_id" name="customer_id" class="form-control bill" placeholder="Customer ID">
@@ -136,7 +136,7 @@
 
                            <div class="col-md-4">
                               <label class="form-control-label" for="lrn">
-                               LRN
+                                 LRN
                               </label>
                               <div class="input-group">
                                  <input type="text" id="lrn" name="lrn" class="form-control bill" placeholder="LRN">
@@ -221,21 +221,13 @@
 
                                     </tbody>
                                  </table>
-
-
-
-
                               </div>
                            </div>
                         </div>
 
 
-
-
                         <div class="form-group row">
-
-
-                           <div class="col-sm-3"  style="display: none;">
+                           <div class="col-sm-3" style="display: none;">
                               <div class="form-group has-pretty-child">
                                  <label class="test_radio">Payment Type <span class="text-danger">*</span></label>
                                  <div class="clearfix prettyradio labelright margin-right blue">
@@ -257,7 +249,26 @@
 
                            </div>
 
-                        </div><br>
+                        </div>
+
+                        <?php if ($role = $this->session->userdata('lm_role') == 1) { ?>
+                           <h6 class="h6pnl_font" style="margin-bottom: 15px;"><b>LMP Details</b></h6>
+                           <div class="form-group row">
+                              <div class="col-md-4">
+                                 <label class="form-control-label">
+                                    Select LMP
+                                 </label>
+                                 <div class="input-group">
+                                    <select tabindex="1" class="form-control" id="lmp_id" name="lmp_id">
+                                       <option value="">-Select-</option>
+                                       <option value="320">ACP</option>
+                                       <option value="3832">AR Traders</option>
+                                       <option value="1728">Sai Enterprises</option>
+                                    </select>
+                                 </div>
+                              </div>
+                           </div>
+                        <?php } ?>
 
                         <div class="form-group form-actions">
                            <div class="col-md-8 ml-auto">

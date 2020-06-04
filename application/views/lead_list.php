@@ -371,7 +371,7 @@ $to_date     = $today;
 
       function downloadReport() {
          let q = $('.dataTables_filter').find('input').val().trim();
-         let url = BASE_URL + 'lead/download?q=' + q + '&from_date=' + $('#from_date').val() + '&to_date=' + $('#to_date').val();
+         let url = BASE_URL + 'lead/download?q=' + q + '&from_date=' + $('#from_date').val() + '&to_date=' + $('#to_date').val() + '&fltr_status=' + $('#fltr_status').val();
          window.open(url);
       }
    </script>

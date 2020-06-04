@@ -36,6 +36,7 @@ class Lead extends MY_Controller
 			$shipping_pincode	= (isset($post['shipping_pincode'])) ? trim($post['shipping_pincode']) : '';
 			$shipping_contact_no = (isset($post['shipping_contact_no'])) ? trim($post['shipping_contact_no']) : '';
 			$payment_type 		= (isset($post['payment_type'])) ? trim($post['payment_type']) : '';
+			$lmp_id 			= (isset($post['lmp_id']) && $post['lmp_id']!='') ? $post['lmp_id'] : '';
 			$lead_status 		= 1; //($payment_type == 2)?3:1;
 			$login_id 			= $this->session->userdata('lm_admin_id');
 			$receipt 			= 'BB' . time();
@@ -45,6 +46,8 @@ class Lead extends MY_Controller
 			$lmp_info = $this->Lead_model->get_lmp_info($prod_list);
 
 			if (count($lmp_info) == 1) {
+
+				$lmp_id = ($lmp_id)?$lmp_id:$lmp_info[0]['lmp_id'];
 
 				// Prepre lead data for insert
 				$insert_arr = array(
@@ -64,7 +67,7 @@ class Lead extends MY_Controller
 					'shipping_city'		=> $shipping_city,
 					'shipping_pincode'	=> $shipping_pincode,
 					'shipping_contact_no' => $shipping_contact_no,
-					'lmp_id' 		    => $lmp_info[0]['lmp_id'],
+					'lmp_id' 		    => $lmp_id,
 					'payment_type' 		=> $payment_type,
 					'status'			=> $lead_status
 				);
@@ -410,7 +413,8 @@ class Lead extends MY_Controller
 		$q = (isset($_GET['q'])) ? $_GET['q'] : '';
 		$from_date = (isset($_GET['from_date'])) ? $_GET['from_date'] : '';
 		$to_date = (isset($_GET['to_date'])) ? $_GET['to_date'] : '';
-		$filter_arr = array('searchKey' => $q, 'ordercolumn' => 'created_on', 'from_date' => $from_date,'to_date' => $to_date,'ordertype' => 'DESC');
+		$fltr_status = (isset($_GET['fltr_status'])) ? $_GET['fltr_status'] : '';
+		$filter_arr = array('searchKey' => $q, 'ordercolumn' => 'created_on', 'from_date' => $from_date,'to_date' => $to_date,'fltr_status'=>$fltr_status,'ordertype' => 'DESC');
 		if ($role != 1)  $filter_arr['created_by'] = $user_id;
 		$result = $this->Lead_model->lead_list($filter_arr);
 		header("Content-Disposition: attachment; filename=\"lead_list_" . time() . ".xls\"");

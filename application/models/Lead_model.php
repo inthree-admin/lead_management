@@ -114,7 +114,7 @@ class Lead_model extends CI_Model
         ");
         }
 
-        if (isset($filter['fltr_status']) && $filter['fltr_status']!='') {
+        if (isset($filter['fltr_status']) && $filter['fltr_status']!='' && $filter['fltr_status']!=0) {
             $this->db->where('approval_status', $filter['fltr_status']);
         }
 

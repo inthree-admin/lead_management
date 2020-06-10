@@ -39,6 +39,7 @@ class Lead extends MY_Controller
 			$lmp_id 			= (isset($post['lmp_id']) && $post['lmp_id']!='') ? $post['lmp_id'] : '';
 			$lead_status 		= 1; //($payment_type == 2)?3:1;
 			$login_id 			= $this->session->userdata('lm_admin_id');
+			$branch_code 		= $this->session->userdata('lm_branch');
 			$receipt 			= 'BB' . time();
 
 			// Check all products from the same LMP
@@ -57,6 +58,7 @@ class Lead extends MY_Controller
 					'receipt_no' 		=> $receipt,
 					'created_on' 		=> date('Y-m-d G:i:s'),
 					'created_by' 		=> $login_id,
+					'branch_code'		=> $branch_code,
 					'billing_address'	=> $billing_address,
 					'billing_city'		=> $billing_city,
 					'billing_pincode'	=> $billing_pincode,
@@ -243,8 +245,8 @@ class Lead extends MY_Controller
 
 		$columnArray = array(
 			0 => 'lead_no', 1 => 'cust_name',  2 => 'cust_phone',
-			3 => 'cust_id',  4 => 'order_total',
-			5 => 'created_on', 6 => 'lmu_username', 7 => 'status'
+			3 => 'firm_name', 4 => 'branchname', 5 => 'order_total',
+			6 => 'created_on', 7 => 'lmu_username', 8 => 'approved_on', 9 => 'delivered_on', 10 => 'status'
 		);
 
 		$filter_arr = array('start' => $start, 'length' => $length, 'searchKey' => $searchKey, 'ordercolumn' => $columnArray[$ordercolumn], 
@@ -259,20 +261,28 @@ class Lead extends MY_Controller
 			$returnData['data'][$key][0] = '<a href="' . base_url() . 'order_history/get_history?id=' . $data['lead_no'] . '">' . $data['lead_no'] . '</a>';
 			$returnData['data'][$key][1] = $data['cust_name'];
 			$returnData['data'][$key][2] = $data['cust_phone'];
-			$returnData['data'][$key][3] = $data['cust_id'];
-			$returnData['data'][$key][4] = $data['order_total'];
-			$returnData['data'][$key][5] = $data['created_on'];
-			$returnData['data'][$key][6] = ucfirst($data['lmu_username']);
-			$returnData['data'][$key][7] = $data['status'];
+			$returnData['data'][$key][3] = $data['firm_name'];
+			$returnData['data'][$key][4] = $data['branchname'];
+			$returnData['data'][$key][5] = $data['order_total'];
+			$returnData['data'][$key][6] = $data['created_on'];
+			$returnData['data'][$key][7] = ucfirst($data['lmu_username']);
+			$returnData['data'][$key][8] = $data['approved_on'];
+			$returnData['data'][$key][9] = $data['delivered_on'];
+			$returnData['data'][$key][10] = $data['status'];
 
 			$actionbtn = '-';
 			if ($data['status'] == 'Waiting For Approval')
 				$actionbtn = '<i class="fa fa-fw fa-thumbs-o-up fa-lg actions_icon" title="Approve" onclick="approveLead(' . $data['lead_id'] . ')"></i>&nbsp&nbsp<i class="fa fa-fw ti-close text-danger actions_icon" title="Cancel" onclick="cancelLead(' . $data['lead_id'] . ')"></i>';
 			//$actionbtn = '<button class="btn btn-primary btn-xs" onclick="cancelLead('.$data['lead_id'].')">Cancel</button>';
-			if ($role == 1) $returnData['data'][$key][8] = $actionbtn;
+			if ($role == 1) $returnData['data'][$key][11] = $actionbtn;
 		}
 		$returnData['recordsTotal'] = count($result);
 		$returnData['recordsFiltered'] = $lead_total['total_lead'];
+
+		// echo '<pre>';
+		// print_r($returnData);
+		// exit;
+
 		echo json_encode($returnData);
 	}
 
@@ -426,10 +436,14 @@ class Lead extends MY_Controller
 			0 => 'Order#',
 			1 => 'Name',
 			2 => 'Phone',
-			3 => 'Amount',
-			4 => 'Created On',
-			5 => 'Created By',
-			6 => 'Status'
+			3 => 'LMP',
+			4 => 'Branch',
+			5 => 'Amount',
+			6 => 'Created On',
+			7 => 'Created By',
+			8 => 'Approved On',
+			9 => 'Delivered On',
+			10 => 'Status'
 		);
 		fputcsv($handle,  $header, "\t");
 		foreach ($result as $key => $info) {
@@ -437,10 +451,14 @@ class Lead extends MY_Controller
 				0 => $info['lead_no'],
 				1 => $info['cust_name'],
 				2 => $info['cust_phone'],
-				3 => $info['order_total'],
-				4 => $info['created_on'],
-				5 => $info['lmu_username'],
-				6 => $info['status']
+				3 => $info['firm_name'],
+				4 => $info['branchname'],
+				5 => $info['order_total'],
+				6 => $info['created_on'],
+				7 => $info['lmu_username'],
+				8 => $info['approved_on'],
+				9 => $info['delivered_on'],
+				10 => $info['status']
 			);
 			fputcsv($handle, $data, "\t");
 		}

@@ -45,6 +45,13 @@ class Auth_model extends CI_Model
         return $this->db->insert_id();	 
 	}
 
+	public function update_user($up_arr, $id)
+    {
+        $this->db->where('lm_id', $id);
+        return $this->db->update('tbl_lead_users', $up_arr);
+    }
+
+
 	public function check_already_exist($condition=array()){
 		$this->db->select('lmu_email');
 		$this->db->from('tbl_lead_users'); 

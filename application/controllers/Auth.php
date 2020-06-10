@@ -39,6 +39,7 @@ class Auth extends CI_Controller
 					$admin_data = array(
 						'lm_admin_id' 		=> $result['lm_id'],
 						'lm_name' 			=> ucfirst($result['lmu_username']),
+						'lm_branch' 		=> $result['lmu_branch'],
 						'lm_role' 			=> $result['lmu_role_id'],
 						'lm_owner_name' 	=> ucfirst($result['lmu_username']),
 						'lm_username' 		=> ucfirst($result['lmu_username']),
@@ -56,6 +57,7 @@ class Auth extends CI_Controller
 		} else {
 
 			$url_user_name = $this->uri->segment(3);
+			$url_user_branch = $this->uri->segment(4);
 
 			if($url_user_name!='') {
 
@@ -69,6 +71,7 @@ class Auth extends CI_Controller
 						'lmu_email'=> $url_user_name,
 						'lmu_username'=> $url_user_name,
 						'lmu_password'=>  md5(trim($url_user_name)),
+						'lmu_branch'=> $url_user_branch,
 						'lmu_created_on' => date('Y-m-d G:i:s'), 
 						'lmu_status' => 1, 
 						'lmu_role_id' => 2
@@ -78,9 +81,16 @@ class Auth extends CI_Controller
 
 				$result = $this->auth_model->get_user_details(array('username' =>$url_user_name));
 
+				// Update user branch
+				if($url_user_branch!='') {
+					$up_data = array('lmu_branch'=>$url_user_branch);
+					$this->auth_model->update_user($up_data, $result['lm_id']);
+				}
+
 				$admin_data = array(
 					'lm_admin_id' 		=> $result['lm_id'],
 					'lm_name' 			=> ucfirst($result['lmu_username']),
+					'lm_branch' 		=> $result['lmu_branch'],
 					'lm_role' 			=> $result['lmu_role_id'],
 					'lm_owner_name' 	=> ucfirst($result['lmu_username']),
 					'lm_username' 		=> ucfirst($result['lmu_username']),

@@ -77,7 +77,8 @@ class Lead_model extends CI_Model
     public function lead_list($filter)
     {
 
-        $this->db->select('lead_id,cust_name,cust_email,cust_phone,cust_id,lead_no,order_total,receipt_no,lmu_username,created_by,
+        $this->db->select('lead_id,cust_name,cust_email,cust_phone,firm_name,lead_no,order_total,receipt_no,lmu_username, jfs_details.branchname, tbl_lead.created_by,
+        tbl_lead.modified_on as approved_on, delivery_confirm.created_at as delivered_on,
         CASE
             WHEN payment_link_status = 0 THEN "Not Sent"
             WHEN payment_link_status = 1 THEN "Sent"
@@ -89,7 +90,7 @@ class Lead_model extends CI_Model
             WHEN payment_status = 1 THEN "Paid"
             ELSE "Failed"
         END AS payment_status,
-        DATE_FORMAT(created_on, "%d-%m-%Y %h:%i %p") AS created_on,
+        created_on,
         CASE
             WHEN approval_status = 1 THEN "Waiting For Approval"
             WHEN approval_status = 2 THEN "Approved"
@@ -98,10 +99,15 @@ class Lead_model extends CI_Model
             ELSE "-"
         END AS status,
         ', FALSE);
-        $this->db->from(' tbl_lead');
-        $this->db->join(' tbl_lead_users', 'tbl_lead.created_by = tbl_lead_users.lm_id', 'LEFT');
+        $this->db->from('tbl_lead');
+        $this->db->join('tbl_lead_users', 'tbl_lead.created_by = tbl_lead_users.lm_id', 'LEFT');
+        $this->db->join('lp_details', 'tbl_lead.lmp_id = lp_details.ci_id', 'LEFT');
+        $this->db->join('jfs_details', 'tbl_lead.branch_code = jfs_details.branchcode', 'LEFT');
+        $this->db->join('transaction', 'tbl_lead.lead_no = transaction.orderid and `tbl_lead`.`receipt_no` = `transaction`.`shipmentid`', 'LEFT');
+        $this->db->join('delivery_confirm', 'transaction.reference = delivery_confirm.reference', 'LEFT');
+
         if (isset($filter['created_by']) and !empty($filter['created_by'])) {
-            $this->db->where('created_by', $filter['created_by']);
+            $this->db->where('tbl_lead.created_by', $filter['created_by']);
         }
         if (isset($filter['searchKey']) and !empty($filter['searchKey'])) {
             $this->db->where("(
@@ -109,7 +115,6 @@ class Lead_model extends CI_Model
             OR lead_no LIKE '%" . $filter['searchKey'] . "%' 
             OR cust_email LIKE '%" . $filter['searchKey'] . "%' 
             OR cust_phone  LIKE '%" . $filter['searchKey'] . "%'  
-            OR cust_id  LIKE '%" . $filter['searchKey'] . "%'  
 			OR receipt_no LIKE '%" . $filter['searchKey'] . "%')
         ");
         }
@@ -127,6 +132,10 @@ class Lead_model extends CI_Model
         if (!empty($filter['length']))
             $this->db->limit($filter['length'], $filter['start']);
 
+        // $this->db->get();
+        // echo $this->db->last_query();
+        // exit;
+
         return $this->db->get()->result_array();
     }
 
@@ -143,7 +152,6 @@ class Lead_model extends CI_Model
             OR lead_no LIKE '%" . $filter['searchKey'] . "%' 
             OR cust_email LIKE '%" . $filter['searchKey'] . "%' 
             OR cust_phone  LIKE '%" . $filter['searchKey'] . "%'  
-            OR cust_id  LIKE '%" . $filter['searchKey'] . "%'  
             OR receipt_no LIKE '%" . $filter['searchKey'] . "%')
         ");
         }
@@ -155,8 +163,6 @@ class Lead_model extends CI_Model
         if (isset($filter['from_date']) and isset($filter['to_date'])) {
             $this->db->where(" ( DATE(created_on)  >= '" . $filter['from_date'] . "' AND DATE(created_on)  <= '" . $filter['to_date'] . "') ");
         }
-
-        
 
         return $this->db->get()->row_array();
     }

@@ -131,10 +131,13 @@ $to_date     = $today;
                                  <th>Order #</th>
                                  <th>Customer</th>
                                  <th>Phone</th>
-                                 <th>Cust ID</th>
+                                 <th>LMP</th>
+                                 <th>Branch</th>
                                  <th>Amount</th>
                                  <th>Created On</th>
                                  <th>Created By</th>
+                                 <th>Approved On</th>
+                                 <th>Delivered On</th>
                                  <th>Status</th>
                                  <?php if ($this->session->userdata('lm_role') == 1) echo '<th>Action</th>'; ?>
                               </tr>
@@ -217,39 +220,42 @@ $to_date     = $today;
             },
             "responsive": true,
             "order": [
-               [5, "desc"]
+               [0, "desc"]
             ],
-            "columns": [{
-                  "width": "8%"
-               },
-               {
-                  "width": "10%"
-               },
-               {
-                  "width": "10%"
-               },
-               {
-                  "width": "10%"
-               },
-               {
-                  "width": "12%"
-               },
-               {
-                  "width": "14%"
-               },
-               {
-                  "width": "12%"
-               },
-               {
-                  "width": "12%"
-               },
-               <?php if ($this->session->userdata('lm_role') == 1) { ?> {
-                     "width": "12%"
-                  },
-               <?php } ?>
-            ],
+            // "columns": [{
+            //       "width": "8%"
+            //    },
+            //    {
+            //       "width": "10%"
+            //    },
+            //    {
+            //       "width": "10%"
+            //    },
+            //    {
+            //       "width": "10%"
+            //    },
+            //    {
+            //       "width": "10%"
+            //    },
+            //    {
+            //       "width": "12%"
+            //    },
+            //    {
+            //       "width": "14%"
+            //    },
+            //    {
+            //       "width": "12%"
+            //    },
+            //    {
+            //       "width": "12%"
+            //    },
+            //    <?php if ($this->session->userdata('lm_role') == 1) { ?> {
+            //          "width": "12%"
+            //       },
+            //    <?php } ?>
+            // ],
             "columnDefs": [{
-               "targets": [0, 1, 2, 3, 4, 5, 6],
+               "targets": [0, 1, 2, 3, 4, 5, 6,],
                "orderable": true
             }],
 

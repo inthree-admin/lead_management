@@ -66,6 +66,23 @@
             return $this->db->update('tbl_lead_curl_log', $up_arr);
         }
 
+        public function get_branch($branch_code){
+            $this->db->select('*');
+            $this->db->from('branch');
+            $this->db->where('code',$branch_code);
+            $query = $this->db->get();
+            return $result = $query->row_array();
+        }
+
+         public function get_lmp_info($lmpid){
+            $this->db->select('*');
+            $this->db->from('lp_details');
+            $this->db->where('ci_id',$lmpid);
+            $query = $this->db->get();
+            $result= $query->row_array();
+            return $result;
+        }
+
 	}
 
 ?>

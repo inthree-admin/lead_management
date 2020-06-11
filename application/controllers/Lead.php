@@ -394,6 +394,13 @@ class Lead extends MY_Controller
 							// $params = array('lead_id' => $lead_id);
 							// $this->load->library('leadlibrary', $params);
 							// $this->leadlibrary->push_seller_portal();
+
+							// Push order to Abayomi portal
+							$params = array('lead_id' => $lead_id);
+							$this->load->library('leadlibrary', $params);
+							$this->leadlibrary->push_abayomi_portal();
+
+
 							$msg = 'Lead Approved Successfully';
 						}
 

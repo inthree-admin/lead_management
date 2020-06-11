@@ -206,9 +206,137 @@ class Leadlibrary {
 
 	}
     
+	public function push_abayomi_portal(){
+		$id = $this->lead_id;
+		$order_list = $this->CI->Lead_order_model->get_lead($id)[0];		
+		$item_list   = $this->CI->Lead_order_model->get_lead_item($id);
+		$json_data = array();
+		$json_data['order_id'] 					= $order_list['lead_no'];
+		$json_data['order_date'] 				= $order_list['created_on'];
+		$json_data['approved_date'] 			= $order_list['modified_on'];
+		$json_data['approved_by'] 				= $order_list['modified_by'];
+		$json_data['order_status'] 				= $order_list['status'];
+		$json_data['order_store'] 				= '-';
+		$json_data['order_value'] 				= $order_list['order_total'];
+		$json_data['payment_mode'] 				= ($order_list['payment_type'] == 1) ? 'Prepaid':'cashondelivery';
+		$json_data['delivery_to'] 				= 'Customer';
+		$json_data['is_precalling_required'] 	= 0;
+		$json_data['is_datacorrection_required']= 0;
+		$json_data['is_deliveryconfirmation_required'] = 0;
+		$json_data['is_democonfirmation_required'] = 0;
+		$json_data['oh_details'][] = array('oh_msg'=>'Order Placed','oh_action_at'=> $order_list['created_on']); 
+		$json_data['billing'] = array(
+									'billing_first_name'  => $order_list['cust_name'],
+									'billing_middle_name'  => '',
+									'billing_last_name'  => '-',
+									'billing_street_1'  => $order_list['billing_address'],
+									'billing_street_2'  => '',
+									'billing_city'  => $order_list['billing_city'],
+									'billing_state'  => 'Tamil Nadu',
+									'billing_country'  => 'India',
+									'billing_postalcode'  => $order_list['billing_pincode'],
+									'billing_phone'  => $order_list['billing_contact_no'],
+									'billing_alt_phone'  => $order_list['billing_contact_no']);
+		$json_data['shipping'] = array(
+									'shipping_first_name' => $order_list['cust_name'],
+									'shipping_middle_name' => '',
+									'shipping_last_name' => '-',
+									'shipping_street_1' => $order_list['shipping_address'],
+									'shipping_street_2' => '',
+									'shipping_city' => $order_list['shipping_city'],
+									'shipping_state' => 'Tamil Nadu',
+									'shipping_country' => 'India',
+									'shipping_postalcode' => $order_list['shipping_pincode'],
+									'shipping_phone' => $order_list['shipping_contact_no'],
+									'shipping_alt_phone' => $order_list['shipping_contact_no']);
+		//branch details
+		if(isset($order_list['branch_code']) AND !empty($order_list['branch_code'])){
+			$branch_info = $this->CI->Lead_order_model->get_branch($order_list['branch_code']); 
+			$json_data['branch'] = array('branch_code' => $branch_info['code'],
+									'branch_name' => $branch_info['name'],
+									'branch_contact_no' => $branch_info['contactno'],
+									'branch_contact_alt' => $branch_info['contactno'],
+									'poc_name' => 'NA',
+									'poc_contact_no' => $branch_info['contactno'],
+									'poc_contact_alt' => $branch_info['contactno']);	
+		}else{
+			$json_data['branch'] = array('branch_code' => '',
+									'branch_name' => '',
+									'branch_contact_no' => '',
+									'branch_contact_alt' => '',
+									'poc_name' => '',
+									'poc_contact_no' => '',
+									'poc_contact_alt' => '');	
+		}
 
+		//LMP details
+		if(isset($order_list['lmp_id']) AND !empty($order_list['lmp_id'])){
+			$lmp_info = $this->CI->Lead_order_model->get_lmp_info($order_list['lmp_id']); 
+			$json_data['LMP']	= array('lmp_firm_name'=> $lmp_info['firm_name'],
+								   	'lmp_owner_name'=> $lmp_info['owner_name'],
+								    'lmp_owner_number'=> $lmp_info['owner_mbl'],
+								    'lmp_owner_email'=> $lmp_info['email'],
+								    'lmp_address'=> $lmp_info['address'],
+								    'lmp_city'=> $lmp_info['lp_city'],
+								    'lp_state'=> $lmp_info['lp_state'],
+								    'lmp_pincode'=> $lmp_info['lp_postalcode'],
+								    'lmp_spoc_name'=> $lmp_info['spoc_name'],
+								    'lmp_spoc_contact_number'=> $lmp_info['spoc_mbl'],
+								    'lmp_landline'=> $lmp_info['land_line']);
+		}else{
+			$json_data['LMP']	= array('lmp_firm_name'=> '',
+								   	'lmp_owner_name'=> '',
+								    'lmp_owner_number'=> '',
+								    'lmp_owner_email'=> '',
+								    'lmp_address'=> '',
+								    'lmp_city'=> '',
+								    'lp_state'=> '',
+								    'lmp_pincode'=> '',
+								    'lmp_spoc_name'=> '',
+								    'lmp_spoc_contact_number'=> '',
+								    'lmp_landline'=> '');
+		}
+		
+		foreach ($item_list as $key => $item_data) {
+		$json_data['item_details'][$key] = array(
+									'brand_name' => $item_data['item_name'],
+									'model_number' => '',
+									'product_sku' => $item_data['item_id'],									
+									'product_name' => $item_data['item_name'],
+									'product_type' => 'simple',
+									'qty' => $item_data['item_qty'],
+									'unit_price' => $item_data['item_unit_price'],
+									'total_price' => $item_data['item_price'],
+									'tax_price' => 0,
+									'item_status' => '',
+									'is_gift' => '0',
+									'is_demo' => '1',
+									'imei_number' => ''	); 
+
+		}
+		$post_data['data'] = $json_data; 
+		//Save log 
+		$post_data = json_encode($post_data);
+		$log_data = array('curl_name' => 'push_order_to_abayomi_portal','send_data'=> $post_data,'started_at'=> date('Y-m-d h:m:s'));
+		$log_id = $this->CI->Lead_order_model->add_log($log_data); 
+
+		//Send data 
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_POST, 1);
+		curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);
+		curl_setopt($curl, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
+		curl_setopt($curl, CURLOPT_URL, 'http://dev.in3access.in/in3crm/boonbox/api/Order?key=M0TyL1LO7H2o1rJyDamFZAowazlO4Ck8');
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+		$result = curl_exec($curl);
+
+		if(!$result){ $result = "Connection Failure"; }
+		curl_close($curl);		
+
+		//Update end time in log table
+		$this->CI->Lead_order_model->update_log(array('response_data'=> $result,'end_at'=> date('Y-m-d h:m:s')),$log_id);
+		 
+	}
 
 
 }
-
-?>

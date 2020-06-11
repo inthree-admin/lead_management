@@ -308,7 +308,7 @@ class Leadlibrary {
 									'unit_price' => $item_data['item_unit_price'],
 									'total_price' => $item_data['item_price'],
 									'tax_price' => 0,
-									'item_status' => '',
+									'item_status' => '-',
 									'is_gift' => '0',
 									'is_demo' => '1',
 									'imei_number' => ''	); 

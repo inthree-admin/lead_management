@@ -52,6 +52,16 @@
                          <span class="mm-text ">New Lead</span>
                      </a>
                  </li>
+
+                 <?php if ($role = $this->session->userdata('lm_role') == 1) { ?>
+                     <li class="<?php if ($seg1 == "lead_upload") echo "active"; ?>">
+                         <a href="<?php echo site_url("lead_upload"); ?>">
+                             <i class="menu-icon ti-file"></i>
+                             <span class="mm-text ">Bulk Upload </span>
+                         </a>
+                     </li>
+                 <?php } ?>
+
                  <li class="<?php if ($seg2 == "list") echo "active"; ?>">
                      <a href="<?php echo site_url("lead/list"); ?>">
                          <i class="menu-icon ti-layout-grid4"></i>

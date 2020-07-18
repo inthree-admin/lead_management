@@ -21,6 +21,23 @@ class Lead_model extends CI_Model
         return $this->db->insert_id();
     }
 
+    public function insert_lead_item($ins_arr)
+    {
+        $this->db->insert('tbl_lead_items', $ins_arr);
+        return $this->db->insert_id();
+    }
+
+    public function get_branch_info()
+    {
+
+        $this->db->select('*');
+        $this->db->from('jfs_details');
+        $this->db->where('state', 'Tamil Nadu');
+        $this->db->order_by('branchname', 'ASC');
+        $query = $this->db->get();
+        return $result = $query->result_array();
+    }
+
     public function get_product_info($prod_id = '')
     {
         if ($prod_id == '') return false;
@@ -119,7 +136,7 @@ class Lead_model extends CI_Model
         ");
         }
 
-        if (isset($filter['fltr_status']) && $filter['fltr_status']!='' && $filter['fltr_status']!=0) {
+        if (isset($filter['fltr_status']) && $filter['fltr_status'] != '' && $filter['fltr_status'] != 0) {
             $this->db->where('approval_status', $filter['fltr_status']);
         }
 
@@ -156,7 +173,7 @@ class Lead_model extends CI_Model
         ");
         }
 
-        if (isset($filter['fltr_status']) and $filter['fltr_status']!='') {
+        if (isset($filter['fltr_status']) and $filter['fltr_status'] != '') {
             $this->db->where('approval_status', $filter['fltr_status']);
         }
 
@@ -223,5 +240,32 @@ class Lead_model extends CI_Model
         if (isset($filter['seller_order_id']) and !empty($filter['seller_order_id']))
             $this->db->where('seller_order_id', $filter['seller_order_id']);
         return $this->db->get()->row();
+    }
+
+    public function check_product($prod_name)
+    {
+        $this->db->select('prod_id, prod_name, prod_price');
+        $this->db->from('tbl_lead_products');
+        $this->db->where('prod_name', $prod_name);
+        $query = $this->db->get();
+        return $result = $query->result_array();
+    }
+
+    public function check_lmp($lmp_name)
+    {
+        $this->db->select('ci_id');
+        $this->db->from('lp_details');
+        $this->db->where('firm_name', $lmp_name);
+        $query = $this->db->get();
+        return $result = $query->result_array();
+    }
+
+    public function check_branch($branch_name)
+    {
+        $this->db->select('branchcode');
+        $this->db->from('jfs_details');
+        $this->db->where('branchname', $branch_name);
+        $query = $this->db->get();
+        return $result = $query->result_array();
     }
 }

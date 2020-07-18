@@ -1313,7 +1313,8 @@ table tbody tr td {
 
 .modal-header {
   -ms-flex-direction: row-reverse;
-  flex-direction: row-reverse; }
+  flex-direction: row-reverse; 
+}
 
 /*custom css dark*/
 body {

@@ -82,7 +82,7 @@
                            * Allows only .xls and .xlsx<br>
                            * Download the sample file by clicking the green download icon.<br>
                            * Uploading file format should match with the sample file format.<br>
-                           * Leads imported only if the file has zero error.<br>
+                           * Leads will imported if the row has zero data error.<br>
                         </div>
                      </div>
                   </div>

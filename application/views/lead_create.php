@@ -259,7 +259,7 @@
                                     Select LMP
                                  </label>
                                  <div class="input-group">
-                                    <select tabindex="1" class="form-control" id="lmp_id" name="lmp_id">
+                                    <select class="form-control" id="lmp_id" name="lmp_id">
                                        <option value="">-Select-</option>
                                        <option value="320">ACP</option>
                                        <option value="3832">AR Traders</option>
@@ -267,7 +267,24 @@
                                     </select>
                                  </div>
                               </div>
-                           </div>
+                              <div class="col-md-4">
+                                 <label class="form-control-label">
+                                    Select Branch
+                                 </label>
+                                 <div class="input-group">
+                                    <select class="form-control" id="branch" name="branch">
+                                    </select>
+                                 </div>
+                              </div>
+                              <div class="col-md-4">
+                                 <label class="form-control-label">
+                                    BB ID
+                                 </label>
+                                 <div class="input-group">
+                                    <input type="text" id="bb_order_id" name="bb_order_id" class="form-control" placeholder="BB Order Id">  
+                                 </div>
+                              </div>
+                           </div><br>
                         <?php } ?>
 
                         <div class="form-group form-actions">

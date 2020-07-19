@@ -125,9 +125,10 @@ class Lead_upload extends MY_Controller
 
 									if (count($lmp_reponse) > 0) {
 
-										$lead_status 		= 1;
+										$lead_status 		= 1; // Open
+										$payment_type		= 1; // Prepaid order
 										$login_id 			= $this->session->userdata('lm_admin_id');
-										$receipt 			= 'BB' . time();
+										
 
 										$cust_name 			= trim($rows[$inc]['customer_name']);
 										$cust_phone 		= trim($rows[$inc]['customer_phone']);
@@ -137,7 +138,7 @@ class Lead_upload extends MY_Controller
 										$shipping_address	= trim($rows[$inc]['customer_address']);
 										$shipping_city		= trim($rows[$inc]['customer_city']);
 										$shipping_pincode	= trim($rows[$inc]['customer_pincode']);
-										$lmp_id 			=  trim($rows[$inc]['lmp']);
+										$lmp_id 			=  $lmp_reponse[0]['ci_id'];
 										$branch_code		=  $branch_code;
 										$bb_order_id		=  trim($rows[$inc]['bb_order_id']);
 
@@ -145,7 +146,6 @@ class Lead_upload extends MY_Controller
 										$insert_arr = array(
 											'cust_name' 		=> $cust_name,
 											'cust_phone' 		=> $cust_phone,
-											'receipt_no' 		=> $receipt,
 											'created_on' 		=> date('Y-m-d G:i:s'),
 											'created_by' 		=> $login_id,
 											'branch_code'		=> $branch_code,
@@ -157,6 +157,7 @@ class Lead_upload extends MY_Controller
 											'shipping_pincode'	=> $shipping_pincode,
 											'lmp_id' 		    => $lmp_id,
 											'bb_order_id' 		=> $bb_order_id,
+											'payment_type' 		=> $payment_type,
 											'status'			=> $lead_status
 										);
 
@@ -182,7 +183,8 @@ class Lead_upload extends MY_Controller
 
 											// Generate lead number and update to lead table
 											$lead_no =  '1' . sprintf("%'.06d", $lead_id);
-											$up_arr = array('lead_no' => $lead_no, 'order_total' => $total_amount);
+											$receipt = 'BB' . $lead_no;
+											$up_arr = array('lead_no' => $lead_no, 'receipt_no' => $receipt, 'order_total' => $total_amount);
 											$this->Lead_model->update_lead($up_arr, $lead_id);
 
 											$err_status = 0;

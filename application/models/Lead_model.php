@@ -94,7 +94,7 @@ class Lead_model extends CI_Model
     public function lead_list($filter)
     {
 
-        $this->db->select('lead_id,cust_name,cust_email,cust_phone,firm_name,lead_no,order_total,receipt_no,lmu_username, jfs_details.branchname, tbl_lead.created_by,
+        $this->db->select('lead_id,cust_name,cust_email,cust_phone,firm_name,lead_no,order_total,receipt_no,lmu_username,lmp_id, jfs_details.branchname, tbl_lead.created_by,
         tbl_lead.modified_on as approved_on, delivery_confirm.created_at as delivered_on,
         CASE
             WHEN payment_link_status = 0 THEN "Not Sent"

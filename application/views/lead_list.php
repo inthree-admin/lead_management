@@ -69,7 +69,7 @@ $to_date     = $today;
                                        <option value="1">Waiting For Approval</option>
                                        <option value="2">Approved</option>
                                        <option value="3">Cancelled</option>
-                                       <option value="4">Delivered</option>                       
+                                       <option value="4">Delivered</option>
                                     </select>
                                  </div>
                                  <!-- /.input group -->
@@ -255,7 +255,7 @@ $to_date     = $today;
             //    <?php } ?>
             // ],
             "columnDefs": [{
-               "targets": [0, 1, 2, 3, 4, 5, 6,],
+               "targets": [0, 1, 2, 3, 4, 5, 6, ],
                "orderable": true
             }],
 
@@ -321,7 +321,7 @@ $to_date     = $today;
                   }
                });
             }
-         })
+         });
       }
 
       function approveLead(lead_id) {
@@ -372,6 +372,99 @@ $to_date     = $today;
                });
             }
 
+         });
+
+         /*swal({
+            title: 'Select Outage Tier',
+            input: 'select',
+            inputOptions: {
+               '1': 'Tier 1',
+               '2': 'Tier 2',
+               '3': 'Tier 3'
+            },
+            inputPlaceholder: 'required',
+            showCancelButton: true,
+            inputValidator: function(value) {
+               return new Promise(function(resolve, reject) {
+                  if (value !== '') {
+                     resolve();
+                  } else {
+                     reject('You need to select a Tier');
+                  }
+               });
+            }
+         }).then(function(result) {
+            swal({
+               type: 'success',
+               html: 'You selected: ' + result.value
+            });
+         });*/
+
+
+      }
+
+
+      function assignLMP(lead_id) {
+         swal({
+            title: '<span style="color:red;font-size:20px;">Please select the LMP to approve<b>',
+            input: 'select',
+            inputPlaceholder: 'select',
+            inputOptions: {
+               '320': 'ACP',
+               '3832': 'AR Traders',
+               '1728': 'Sai Enterprises'
+            },
+            inputPlacehokder: 'lmp',
+            confirmButtonClass: 'btn btn-info',
+            confirmButtonText: 'Approve',
+            showCancelButton: true,
+            cancelButtonColor: '#ff6666',
+            cancelButtonText: 'No',
+            cancelButtonClass: 'btn btn-danger',
+            inputValidator: function(value) {
+               return new Promise(function(resolve, reject) {
+                  if (value) {
+                     resolve();
+                     $.ajax({
+                        type: "POST",
+                        url: BASE_URL + "/lead/approve_lead",
+                        data: {
+                           lead_id: lead_id,
+                           lmp_id: value,
+                           status: 2
+                        },
+                        cache: false,
+                        timeout: 800000,
+                        success: function(data) {
+                           var result = JSON.parse(data);
+                           if (result['success']) {
+                              swal({
+                                 title: "Success",
+                                 text: result['msg'],
+                                 type: "success",
+                                 confirmButtonColor: "#66cc99"
+                              }).then(function() {
+                                 leadList();
+                              });
+                           } else {
+                              swal({
+                                 title: "Failed",
+                                 text: result['msg'],
+                                 type: "error",
+                                 confirmButtonColor: "#66cc99"
+                              }).then(function() {
+                                 leadList();
+                              });
+                           }
+                        },
+                        error: function(e) {}
+                     });
+                  } else {
+                     alert('Please select the LMP to approve');
+                     assignLMP(lead_id)
+                  }
+               });
+            }
          });
       }
 

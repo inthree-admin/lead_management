@@ -36,189 +36,88 @@ class Lead extends MY_Controller
 			$shipping_pincode	= (isset($post['shipping_pincode'])) ? trim($post['shipping_pincode']) : '';
 			$shipping_contact_no = (isset($post['shipping_contact_no'])) ? trim($post['shipping_contact_no']) : '';
 			$payment_type 		= (isset($post['payment_type'])) ? trim($post['payment_type']) : '';
-			$lmp_id 			= (isset($post['lmp_id']) && $post['lmp_id']!='') ? $post['lmp_id'] : '';
-			$lead_status 		= 1; //($payment_type == 2)?3:1;
+			$lmp_id 			= (isset($post['lmp_id']) && $post['lmp_id'] != '') ? $post['lmp_id'] : '';
+			$branch_code		= (isset($post['branch']) && $post['branch'] != '') ? $post['branch'] : $this->session->userdata('lm_branch');
+			$bb_order_id		= (isset($post['bb_order_id']) && $post['bb_order_id'] != '') ? $post['bb_order_id'] : '';
+
+			$lead_status 		= 1;
 			$login_id 			= $this->session->userdata('lm_admin_id');
-			$branch_code 		= $this->session->userdata('lm_branch');
-			$receipt 			= 'BB' . time();
+			
+			// Prepre lead data for insert
+			$insert_arr = array(
+				'cust_name' 		=> $cust_name,
+				'cust_email' 		=> $cust_email,
+				'cust_phone' 		=> $cust_phone,
+				'created_on' 		=> date('Y-m-d G:i:s'),
+				'created_by' 		=> $login_id,
+				'branch_code'		=> $branch_code,
+				'billing_address'	=> $billing_address,
+				'billing_city'		=> $billing_city,
+				'billing_pincode'	=> $billing_pincode,
+				'billing_contact_no' => $billing_contact_no,
+				'cust_id' 			=> $cust_id,
+				'lrn' 				=> $lrn_no,
+				'shipping_address'	=> $shipping_address,
+				'shipping_city'		=> $shipping_city,
+				'shipping_pincode'	=> $shipping_pincode,
+				'shipping_contact_no' => $shipping_contact_no,
+				'lmp_id' 		    => $lmp_id,
+				'bb_order_id' 		=> $bb_order_id,
+				'payment_type' 		=> $payment_type,
+				'status'			=> $lead_status
+			);
 
-			// Check all products from the same LMP
-			$prod_list = rtrim(implode(',', $post['product']), ',');
-			$lmp_info = $this->Lead_model->get_lmp_info($prod_list);
+			// Save lead
+			$lead_id = $this->Lead_model->insert_new_lead($insert_arr);
+			if ($lead_id) {
 
-			if (count($lmp_info) == 1) {
-
-				$lmp_id = ($lmp_id)?$lmp_id:$lmp_info[0]['lmp_id'];
-
-				// Prepre lead data for insert
-				$insert_arr = array(
-					'cust_name' 		=> $cust_name,
-					'cust_email' 		=> $cust_email,
-					'cust_phone' 		=> $cust_phone,
-					'receipt_no' 		=> $receipt,
-					'created_on' 		=> date('Y-m-d G:i:s'),
-					'created_by' 		=> $login_id,
-					'branch_code'		=> $branch_code,
-					'billing_address'	=> $billing_address,
-					'billing_city'		=> $billing_city,
-					'billing_pincode'	=> $billing_pincode,
-					'billing_contact_no' => $billing_contact_no,
-					'cust_id' 			=> $cust_id,
-					'lrn' 				=> $lrn_no,
-					'shipping_address'	=> $shipping_address,
-					'shipping_city'		=> $shipping_city,
-					'shipping_pincode'	=> $shipping_pincode,
-					'shipping_contact_no' => $shipping_contact_no,
-					'lmp_id' 		    => $lmp_id,
-					'payment_type' 		=> $payment_type,
-					'status'			=> $lead_status
-				);
-
-				// Save lead
-				$lead_id = $this->Lead_model->insert_new_lead($insert_arr);
-				if ($lead_id) {
-
-					// Group order items 
-					$order_data = array();
-					foreach ($post['product'] as $key => $pid) {
-						if (!empty($pid)) {
-							if (isset($order_data[$pid]))
-								$order_data[$pid] += $post['quantity'][$key];
-							else
-								$order_data[$pid] = $post['quantity'][$key];
-						}
+				// Group order items 
+				$order_data = array();
+				foreach ($post['product'] as $key => $pid) {
+					if (!empty($pid)) {
+						if (isset($order_data[$pid]))
+							$order_data[$pid] += $post['quantity'][$key];
+						else
+							$order_data[$pid] = $post['quantity'][$key];
 					}
+				}
 
-					// Prepare order item 
-					$product_info = $this->Lead_model->get_product_info(array_keys($order_data));
-					$total_amount = 0;
-					$insert_item_arr = array();
-					foreach ($product_info as $key => $pdata) {
-						$qty = $order_data[$pdata['prod_id']];
-						$price =  $pdata['prod_price'];
-						$subtotal = $qty * $price;
-						$total_amount = $total_amount + $subtotal;
-						$item_arr = array(
-							'lead_id' 			=> $lead_id,
-							'item_name' 		=> $pdata['prod_name'],
-							'item_id' 			=> $pdata['prod_id'],
-							'item_unit_price' 	=> $price,
-							'item_qty' 			=> $qty,
-							'item_price' 		=> $subtotal
-						);
-						array_push($insert_item_arr, $item_arr);
-					}
-
-					// Save lead item
-					$this->Lead_model->insert_new_lead_items($insert_item_arr);
-
-					// Generate lead number and update to lead table
-					$lead_no =  '1' . sprintf("%'.06d", $lead_id);
-					$up_arr = array('lead_no' => $lead_no, 'order_total' => $total_amount);
-					$this->Lead_model->update_lead($up_arr, $lead_id);
-
-					// Lead generation completed
-					$msg = 'Lead ID '.$lead_no.' generated.';
-
-					// Send details to payment gateway for prepaid orders
-					/*if ($payment_type == 1) {
-
-					$tot_amount_paisa = $total_amount * 100;
-					$discription = 'Boonbox Product';
-
-					$fields_string = '{"customer": {
-					"name": "' . $cust_name . '",
-					"email": "' . $cust_email . '",
-					"contact": "' . $cust_phone . '"
-					},
-					"type": "link",
-					"view_less": 1,
-					"amount": ' . $tot_amount_paisa . ',
-					"currency": "INR",
-					"description": "' . $discription . '",
-					"receipt": "' . $receipt . '",
-					"reminder_enable": true,
-					"sms_notify": 1,
-					"email_notify": 1,
-					"expire_by": "",
-					"callback_url": "http://dev.in3access.in/lead_management/lead_order/verify",
-					"callback_method": "get" }';
-
-					// Send Payment Link
-					$url = 'https://api.razorpay.com/v1/invoices/';
-					$key_id = 'rzp_test_WIy9t4y8B55ivj';
-					$key_secret = 'zYx0UxiPQ9DdTYH0VWTvCWPj';
-
-					//Prepare CURL Request for payment link
-					$ch = curl_init();
-					curl_setopt($ch, CURLOPT_URL, $url);
-					curl_setopt($ch, CURLOPT_USERPWD, $key_id . ':' . $key_secret);
-					curl_setopt($ch, CURLOPT_TIMEOUT, 60);
-					curl_setopt($ch, CURLOPT_POST, 1);
-					curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
-					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-					curl_setopt(
-						$ch,
-						CURLOPT_HTTPHEADER,
-						array(
-							'Content-Type: application/json',
-							'Content-Length: ' . strlen($fields_string)
-						)
+				// Prepare order item 
+				$product_info = $this->Lead_model->get_product_info(array_keys($order_data));
+				$total_amount = 0;
+				$insert_item_arr = array();
+				foreach ($product_info as $key => $pdata) {
+					$qty = $order_data[$pdata['prod_id']];
+					$price =  $pdata['prod_price'];
+					$subtotal = $qty * $price;
+					$total_amount = $total_amount + $subtotal;
+					$item_arr = array(
+						'lead_id' 			=> $lead_id,
+						'item_name' 		=> $pdata['prod_name'],
+						'item_id' 			=> $pdata['prod_id'],
+						'item_unit_price' 	=> $price,
+						'item_qty' 			=> $qty,
+						'item_price' 		=> $subtotal
 					);
-					$result = curl_exec($ch);
-
-					// Check the curl response
-					if ($result) {
-						$res_arr = json_decode($result);
-
-						if (isset($res_arr->id)) {
-							$payment_link_status = 1;
-							$rpay_inv_id = $res_arr->id;
-							$msg .= ' and payment link sent successfully';
-						} else {
-							$payment_link_status = 2;
-							$rpay_inv_id = '';
-							$msg .= ' and payment link failed';
-						}
-
-						$up_arr = array(
-							'payment_link_req' => $fields_string,
-							'payment_link_status' => $payment_link_status,
-							'payment_link_response' => $result,
-							'rpay_inv_id' => $rpay_inv_id
-						);
-					} else {
-
-						$up_arr = array(
-							'payment_link_req' => $fields_string,
-							'payment_link_status' => 2,
-							'payment_link_response' => 'Empty Response',
-							'rpay_inv_id' => ''
-						);
-
-						$msg .= ' and payment link failed';
-					}
-
-					$this->Lead_model->update_lead($up_arr, $lead_id);
+					array_push($insert_item_arr, $item_arr);
 				}
 
+				// Save lead item
+				$this->Lead_model->insert_new_lead_items($insert_item_arr);
 
-				// Push orders to lastmile for COD Orders
-				if ($payment_type == 2) {
-					$params = array('lead_id' => $lead_id);
-					$this->load->library('leadlibrary', $params);
-					$this->leadlibrary->push_order();
-					$msg .= " and order pushed to lastmile";
-				}*/
+				// Generate lead number and update to lead table
+				$lead_no =  '1' . sprintf("%'.06d", $lead_id);
+				$receipt = 'BB' . $lead_no;
+				$up_arr = array('lead_no' => $lead_no, 'receipt_no' => $receipt, 'order_total' => $total_amount);
+				$this->Lead_model->update_lead($up_arr, $lead_id);
 
-					echo json_encode(array('success' => true, 'msg' => $msg));
-				} else {
+				// Lead generation completed
+				$msg = 'Lead ID ' . $lead_no . ' generated.';
 
-					echo json_encode(array('success' => false, 'msg' => 'Lead generation failed'));
-				}
+				echo json_encode(array('success' => true, 'msg' => $msg));
 			} else {
 
-				echo json_encode(array('success' => false, 'msg' => 'You cannot select products from multiple LMP'));
+				echo json_encode(array('success' => false, 'msg' => 'Lead generation failed'));
 			}
 		}
 	}
@@ -230,7 +129,7 @@ class Lead extends MY_Controller
 
 	public function lead_list()
 	{
-	
+
 		$role = $this->session->userdata('lm_role');
 		$user_id = $this->session->userdata('lm_admin_id');
 		$start  = (isset($_GET['start'])) ? $_GET['start'] : '';
@@ -238,9 +137,9 @@ class Lead extends MY_Controller
 		$searchKey = (isset($_GET['search']['value'])) ? trim($_GET['search']['value']) : '';
 		$ordercolumn =  (isset($_GET['order'][0]['column'])) ? $_GET['order'][0]['column'] : 1;
 		$ordertype = (isset($_GET['order'][0]['dir'])) ? $_GET['order'][0]['dir'] : ''; //asc or desc  
-		$fltr_status = ($_GET['fltr_status'])?$_GET['fltr_status']:'';
-		$from_date = (isset($_GET['from_date']) AND !empty($_GET['from_date'])) ? $_GET['from_date'] : date('Y-m-d');
-		$to_date = (isset($_GET['to_date']) AND !empty($_GET['to_date'])) ? $_GET['to_date'] : date('Y-m-d'); 
+		$fltr_status = ($_GET['fltr_status']) ? $_GET['fltr_status'] : '';
+		$from_date = (isset($_GET['from_date']) and !empty($_GET['from_date'])) ? $_GET['from_date'] : date('Y-m-d');
+		$to_date = (isset($_GET['to_date']) and !empty($_GET['to_date'])) ? $_GET['to_date'] : date('Y-m-d');
 
 
 		$columnArray = array(
@@ -249,8 +148,10 @@ class Lead extends MY_Controller
 			6 => 'created_on', 7 => 'lmu_username', 8 => 'approved_on', 9 => 'delivered_on', 10 => 'status'
 		);
 
-		$filter_arr = array('start' => $start, 'length' => $length, 'searchKey' => $searchKey, 'ordercolumn' => $columnArray[$ordercolumn], 
-		'ordertype' => $ordertype,'from_date' => $from_date,'to_date' => $to_date, 'fltr_status' => $fltr_status);
+		$filter_arr = array(
+			'start' => $start, 'length' => $length, 'searchKey' => $searchKey, 'ordercolumn' => $columnArray[$ordercolumn],
+			'ordertype' => $ordertype, 'from_date' => $from_date, 'to_date' => $to_date, 'fltr_status' => $fltr_status
+		);
 		if ($role != 1)  $filter_arr['created_by'] = $user_id;
 
 		$result = $this->Lead_model->lead_list($filter_arr);
@@ -271,9 +172,13 @@ class Lead extends MY_Controller
 			$returnData['data'][$key][10] = $data['status'];
 
 			$actionbtn = '-';
-			if ($data['status'] == 'Waiting For Approval')
-				$actionbtn = '<i class="fa fa-fw fa-thumbs-o-up fa-lg actions_icon" title="Approve" onclick="approveLead(' . $data['lead_id'] . ')"></i>&nbsp&nbsp<i class="fa fa-fw ti-close text-danger actions_icon" title="Cancel" onclick="cancelLead(' . $data['lead_id'] . ')"></i>';
-			//$actionbtn = '<button class="btn btn-primary btn-xs" onclick="cancelLead('.$data['lead_id'].')">Cancel</button>';
+			if ($data['status'] == 'Waiting For Approval') {
+				if($data['lmp_id']>0)
+					$actionbtn = '<i class="fa fa-fw fa-thumbs-o-up fa-lg actions_icon" title="Approve" onclick="approveLead(' . $data['lead_id'] . ')"></i>&nbsp&nbsp<i class="fa fa-fw ti-close text-danger actions_icon" title="Cancel" onclick="cancelLead(' . $data['lead_id'] . ')"></i>';
+				else
+					$actionbtn = '<i class="fa fa-fw fa-thumbs-o-up fa-lg actions_icon" title="Approve" onclick="assignLMP(' . $data['lead_id'] . ')"></i>&nbsp&nbsp<i class="fa fa-fw ti-close text-danger actions_icon" title="Cancel" onclick="cancelLead(' . $data['lead_id'] . ')"></i>';	
+			}		
+			
 			if ($role == 1) $returnData['data'][$key][11] = $actionbtn;
 		}
 		$returnData['recordsTotal'] = count($result);
@@ -284,6 +189,12 @@ class Lead extends MY_Controller
 		// exit;
 
 		echo json_encode($returnData);
+	}
+
+	public function load_branches()
+	{
+		$branch_info = $this->Lead_model->get_branch_info();
+		echo json_encode($branch_info);
 	}
 
 	public function load_products()
@@ -363,13 +274,20 @@ class Lead extends MY_Controller
 	public function approve_lead()
 	{
 		$post = $this->input->post();
+
 		$lead_id = (isset($post['lead_id'])) ? $post['lead_id'] : 0;
+		$lmp_id = (isset($post['lmp_id'])) ? $post['lmp_id'] : 0;
 		$status = (isset($post['status'])) ? $post['status'] : 0;
 		$reason = (isset($post['reason'])) ? $post['reason'] : '';
+		
 		if (empty($lead_id) or empty($status)) {
 			echo json_encode(array('success' => false, 'msg' => 'Something went wrong'));
 		}
 		if (!empty($lead_id) and !empty($status)) {
+
+			// Assign LMP if lmp_id is not null
+			if($lmp_id > 0)
+				$this->Lead_model->update_lead(array('lmp_id'=>$lmp_id), $lead_id);
 
 			$lead_info = $this->Lead_model->get_lead_by_lead_id($lead_id);
 			if (is_array($lead_info) && count($lead_info) > 0) {
@@ -380,7 +298,7 @@ class Lead extends MY_Controller
 
 					$username = $this->session->userdata('lm_username');
 					$up_arr = array('approval_status' => $status, 'modified_on' => date('Y-m-d G:i:s'), 'modified_by' => $username);
-					if(!empty($reason)) $up_arr['cancel_reason'] = $reason;
+					if (!empty($reason)) $up_arr['cancel_reason'] = $reason;
 					$result = $this->Lead_model->update_lead($up_arr, $lead_id);
 					if ($result) {
 
@@ -431,7 +349,7 @@ class Lead extends MY_Controller
 		$from_date = (isset($_GET['from_date'])) ? $_GET['from_date'] : '';
 		$to_date = (isset($_GET['to_date'])) ? $_GET['to_date'] : '';
 		$fltr_status = (isset($_GET['fltr_status'])) ? $_GET['fltr_status'] : '';
-		$filter_arr = array('searchKey' => $q, 'ordercolumn' => 'created_on', 'from_date' => $from_date,'to_date' => $to_date,'fltr_status'=>$fltr_status,'ordertype' => 'DESC');
+		$filter_arr = array('searchKey' => $q, 'ordercolumn' => 'created_on', 'from_date' => $from_date, 'to_date' => $to_date, 'fltr_status' => $fltr_status, 'ordertype' => 'DESC');
 		if ($role != 1)  $filter_arr['created_by'] = $user_id;
 		$result = $this->Lead_model->lead_list($filter_arr);
 		header("Content-Disposition: attachment; filename=\"lead_list_" . time() . ".xls\"");
@@ -471,5 +389,4 @@ class Lead extends MY_Controller
 		}
 		fclose($handle);
 	}
-	
 }

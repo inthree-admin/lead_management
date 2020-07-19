@@ -78,6 +78,12 @@ class Proof extends MY_Controller {
             $returnData['recordsTotal'] = count($data);
             $returnData['recordsFiltered'] =  $ListTotal['total_count'];
             $returnData['data'] = $data;
+
+            // echo '<pre>';
+            // print_r($returnData);
+            // exit;
+
+
             echo json_encode($returnData);
         }
 

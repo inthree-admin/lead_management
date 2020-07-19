@@ -54,6 +54,8 @@
                               <tr>
                                  <th>Reference</th>
                                  <th>Order Id#</th> 
+                                 <th>Customer Name</th> 
+                                 <th>Phone</th> 
                                  <th>Delivery Date</th> 
                                  <th>Delivery Proof</th>
                                  <th>Invoice Proof</th>
@@ -127,6 +129,14 @@
                 "width": "10%"
             }, 
             {
+                "data": "customer_name",
+                "width": "10%"
+            }, 
+            {
+                "data": "customer_contact_number",
+                "width": "10%"
+            }, 
+            {
                 "data": "created_at",
                 "width": "10%"
             },
@@ -152,7 +162,7 @@
         ],
              
             "columnDefs": [{
-               "targets": [0,1,2,3,4,5,6],
+               "targets": [0,1,2,3,4,5,6,7,8],
                "orderable": true
             }],
 

@@ -255,7 +255,8 @@ class Lead_model extends CI_Model
     {
         $this->db->select('ci_id');
         $this->db->from('lp_details');
-        $this->db->where('firm_name', $lmp_name);
+        $this->db->where('employee_code', $lmp_name);
+       // $this->db->where('firm_name', $lmp_name);
         $query = $this->db->get();
         return $result = $query->result_array();
     }

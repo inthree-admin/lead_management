@@ -18,6 +18,12 @@
    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/css/custom_css/sweet_alert2.css">
    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/vendors/jquerydaterangepicker/css/daterangepicker.min.css">
    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/css/datepicker.css">
+   <style>
+      @media screen and (max-width: 767px)
+      {
+         .page-link{padding: 0.5rem 0.20rem !important;font-size: 12px;}
+      }
+   </style>
 </head>
 <script>
    var BASE_URL = "<?php echo base_url() ?>";
@@ -132,7 +138,7 @@ $to_date     = $today;
                                  <th>Approved On</th>
                                  <th>Delivered On</th>
                                  <th>Order Status</th>
-                                 <?php if ($this->session->userdata('lm_role') == 1) echo '<th >Approve All <input type="checkbox" class="iCheck-helper" onchange="checkAppAll(this);">  </th><th>Action</th>'; ?>
+                                 <?php if ($this->session->userdata('lm_role') == 1) echo '<th >Bulk Approve <input type="checkbox" class="iCheck-helper multiapprovechkbox" onchange="checkAppAll(this);">  </th><th>Action</th>'; ?>
                               </tr>
                            </thead>
                            <tbody>
@@ -152,7 +158,7 @@ $to_date     = $today;
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <button type="button" class="close" data-dismiss="modal" onclick="$('.multiapprovechkbox').prop('checked',false);">&times;</button>
         <h4 class="modal-title">Order List</h4>
       </div>
       <div class="modal-body">
@@ -173,8 +179,8 @@ $to_date     = $today;
                         </table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success" onclick="multipleApprove();">Approve</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success btn_bulk_approve" onclick="multipleApprove();">Approve</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="$('.multiapprovechkbox').prop('checked',false);">Close</button>
         
       </div>
     </div>
@@ -183,43 +189,7 @@ $to_date     = $today;
 </div>
 
 
-<div id="approvalInfoModal" class="modal fade" role="dialog">
-  <div class="modal-dialog  modal-lg">
 
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Order List</h4>
-      </div>
-      <div class="modal-body">
-        
-        <table class="table table-striped table-bordered table-hover" id="tbl_pendingAprroveList" style="width:100%">
-                           <thead style="text-align: center;">
-                              <tr>
-                                 <th>S.no</th>
-                                 <th>Order #</th>  
-                                 <th>Branch</th> 
-                                 <th>LMP</th>
-                                 <th>Status</th>
-                                 <th>Reason</th>
-                              </tr>
-                           </thead>
-                           <tbody>
-
-
-                           </tbody>
-                        </table>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-success" onclick="multipleApprove();">Approve</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        
-      </div>
-    </div>
-
-  </div>
-</div>
 
 
       </section>
@@ -241,6 +211,8 @@ $to_date     = $today;
    <script type="text/javascript" src="<?php echo base_url() ?>assets/vendors/jquerydaterangepicker/js/jquery.daterangepicker.min.js"></script>
    <script src="<?php echo base_url() ?>assets/vendors/datedropper/datedropper.js" type="text/javascript"></script>
    <script type="text/javascript" src="<?php echo base_url() ?>assets/js/jquery.datetimepicker.js"></script>
+   <script type="text/javascript" src="<?php echo base_url() ?>assets/js/custom_js/jquery.blockUI.js"></script>
+
 
    <script>
       "use strict";
@@ -487,9 +459,9 @@ $to_date     = $today;
             input: 'select',
             inputPlaceholder: 'select',
             inputOptions: {
-               '203': 'Divya',
-               '145': 'Monisha',
-               '159': 'Sai Enterprises'
+               '145': 'Monisha  (bb_Monish)',
+               '159': 'Agalya (bb_Agalya)',
+               '163': 'Vikash (bb_vikash)'
             },
             inputPlacehokder: 'lmp',
             confirmButtonClass: 'btn btn-info',
@@ -551,9 +523,17 @@ $to_date     = $today;
          window.open(url);
       }
 
-      function checkAppAll(e){         
-         showPendingApproveList()
-         $('#multipleApproveModal').modal('show');
+      function checkAppAll(e){    
+
+              $('.btn_bulk_approve').prop('disabled',false);
+            if($(e).prop('checked')){
+               showPendingApproveList()
+               $('#multipleApproveModal').modal('show');
+            }  else{
+                
+                $('#multipleApproveModal').modal('hide');
+            }   
+         
       }
 
       function showPendingApproveList(){
@@ -597,6 +577,10 @@ $to_date     = $today;
       }
 
       function multipleApprove(){
+         if(selectedOrder.length == 0) {
+            alert('Please select the lead');
+            return false;  
+         }
          swal({
             title: "",
             text: "Are you sure want to approve this order?",
@@ -609,9 +593,23 @@ $to_date     = $today;
             cancelButtonClass: 'btn btn-danger'
          }).then(function(conrifm) {
             if (conrifm['value'] == true) { 
-             
+                  $('.btn_bulk_approve').prop('disabled',true);
                   var arr_orders = [];
                   arr_orders = getUnique(selectedOrder);
+
+                  $.blockUI({message:'Please wait...', css: {
+                                border: 'none',
+                                padding: '15px',
+                               backgroundColor: '#000',
+                                '-webkit-border-radius': '10px',
+                                '-moz-border-radius': '10px',
+                                opacity: .5,
+                                color: '#fff',
+                                'z-index':3000
+                                 }
+                  });
+
+
                   $.ajax({
                         type: "POST",
                         url: BASE_URL + "/lead/bulk_approve",
@@ -623,9 +621,20 @@ $to_date     = $today;
                         cache: false,
                         timeout: 800000,
                         success: function(data) {
-                         //  var result = JSON.parse(data);
+                         var result = JSON.parse(data); 
+                          $.unblockUI();
                             showPendingApproveList();
-                             
+                           $('.btn_bulk_approve').prop('disabled',false);
+                           leadList(); 
+                             swal({
+                           title: "Success",
+                           text: result.length +' Lead approved successfully',
+                           type: "success",
+                           confirmButtonColor: "#66cc99"
+                        }).then(function() { 
+                          
+                        }); 
+                            
                         },
                         error: function(e) {}
                      });

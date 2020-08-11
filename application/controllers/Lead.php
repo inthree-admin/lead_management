@@ -429,9 +429,9 @@ class Lead extends MY_Controller
 				$returnData['data'][$key][0] = '<input type="checkbox" class="multi_chkbx" value="'.$data['lead_id'].'" disabled >'; 
 				$returnData['data'][$key][3] = '<select class="form-control sel_lmp" name="" onchange="validateMultiapprove(this);">
 													<option value="">-Select-</option>
-													<option value="320">ACP</option>
-													<option value="3832">AR Traders</option>
-													<option value="1728">Sai Enterprises</option>
+													<option value="145">Monisha  (bb_Monish)</option>
+													<option value="159">Agalya (bb_Agalya)</option>
+													<option value="163">Vikash (bb_vikash)</option>
 												</select>'; 
 			}else{
 				$returnData['data'][$key][0] = '<input type="checkbox" class="multi_chkbx" value="'.$data['lead_id'].'" onchange="pushOrder(this);" >'; 
@@ -456,10 +456,13 @@ class Lead extends MY_Controller
 			$status =  2;
 			$returnData = array();
 			 $lmp_arr = array();
-			 foreach(explode(',', $post['lead_ids_with_lmp']) as $key => $s){
+			 if(!empty($post['lead_ids_with_lmp'] )){
+			 	foreach(explode(',', $post['lead_ids_with_lmp']) as $key => $s){
 			 	$temp = explode(':', $s);
 			 	$lmp_arr[$temp[0]] = $temp[1];
-			 } 
+			 	}
+			 }
+			 
 
 			foreach (explode(",", $post['lead_ids']) as $key => $lead_id) { 
 				$username = $this->session->userdata('lm_username'); 
@@ -477,12 +480,12 @@ class Lead extends MY_Controller
 								// Push orders to lastmile
 								$params = array('lead_id' => $lead_id);
 								$this->load->library('leadlibrary', $params);
-								//	$this->leadlibrary->push_order(); 
+								$this->leadlibrary->push_order(); 
 
 								// Push order to Abayomi portal
 								$params = array('lead_id' => $lead_id);
 								$this->load->library('leadlibrary', $params);
-								//$this->leadlibrary->push_abayomi_portal(); 
+								$this->leadlibrary->push_abayomi_portal(); 
 								$msg = 'Lead Approved Successfully';
 								$returnData[$key]['msg'] = $msg;
 							} 

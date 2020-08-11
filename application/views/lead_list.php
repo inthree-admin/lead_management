@@ -59,54 +59,47 @@ $to_date     = $today;
                   </div>
                   <div class="card-body">
                      <form id="search_form" method="get">
-                        <div class="row">
-                           <div class="col-3">
-                              <div class="form-group">
-                                 <label class="form-control-label text-info"> Status</label>
-                                 <div class="input-group">
-                                    <select class="form-control" id="fltr_status" name="fltr_status">
-                                       <option value="0" selected>All</option>
-                                       <option value="1">Waiting For Approval</option>
-                                       <option value="2">Approved</option>
-                                       <option value="3">Cancelled</option>
-                                       <option value="4">Delivered</option>
-                                    </select>
-                                 </div>
-                                 <!-- /.input group -->
+                        <div class="form-group row">
+                           <div class="col-md-3">
+                              <label class="form-control-label text-info"> Status</label>
+                              <div class="input-group">
+                                 <select class="form-control" id="fltr_status" name="fltr_status">
+                                    <option value="0" selected>All</option>
+                                    <option value="1">Waiting For Approval</option>
+                                    <option value="2">Approved</option>
+                                    <option value="3">Cancelled</option>
+                                    <option value="4">Delivered</option>
+                                 </select>
                               </div>
                            </div>
-                           <div class="col-3">
-                              <div class="form-group">
-                                 <label class="form-control-label text-info"> Created From</label>
-                                 <div class="input-group">
-                                    <div class="input-group-addon">
-                                       <i class="fa fa-fw ti-calendar"></i>
-                                    </div>
-                                    <input class="form-control" id="from_date" size="40" placeholder="From date" value="<?php echo $from_date; ?>">
+                           <div class="col-md-3">
+                              <label class="form-control-label text-info"> Created From</label>
+                              <div class="input-group">
+                                 <div class="input-group-addon">
+                                    <i class="fa fa-fw ti-calendar"></i>
                                  </div>
-                                 <!-- /.input group -->
+                                 <input class="form-control" id="from_date" size="40" placeholder="From date" value="<?php echo $from_date; ?>">
                               </div>
                            </div>
-                           <div class="col-3">
-                              <div class="form-group">
-                                 <label class="form-control-label text-info"> Created To</label>
-                                 <div class="input-group">
-                                    <div class="input-group-addon">
-                                       <i class="fa fa-fw ti-calendar"></i>
-                                    </div>
-                                    <input class="form-control" id="to_date" size="40" placeholder="To date" value="<?php echo $to_date; ?>">
+
+                           <div class="col-md-3">
+                              <label class="form-control-label text-info"> Created To</label>
+                              <div class="input-group">
+                                 <div class="input-group-addon">
+                                    <i class="fa fa-fw ti-calendar"></i>
                                  </div>
-                                 <!-- /.input group -->
+                                 <input class="form-control" id="to_date" size="40" placeholder="To date" value="<?php echo $to_date; ?>">
                               </div>
                            </div>
-                           <div class="col-3" style="margin-top: 28px;">
+
+                           <div class="col-md-3" style="margin-top: 28px;">
                               <button type="button" class="btn btn-effect-ripple btn-primary" onclick="leadList();">
                                  Search
                               </button>
-                              <!-- <button type="reset" class="btn btn-effect-ripple btn-default reset_btn">Reset
-                              </button> -->
+
                            </div>
                         </div>
+
                      </form>
                   </div>
                </div>
@@ -120,8 +113,8 @@ $to_date     = $today;
                   <div class="card-body">
                      <div class="table-responsive">
                         <?php if ($role = $this->session->userdata('lm_role') == 1) { ?>
-                           <div class="btn-group" style="float:right;margin-right:15px;">
-                              <button type="button" class="toggle-vis btn btn-default" onclick="downloadReport();"> <span class="ti-download"></span> Download CSV </button>
+                           <div class="btn-group" style="float:right;margin-right:0px;">
+                              <a href="javascript:void(0);" onclick="downloadReport();"><img src="<?php echo base_url() ?>assets/img/icon-download.png" style="float:right;" title="Download CSV"></a>
                            </div>
                         <?php } ?>
 
@@ -138,8 +131,8 @@ $to_date     = $today;
                                  <th>Created By</th>
                                  <th>Approved On</th>
                                  <th>Delivered On</th>
-                                 <th>Status</th>
-                                 <?php if ($this->session->userdata('lm_role') == 1) echo '<th>Action</th>'; ?>
+                                 <th>Order Status</th>
+                                 <?php if ($this->session->userdata('lm_role') == 1) echo '<th >Approve All <input type="checkbox" class="iCheck-helper" onchange="checkAppAll(this);">  </th><th>Action</th>'; ?>
                               </tr>
                            </thead>
                            <tbody>
@@ -153,6 +146,80 @@ $to_date     = $today;
             </div>
          </div>
 
+<div id="multipleApproveModal" class="modal fade" role="dialog">
+  <div class="modal-dialog  modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Order List</h4>
+      </div>
+      <div class="modal-body">
+        
+        <table class="table table-striped table-bordered table-hover" id="tbl_pendingAprroveList" style="width:100%">
+                           <thead style="text-align: center;">
+                              <tr>
+                                 <th><input type="checkbox" id="chkbox_select_all" value="deva" onchange="selectAll(this);" ></th>
+                                 <th>Order #</th>  
+                                 <th>Branch</th> 
+                                 <th>LMP</th>
+                              </tr>
+                           </thead>
+                           <tbody>
+
+
+                           </tbody>
+                        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" onclick="multipleApprove();">Approve</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<div id="approvalInfoModal" class="modal fade" role="dialog">
+  <div class="modal-dialog  modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Order List</h4>
+      </div>
+      <div class="modal-body">
+        
+        <table class="table table-striped table-bordered table-hover" id="tbl_pendingAprroveList" style="width:100%">
+                           <thead style="text-align: center;">
+                              <tr>
+                                 <th>S.no</th>
+                                 <th>Order #</th>  
+                                 <th>Branch</th> 
+                                 <th>LMP</th>
+                                 <th>Status</th>
+                                 <th>Reason</th>
+                              </tr>
+                           </thead>
+                           <tbody>
+
+
+                           </tbody>
+                        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" onclick="multipleApprove();">Approve</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+
+  </div>
+</div>
 
 
       </section>
@@ -255,9 +322,19 @@ $to_date     = $today;
             //    <?php } ?>
             // ],
             "columnDefs": [{
-               "targets": [0, 1, 2, 3, 4, 5, 6, ],
-               "orderable": true
-            }],
+                  "targets": 11, 
+                  "className": "text-center", 
+               },
+               {
+                  "targets": 12,  
+                  "className": "text-center", 
+               },
+               {
+                  "orderable": false,
+                  "targets": [9, 10, 11, 12]
+               }
+            ],
+
 
          });
 
@@ -410,9 +487,9 @@ $to_date     = $today;
             input: 'select',
             inputPlaceholder: 'select',
             inputOptions: {
-               '320': 'ACP',
-               '3832': 'AR Traders',
-               '1728': 'Sai Enterprises'
+               '203': 'Divya',
+               '145': 'Monisha',
+               '159': 'Sai Enterprises'
             },
             inputPlacehokder: 'lmp',
             confirmButtonClass: 'btn btn-info',
@@ -473,6 +550,169 @@ $to_date     = $today;
          let url = BASE_URL + 'lead/download?q=' + q + '&from_date=' + $('#from_date').val() + '&to_date=' + $('#to_date').val() + '&fltr_status=' + $('#fltr_status').val();
          window.open(url);
       }
+
+      function checkAppAll(e){         
+         showPendingApproveList()
+         $('#multipleApproveModal').modal('show');
+      }
+
+      function showPendingApproveList(){
+         $('#tbl_pendingAprroveList').DataTable().destroy();
+         $('#chkbox_select_all').prop('checked',false);
+         lead_id_with_lmp = [];
+         selectedOrder = [];
+         var table = $('#tbl_pendingAprroveList').DataTable({ 
+            "dom": "<'row'<'col-md-5 col-12 float-left'l><'col-md-7 col-12'f>r><'table-responsive't><'row'<'col-md-5 col-12'i><'col-md-7 col-12'p>>",
+            "bLengthChange": false,
+            "bFilter": false,
+            "bInfo": false,
+            "bAutoWidth": true,
+            "ajax": {
+               "url": BASE_URL + "lead/waiting_for_approval_list",
+               "data": {
+                  "from_date": $('#from_date').val(),
+                  "to_date": $('#to_date').val(),
+                   "fltr_status": 1,
+               }
+            },
+
+            "responsive": true,
+              
+            "columnDefs": [
+            
+               {
+                  "targets": [0,1,2,3], 
+                  "className": "text-center", 
+               },
+               {
+                  "orderable": false,
+                  "targets": [0,1,2,3]
+               }
+            ],
+
+
+         });
+
+
+      }
+
+      function multipleApprove(){
+         swal({
+            title: "",
+            text: "Are you sure want to approve this order?",
+            type: "info",
+            confirmButtonClass: 'btn btn-info',
+            confirmButtonText: 'Yes',
+            showCancelButton: true,
+            cancelButtonColor: '#ff6666',
+            cancelButtonText: 'No',
+            cancelButtonClass: 'btn btn-danger'
+         }).then(function(conrifm) {
+            if (conrifm['value'] == true) { 
+             
+                  var arr_orders = [];
+                  arr_orders = getUnique(selectedOrder);
+                  $.ajax({
+                        type: "POST",
+                        url: BASE_URL + "/lead/bulk_approve",
+                        data: {
+                           lead_ids: arr_orders.join(), 
+                           lead_ids_with_lmp: lead_id_with_lmp.join(), 
+                           status: 2
+                        },
+                        cache: false,
+                        timeout: 800000,
+                        success: function(data) {
+                         //  var result = JSON.parse(data);
+                            showPendingApproveList();
+                             
+                        },
+                        error: function(e) {}
+                     });
+               
+
+            }
+
+         });
+      }
+      
+      var lead_id_with_lmp = [];
+      function validateMultiapprove(e){
+         $($(e).closest('tr').find('.sel_lmp option')).each(function(){
+             var removevalue = $(e).closest('tr').find('.multi_chkbx').val()+':'+this.value;
+              lead_id_with_lmp = jQuery.grep(lead_id_with_lmp, function(value) { 
+                   return value != removevalue;
+             }); 
+         });
+         if($(e).val() == '') {
+            $(e).closest('tr').find('.multi_chkbx').prop('checked',false);
+            $(e).closest('tr').find('.multi_chkbx').prop('disabled',true);
+             removeOrder( $(e).closest('tr').find('.multi_chkbx').val()); 
+         }
+         else{
+             $(e).closest('tr').find('.multi_chkbx').prop('checked',true);
+             $(e).closest('tr').find('.multi_chkbx').prop('disabled',false);
+              selectedOrder.push(  $(e).closest('tr').find('.multi_chkbx').val()); 
+              lead_id_with_lmp.push($(e).closest('tr').find('.multi_chkbx').val()+':'+$(e).val());
+         } 
+         console.log(lead_id_with_lmp);
+      }
+
+      var selectedOrder = [];
+      function selectAll(e){       
+         if($(e).prop('checked')){
+            $('#tbl_pendingAprroveList').find('.multi_chkbx').prop('checked',true);
+            $.each($('.multi_chkbx'), function( index, value ) {
+               
+               if($(this).prop('disabled') === false)  
+                  selectedOrder.push($(this).val());                
+               else 
+                  $(this).prop('checked',false);               
+              });
+         } 
+         else {
+            $('#tbl_pendingAprroveList').find('.multi_chkbx').prop('checked',false);
+              $.each($('.multi_chkbx'), function( index, value ) {
+                 removeOrder($(this).val());
+              });
+             
+         }
+
+         console.log(selectedOrder);
+      }
+      function removeOrder(t){
+         selectedOrder = jQuery.grep(selectedOrder, function(value) { 
+         return value != t;
+         });
+      }
+
+      $(document).on('click', '.page-link',function(){  
+         var count = 0;
+         $.each($('.multi_chkbx'), function( index, value ) {
+             if($(this).prop('checked')) count++;
+         });
+         if(count == 10)  $('#chkbox_select_all').prop('checked',true);
+         else  $('#chkbox_select_all').prop('checked',false);
+      });
+      
+      function pushOrder(e){
+         
+         if($(e).prop('checked'))  selectedOrder.push($(e).val());
+         else removeOrder($(e).val());
+          console.log(selectedOrder);
+      }
+      
+    function getUnique(array){
+        var uniqueArray = [];
+        
+        // Loop through array values
+        for( var i=0; i < array.length; i++){
+            if(uniqueArray.indexOf(array[i]) === -1) {
+                uniqueArray.push(array[i]);
+            }
+        }
+        return uniqueArray;
+    }
    </script>
 </body>
 

@@ -14,7 +14,7 @@ $(document).ready(function () {
             $('.modal-backdrop').css('display', 'none');
 
             var jsonObj = response
-
+            console.log(response);
             if (jsonObj.result == 'success') {
 
                 var xlsItems = jsonObj.data;
@@ -49,7 +49,7 @@ $(document).ready(function () {
 
             } else {
 
-                showDialog('File Upload Error !', 'Invalid File');
+                showDialog('File Upload Error !', 'Invalisssd File');
 
             }
         },
